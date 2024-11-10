@@ -149,4 +149,26 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
         }
         return "Unknown";
     }
+
+//    public List<String> getStreaming(int movieID) {
+//        try {
+//            OkHttpClient client = new OkHttpClient();
+
+//            Request request = new Request.Builder()
+//                    .url("https://api.themoviedb.org/3/movie/movie_id/watch/providers")
+//                    .get()
+//                    .addHeader("accept", "application/json")
+//                    .addHeader("Authorization", "Bearer application/json")
+//                    .build();
+
+//            Response response = client.newCall(request).execute();
+//            if (response.isSuccessful() && response.body() != null) {
+//                String jsonResponse = response.body().string();
+//                JSONObject jsonObject = new JSONObject(jsonResponse);
+//                JSONArray results = jsonObject.getJSONArray("id");
+//            }
+//            } catch (IOException | org.json.JSONException e) {
+//            e.printStackTrace();
+//        }
+ //   }
 }

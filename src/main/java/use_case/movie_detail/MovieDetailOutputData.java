@@ -23,16 +23,16 @@ public class MovieDetailOutputData {
     }
 
 //    public String getStreamingServices() {
- //       return this.movie.getStreamingServices();
+//        return String.join(",", this.movie.getStreamingServices());
 //    }
 
     public String getGenre() {
-        StringBuilder genres = new StringBuilder();
-        for (int i = 0; i < this.movie.getGenres().size() - 1; i++) {
-            genres.append(this.movie.getGenres().get(i) + ", ");
-        }
-        genres.append(this.movie.getGenres().get(this.movie.getGenres().size() - 1));
-        return genres.toString();
+//        StringBuilder genres = new StringBuilder();
+//        for (int i = 0; i < this.movie.getGenres().size() - 1; i++) {
+//            genres.append(this.movie.getGenres().get(i) + ", ");
+//        }
+//        genres.append(this.movie.getGenres().get(this.movie.getGenres().size() - 1));
+        return String.join(", ", this.movie.getGenres());
     }
 
     public String getTitle() {
