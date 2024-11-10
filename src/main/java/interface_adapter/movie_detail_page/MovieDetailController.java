@@ -1,12 +1,9 @@
 package interface_adapter.movie_detail_page;
 
 import entity.Movie;
-import use_case.change_password.ChangePasswordInputBoundary;
-import use_case.change_password.ChangePasswordInputData;
 import use_case.movie_detail.MovieDetailInputBoundary;
 import use_case.movie_detail.MovieDetailInputData;
 
-import java.util.Map;
 
 /**
  * Controller for the Movie Detail Selection Use Case.
