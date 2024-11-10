@@ -1,6 +1,7 @@
 package data_access;
 
 import entity.Movie;
+import use_case.movie_detail.MovieDetailDataAccessInterface;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,7 +17,7 @@ import java.util.Map;
 /**
  * Implementation of SearchMovieDataAccessInterface to fetch movie data from API
  */
-public class MovieAPIAccess implements SearchMovieDataAccessInterface {
+public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDetailDataAccessInterface {
 
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";

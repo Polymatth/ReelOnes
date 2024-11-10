@@ -74,11 +74,19 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        ;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        ;
+    }
 
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setMovieDetailController(MovieDetailController movieDetailController) {
+        this.movieDetailController = movieDetailController;
     }
 }
