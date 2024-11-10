@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 
 public class MovieDetailView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -40,7 +41,11 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
         final JLabel streaming = new JLabel(this.movieDetailViewModel.getState().getStreamingServices());
 
         File file = new File(this.movieDetailViewModel.getState().getPosterImagePath());
-        poster = ImageIO.read(file);
+        try {
+            poster = ImageIO.read(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         final JLabel posterPic = new JLabel(new ImageIcon(poster));
         posterPic.setAlignmentX(Component.LEFT_ALIGNMENT);
 

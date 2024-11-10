@@ -102,15 +102,17 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface {
                 JSONObject jsonObject = new JSONObject(jsonResponse);
                 JSONArray results = jsonObject.getJSONArray("genres");
                 for (int i = 0; i < results.length(); i++) {
-                    JSONObject genreJson = results.getJSONObject(i);
-                    genres.put(genreJson["id"], genreJson["name"];
-                    }
-        }
-            else {
-            System.out.println("API request failed with code: " + response.code());
-        }
-    } catch (IOException | org.json.JSONException e) {
-        e.printStackTrace();
+                    JSONObject elem = results.getJSONObject(i);
+                    Integer id = elem.getInt("id");
+                    String name = elem.getString("name");
+                    genres.put(id, name);
+                }
+            }
+            else{
+                    System.out.println("API request failed with code: " + response.code());
+                }
+        }catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
         }
         return genres;
     }
