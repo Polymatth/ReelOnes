@@ -14,8 +14,9 @@ public class MovieDetailOutputData {
         return this.movie;
     }
 
-//    public String getDirector() {return this.movie.getDirector();
-//       }
+    public String getDirector() {
+        return this.movie.getDirector();
+    }
 
     public String getYear() {
         return this.movie.getYear();

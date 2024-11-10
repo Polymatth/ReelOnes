@@ -32,8 +32,8 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
                 " (" + this.movieDetailViewModel.getState().getYear() + ")");
         title.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-//        final JLabel director = new JLabel("dir. " + this.movieDetailViewModel.getState().getDirector());
-//        title.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        final JLabel director = new JLabel("dir. " + this.movieDetailViewModel.getState().getDirector());
+        title.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         final JLabel genre = new JLabel("dir. " + this.movieDetailViewModel.getState().getGenre());
         title.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -53,7 +53,7 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
 
         final JPanel movieInfo = new JPanel();
         movieInfo.add(title);
-    //    movieInfo.add(director);
+        movieInfo.add(director);
         movieInfo.add(genre);
         movieInfo.add(streaming);
 

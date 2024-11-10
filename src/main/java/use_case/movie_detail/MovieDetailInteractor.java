@@ -20,6 +20,7 @@ public class MovieDetailInteractor implements MovieDetailInputBoundary {
     @Override
     public void execute(MovieDetailInputData movieDetailInputData) {
         Movie movie = movieDetailInputData.getMovie();
+        movie.setDirector(dataAccessInterface.getDirector(movie.getID()));
         Map<Integer, String> genres = dataAccessInterface.getGenres();
         List<String> genreList = new ArrayList<>();
         for (int genreId : movie.getGenre_ids()) {

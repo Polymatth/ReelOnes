@@ -6,4 +6,6 @@ public interface MovieDetailDataAccessInterface {
 
     Map<Integer, String> getGenres();
 
+    String getDirector(int movieID);
+
 }

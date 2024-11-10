@@ -117,4 +117,36 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
         }
         return genres;
     }
+
+    public String getDirector(int movieID) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url("https://api.themoviedb.org/3/movie/" + movieID + "/credits?language=en-US")
+                    .get()
+                    .addHeader("accept", CONTENT_TYPE_JSON)
+                    .addHeader("Authorization", "Bearer application/json")
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                String jsonResponse = response.body().string();
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray results = jsonObject.getJSONArray("crew");
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject elem = results.getJSONObject(i);
+                    if (elem.getString("known_for_department").equals("Director")) {
+                        return elem.getString("name");
+                    }
+                }
+            }
+            else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+        return "Unknown";
+    }
 }
