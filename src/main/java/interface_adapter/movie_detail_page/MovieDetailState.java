@@ -48,9 +48,9 @@ public class MovieDetailState {
         return this.genre;
     }
 
-    public String getDirector() {
-        return this.director;
-    }
+//    public String getDirector() {
+//        return this.director;
+//    }
 
     public String getStreamingServices() {
         return this.streamingServices;

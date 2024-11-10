@@ -1,6 +1,6 @@
 package view;
 
-import interface_adapter.change_password.MovieDetailController;
+import interface_adapter.movie_detail_page.MovieDetailController;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.movie_detail_page.MovieDetailViewModel;

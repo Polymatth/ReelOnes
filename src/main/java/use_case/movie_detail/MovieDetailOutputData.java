@@ -27,10 +27,10 @@ public class MovieDetailOutputData {
 
     public String getGenre() {
         StringBuilder genres = new StringBuilder();
-        for (int i = 0; i < this.movie.getGenres() - 1; i++) {
+        for (int i = 0; i < this.movie.getGenres().size() - 1; i++) {
             genres.append(this.movie.getGenres().get(i) + ", ");
         }
-        genres.append(this.movie.getGenres().get(this.movie.getGenres() - 1));
+        genres.append(this.movie.getGenres().get(this.movie.getGenres().size() - 1));
         return genres.toString();
     }
 
@@ -39,6 +39,6 @@ public class MovieDetailOutputData {
     }
 
     public String getPosterImagePath() {
-        return this.movie.getPosterImagePath();
+        return this.movie.getPosterPath();
     }
 }
