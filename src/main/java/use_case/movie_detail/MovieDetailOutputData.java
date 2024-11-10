@@ -14,16 +14,16 @@ public class MovieDetailOutputData {
         return this.movie;
     }
 
-    public String getDirector() {return this.movie.getDirector();
-    }
+//    public String getDirector() {return this.movie.getDirector();
+//       }
 
     public String getYear() {
         return this.movie.getYear();
     }
 
-    public String getStreamingServices() {
-        return this.movie.getStreamingServices():
-    }
+//    public String getStreamingServices() {
+ //       return this.movie.getStreamingServices();
+//    }
 
     public String getGenre() {
         StringBuilder genres = new StringBuilder();

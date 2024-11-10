@@ -1,4 +1,4 @@
-package interface_adapter.change_password;
+package interface_adapter.movie_detail_page.;
 
 import entity.Movie;
 import use_case.change_password.ChangePasswordInputBoundary;
@@ -23,7 +23,7 @@ public class MovieDetailController {
      * @param movie the movie selected
      */
     public void execute(Movie movie) {
-        Map<Integer, String> genreNames = MovieAPIAccess.get
+        Map<Integer, String> genreNames = MovieAPIAccess.get;
         final MovieDetailInputData movieDetailInputData = new MovieDetailInputData(movie);
 
         movieDetailUseCaseInteractor.execute(movieDetailInputData);
