@@ -24,7 +24,7 @@ import use_case.search_movie.SearchMovieOutputData;
  */
 public class SearchMovieView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    private final String viewName = "Search Results";
+    private final String viewName = "movie search";
     private final SearchMovieViewModel searchMovieViewModel;
     private final JLabel searchErrorField = new JLabel();
     private SearchMovieOutputData searchMovieOutputData;
