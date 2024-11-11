@@ -46,6 +46,7 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
 
             if (response.isSuccessful() && response.body() != null) {
                 String jsonResponse = response.body().string();
+                System.out.println(jsonResponse);
                 JSONObject jsonObject = new JSONObject(jsonResponse);
                 JSONArray results = jsonObject.getJSONArray("results");
 
@@ -61,7 +62,8 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                     }
 
                     Movie movie = new Movie(
-                            movieJson.getString("poster_path"),
+                            //movieJson.getString("poster_path"),
+                            "default",
                             movieJson.getBoolean("adult"),
                             movieJson.getString("overview"),
                             movieJson.getString("release_date"),
@@ -69,7 +71,8 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                             movieJson.getInt("id"),
                             movieJson.getString("original_language"),
                             movieJson.getString("title"),
-                            movieJson.getString("backdrop_path"),
+                            "default",
+                            //movieJson.getString("backdrop_path"),
                             movieJson.getFloat("popularity"),
                             movieJson.getInt("vote_count"),
                             movieJson.getBoolean("video"),

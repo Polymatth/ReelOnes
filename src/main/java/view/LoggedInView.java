@@ -18,6 +18,7 @@ import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.search_movie.SearchMoviesController;
 import interface_adapter.userprofile.CircularButton;
 import interface_adapter.userprofile.UserProfileController;
 
@@ -30,11 +31,18 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
     private LogoutController logoutController;
+
+    private SearchMoviesController searchMovieController;
+
     private final JLabel username;
     private LoginController loginController;
     private final JButton logOut;
     private final JLabel usernameLabel;
+
+   
+
     private UserProfileController userProfileController;
+
 
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
@@ -134,7 +142,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
             public void actionPerformed(ActionEvent e) {
                 String query = searchField.getText().trim();
                 if (!query.isEmpty()) {
-                   // searchMovies(query);
+                   searchMovieController.executeSearch(query);
                 } else {
                     JOptionPane.showMessageDialog(null, "Please enter a movie title to search.");
                 }
@@ -211,6 +219,10 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.logoutController = logoutController;
     }
 
+
+    public void setSearchMoviesController(SearchMoviesController searchMoviesController) {
+        this.searchMovieController = searchMoviesController;
+      
     public void setLoginController(LoginController logInController) {
         this.loginController = loginController;
     }
