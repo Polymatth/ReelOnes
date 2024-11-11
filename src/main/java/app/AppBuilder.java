@@ -6,9 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import app.AppConfig;
 import data_access.InMemoryUserDataAccessObject;
+import data_access.MovieAPIAccess;
 import entity.CommonUserFactory;
 import entity.User;
+import entity.Movie;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
@@ -19,6 +22,12 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.movie_detail_page.MovieDetailController;
+import interface_adapter.movie_detail_page.MovieDetailPresenter;
+import interface_adapter.movie_detail_page.MovieDetailViewModel;
+import interface_adapter.search_movie.SearchMoviesController;
+import interface_adapter.search_movie.SearchMoviePresenter;
+import interface_adapter.search_movie.SearchMovieViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -36,9 +45,17 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.movie_detail.MovieDetailDataAccessInterface;
+import use_case.movie_detail.MovieDetailInputBoundary;
+import use_case.movie_detail.MovieDetailInteractor;
+import use_case.movie_detail.MovieDetailOutputBoundary;
+import use_case.search_movie.SearchMovieDataAccessInterface;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.search_movie.SearchMovieInputBoundary;
+import use_case.search_movie.SearchMovieInteractor;
+import use_case.search_movie.SearchMovieOutputBoundary;
 import view.*;
 
 /**
@@ -63,6 +80,10 @@ public class AppBuilder {
     // thought question: is the hard dependency below a problem?
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
 
+    private final SearchMovieDataAccessInterface searchMovieDataAccessInterface = new AppConfig().getMovieDataAccess();
+    private final MovieDetailDataAccessInterface movieDetailDataAccessInterface = new AppConfig()
+            .getMovieDetailDataAccess();
+
     private SignupView signupView;
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -71,6 +92,12 @@ public class AppBuilder {
     private LoggedInView loggedInView;
     private LoginView loginView;
     private UserProfileView userProfileView;
+
+    private SearchMovieView searchMovieView;
+    private SearchMovieViewModel searchMovieViewModel;
+
+    private MovieDetailView movieDetailView;
+    private MovieDetailViewModel movieDetailViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -117,6 +144,25 @@ public class AppBuilder {
         userProfileViewModel = new UserProfileViewModel();
         userProfileView = new UserProfileView(userProfileViewModel);
         cardPanel.add(userProfileView, userProfileView.getViewName());
+      
+     * Adds the SearchMovie View to the application.
+     * @return this builder
+     */
+    public AppBuilder addSearchMovieView() {
+        searchMovieViewModel = new SearchMovieViewModel();
+        searchMovieView = new SearchMovieView(searchMovieViewModel);
+        cardPanel.add(searchMovieView, searchMovieView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the MovieDetail View to the application.
+     * @return this builder
+     */
+    public AppBuilder addMovieDetailView() {
+        movieDetailViewModel = new MovieDetailViewModel();
+        movieDetailView = new MovieDetailView(movieDetailViewModel);
+        cardPanel.add(movieDetailView, movieDetailView.getViewName());
         return this;
     }
 
@@ -160,6 +206,20 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Search Movie Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addSearchMovieUseCase() {
+        final SearchMovieOutputBoundary searchMovieOutputBoundary = new SearchMoviePresenter(searchMovieViewModel);
+        final SearchMovieInputBoundary searchMovieInteractor = new SearchMovieInteractor(searchMovieOutputBoundary,
+                searchMovieDataAccessInterface);
+
+        final SearchMoviesController searchMovieController = new SearchMoviesController(searchMovieInteractor);
+        searchMovieView.setSearchMoviesController(searchMovieController);
+        return this;
+    }
+
+    /**
      * Adds the Change Password Use Case to the application.
      * @return this builder
      */
@@ -173,6 +233,20 @@ public class AppBuilder {
 //        final ChangePasswordController changePasswordController =
 //                new ChangePasswordController(changePasswordInteractor);
 //        loggedInView.setChangePasswordController(changePasswordController);
+        return this;
+    }
+
+    /**
+     * Adds the Movie Detail Selection Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addMovieDetailUseCase() {
+        final MovieDetailOutputBoundary movieDetailOutputBoundary = new MovieDetailPresenter(movieDetailViewModel,
+                viewManagerModel);
+        final MovieDetailInputBoundary movieDetailInteractor = new MovieDetailInteractor(movieDetailOutputBoundary,
+                movieDetailDataAccessInterface);
+        final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor);
+        movieDetailView.setMovieDetailController(movieDetailController);
         return this;
     }
 
