@@ -6,12 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import app.AppConfig;
 import data_access.InMemoryUserDataAccessObject;
-import data_access.MovieAPIAccess;
 import entity.CommonUserFactory;
-import entity.User;
-import entity.Movie;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
@@ -25,7 +21,7 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.movie_detail_page.MovieDetailController;
 import interface_adapter.movie_detail_page.MovieDetailPresenter;
 import interface_adapter.movie_detail_page.MovieDetailViewModel;
-import interface_adapter.search_movie.SearchMoviesController;
+import interface_adapter.search_movie.SearchMovieController;
 import interface_adapter.search_movie.SearchMoviePresenter;
 import interface_adapter.search_movie.SearchMovieViewModel;
 import interface_adapter.signup.SignupController;
@@ -144,8 +140,10 @@ public class AppBuilder {
         userProfileViewModel = new UserProfileViewModel();
         userProfileView = new UserProfileView(userProfileViewModel);
         cardPanel.add(userProfileView, userProfileView.getViewName());
+        return this;
+    }
       
-     * Adds the SearchMovie View to the application.
+     /** Adds the SearchMovie View to the application.
      * @return this builder
      */
     public AppBuilder addSearchMovieView() {
@@ -213,8 +211,8 @@ public class AppBuilder {
                 searchMovieViewModel);
         final SearchMovieInputBoundary searchMovieInteractor = new SearchMovieInteractor(searchMovieOutputBoundary,
                 searchMovieDataAccessInterface);
-        final SearchMoviesController searchMoviesController = new SearchMoviesController(searchMovieInteractor);
-        loggedInView.setSearchMoviesController(searchMoviesController);
+        final SearchMovieController searchMovieController = new SearchMovieController(searchMovieInteractor);
+        loggedInView.setSearchMoviesController(searchMovieController);
         return this;
     }
 

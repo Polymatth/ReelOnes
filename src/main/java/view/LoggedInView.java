@@ -18,7 +18,7 @@ import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.search_movie.SearchMoviesController;
+import interface_adapter.search_movie.SearchMovieController;
 import interface_adapter.userprofile.CircularButton;
 import interface_adapter.userprofile.UserProfileController;
 
@@ -32,7 +32,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final LoggedInViewModel loggedInViewModel;
     private LogoutController logoutController;
 
-    private SearchMoviesController searchMovieController;
+    private SearchMovieController searchMovieController;
 
     private final JLabel username;
     private LoginController loginController;
@@ -220,8 +220,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     }
 
 
-    public void setSearchMoviesController(SearchMoviesController searchMoviesController) {
-        this.searchMovieController = searchMoviesController;
+    public void setSearchMoviesController(SearchMovieController searchMovieController) {
+        this.searchMovieController = searchMovieController;
+    }
       
     public void setLoginController(LoginController logInController) {
         this.loginController = loginController;
