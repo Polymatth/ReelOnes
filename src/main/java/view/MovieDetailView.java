@@ -32,13 +32,13 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
                 " (" + this.movieDetailViewModel.getState().getYear() + ")");
         title.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-//        final JLabel director = new JLabel("dir. " + this.movieDetailViewModel.getState().getDirector());
-//        title.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        final JLabel director = new JLabel("dir. " + this.movieDetailViewModel.getState().getDirector());
+        title.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         final JLabel genre = new JLabel("dir. " + this.movieDetailViewModel.getState().getGenre());
         title.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        final JLabel streaming = new JLabel(this.movieDetailViewModel.getState().getStreamingServices());
+//        final JLabel streaming = new JLabel(this.movieDetailViewModel.getState().getStreamingServices());
 
         File file = new File(this.movieDetailViewModel.getState().getPosterImagePath());
         try {
@@ -53,9 +53,9 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
 
         final JPanel movieInfo = new JPanel();
         movieInfo.add(title);
-    //    movieInfo.add(director);
+        movieInfo.add(director);
         movieInfo.add(genre);
-        movieInfo.add(streaming);
+//        movieInfo.add(streaming);
 
         final JPanel addButton = new JPanel();
         addButton.add(addTo);
@@ -63,22 +63,30 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
         final JPanel addPoster = new JPanel();
         addPoster.add(posterPic);
 
-        final JPanel page = new JPanel();
-        page.add(movieInfo);
-        page.add(addButton);
-        page.add(addPoster);
+        final JPanel rightSide = new JPanel();
+        rightSide.add(movieInfo);
+        rightSide.add(addButton);
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(page);
+        this.setLayout(new GridLayout(1, 2));
+        this.add(addPoster);
+        this.add(rightSide);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        ;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        ;
+    }
 
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setMovieDetailController(MovieDetailController movieDetailController) {
+        this.movieDetailController = movieDetailController;
     }
 }

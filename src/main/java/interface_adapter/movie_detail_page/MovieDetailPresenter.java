@@ -20,7 +20,7 @@ public class MovieDetailPresenter implements MovieDetailOutputBoundary {
         movieDetailState.setTitle(movieDetailOutputData.getTitle());
         movieDetailState.setGenre(movieDetailOutputData.getGenre());
         movieDetailState.setYear(movieDetailOutputData.getYear());
-//        movieDetailState.setDirector(movieDetailOutputData.getDirector());
+        movieDetailState.setDirector(movieDetailOutputData.getDirector());
  //       movieDetailState.setStreamingServices(movieDetailOutputData.getStreamingServices());
         movieDetailState.setPosterImagePath(movieDetailOutputData.getPosterImagePath());
         //Update the State in the Movie Detail View Model

@@ -20,6 +20,7 @@ public class Movie {
     private float vote_average;
     private List<String> genres;
     private List<String> streaming;
+    private String director = "";
 
     public Movie(String poster_path, Boolean adult, String overview, String release_date,
                  List<Integer> genre_ids, int id, String original_language, String title, String backdrop_path,
@@ -79,5 +80,17 @@ public class Movie {
 
     public void setStreaming(List<String> streamingList) {
         this.streaming = streamingList;
+    }
+
+    public void setDirector(String dir) {
+        this.director = dir;
+    }
+
+    public String getDirector() {
+        return this.director;
+    }
+
+    public int getID() {
+        return this.id;
     }
 }
