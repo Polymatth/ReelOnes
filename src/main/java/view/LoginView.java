@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -98,6 +98,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         });
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBackground(Color.DARK_GRAY);
 
         passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
 
