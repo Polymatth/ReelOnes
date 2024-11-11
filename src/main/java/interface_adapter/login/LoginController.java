@@ -25,4 +25,10 @@ public class LoginController {
 
         loginUseCaseInteractor.execute(loginInputData);
     }
+
+    /**
+     * Executes the "switch to ProfileView" Use Case.
+     */
+    public void switchToProfileView(){ loginUseCaseInteractor.switchToProfileView();}
+
 }

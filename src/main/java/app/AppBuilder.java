@@ -10,6 +10,7 @@ import app.AppConfig;
 import data_access.InMemoryUserDataAccessObject;
 import data_access.MovieAPIAccess;
 import entity.CommonUserFactory;
+import entity.User;
 import entity.Movie;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
@@ -30,9 +31,14 @@ import interface_adapter.search_movie.SearchMovieViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.userprofile.UserProfileController;
+import interface_adapter.userprofile.UserProfilePresenter;
+import interface_adapter.userprofile.UserProfileViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.goprofile.GoProfileInteractor;
+import use_case.goprofile.GoProfileOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -82,8 +88,10 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private UserProfileViewModel userProfileViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private UserProfileView userProfileView;
 
     private SearchMovieView searchMovieView;
     private SearchMovieViewModel searchMovieViewModel;
@@ -129,6 +137,14 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the User Profile View to the application.
+     * @return this builder
+     */
+    public AppBuilder addUserProfileView() {
+        userProfileViewModel = new UserProfileViewModel();
+        userProfileView = new UserProfileView(userProfileViewModel);
+        cardPanel.add(userProfileView, userProfileView.getViewName());
+      
      * Adds the SearchMovie View to the application.
      * @return this builder
      */
@@ -170,12 +186,21 @@ public class AppBuilder {
      */
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+                loggedInViewModel, loginViewModel, userProfileViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
+        return this;
+    }
+
+
+    public AppBuilder addGoProfileUseCase() {
+        GoProfileOutputBoundary goProfileOutputBoundary = new UserProfilePresenter(viewManagerModel,userProfileViewModel);
+        GoProfileInteractor goProfileInteractor = new GoProfileInteractor(); // Assuming this is implemented
+        UserProfileController userProfileController = new UserProfileController(goProfileInteractor); // Modify as needed
+        loggedInView.setUserProfileController(userProfileController);
         return this;
     }
 
@@ -204,6 +229,7 @@ public class AppBuilder {
 
         final ChangePasswordInputBoundary changePasswordInteractor =
                 new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
+
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);

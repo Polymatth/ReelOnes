@@ -34,7 +34,6 @@ public class LogoutPresenter implements LogoutOutputBoundary {
         // We also need to set the username in the LoggedInState to
         // the empty string.
 
-        // TODO: have prepareSuccessView update the LoggedInState
         final LoggedInState loggedInState = loggedInViewModel.getState();
         loggedInState.setUsername("");
         this.loggedInViewModel.setState(loggedInState);
