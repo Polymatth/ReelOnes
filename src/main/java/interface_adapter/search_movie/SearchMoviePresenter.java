@@ -1,19 +1,25 @@
 package interface_adapter.search_movie;
 
+import interface_adapter.ViewManagerModel;
 import use_case.search_movie.SearchMovieOutputBoundary;
 import use_case.search_movie.SearchMovieOutputData;
 
 public class SearchMoviePresenter implements SearchMovieOutputBoundary {
     private final SearchMovieViewModel viewModel;
+    private final ViewManagerModel viewManagerModel;
 
-    public SearchMoviePresenter(SearchMovieViewModel viewModel) {
+    public SearchMoviePresenter(ViewManagerModel viewManagerModel, SearchMovieViewModel viewModel) {
         this.viewModel = viewModel;
+        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
     public void prepareSuccessView(SearchMovieOutputData outputData) {
-        viewModel.setMovies(outputData.getMovies());
-        viewModel.firePropertyChanged("searchResults");
+        this.viewModel.getState().setMovies(outputData.getMovies());
+        this.viewModel.firePropertyChanged();
+
+        this.viewManagerModel.setState(viewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
     }
 
     @Override

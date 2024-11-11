@@ -25,6 +25,7 @@ import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.search_movie.SearchMoviesController;
 import interface_adapter.userprofile.CircularButton;
 import interface_adapter.login.LoginState;
 import interface_adapter.logout.LogoutController;
@@ -41,6 +42,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     //private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
+    private SearchMoviesController searchMovieController;
 
     private final JLabel username;
     private final JButton logOut;
@@ -48,12 +50,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     //private final JTextField passwordInputField = new JTextField(15);
     //private final JButton changePassword;
     private final JLabel usernameLabel;
-    private LogoutController logoutController;
-
-    private final JLabel username;
-
-    private final JButton logOut;
-
    
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
@@ -143,7 +139,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
             public void actionPerformed(ActionEvent e) {
                 String query = searchField.getText().trim();
                 if (!query.isEmpty()) {
-                   // searchMovies(query);
+                   searchMovieController.executeSearch(query);
                 } else {
                     JOptionPane.showMessageDialog(null, "Please enter a movie title to search.");
                 }
@@ -219,5 +215,14 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+    }
+
+    public void setSearchMoviesController(SearchMoviesController searchMoviesController) {
+        this.searchMovieController = searchMoviesController;
     }
 }

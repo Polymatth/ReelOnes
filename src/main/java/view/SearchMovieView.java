@@ -1,7 +1,7 @@
 package view;
 
+import java.awt.*;
 import java.util.List;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -41,23 +41,26 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
 
         final JList results = new JList<>();
 
-        for (Movie movie:
-             searchMovieOutputData.getMovies()) {
-           // final JButton result = new JButton(movie.getTitle());
-            //final Icon resultIcon = new ImageIcon(movie.getPosterPath);
-           // result.setIcon(resultIcon);
-           // result.addActionListener(
-                    //new ActionListener() {
-                        //public void actionPerformed(ActionEvent evt) {
-                            //if (evt.getSource().equals(result)) {
-                                //TODO: Use Proper Method.
-           //                 }
-           //             }
-          //          }
-           // );
-            //results.add(result);
-        }
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBackground(Color.DARK_GRAY);
 
+        if (searchMovieViewModel.getState().getMovies() != null) {
+            for (Movie movie : searchMovieViewModel.getState().getMovies()) {
+                final JButton result = new JButton(movie.getTitle());
+                final Icon resultIcon = new ImageIcon(movie.getPosterPath());
+                result.setIcon(resultIcon);
+                result.addActionListener(
+                        new ActionListener() {
+                            public void actionPerformed(ActionEvent evt) {
+                                if (evt.getSource().equals(result)) {
+                                    //movieDetailController.execute(movie);
+                                }
+                            }
+                        }
+                );
+                results.add(result);
+            }
+        }
         this.add(title);
         this.add(results);
     }
@@ -72,9 +75,7 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final SearchMovieState state = (SearchMovieState) evt.getNewValue();
-        setFields(state);
-        searchErrorField.setText(state.getErrorMessage());
+
     }
 
     private void setFields(SearchMovieState state) {

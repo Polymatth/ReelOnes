@@ -133,11 +133,10 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addSearchMovieView() {
-        searchMovieViewModel = new SearchMovieViewModel();
-        searchMovieView = new SearchMovieView(searchMovieViewModel);
-        cardPanel.add(searchMovieView, searchMovieView.getViewName());
-        return this;
-    }
+    searchMovieViewModel = new SearchMovieViewModel();
+    searchMovieView = new SearchMovieView(searchMovieViewModel);
+    cardPanel.add(searchMovieView, searchMovieView.getViewName());
+    return this;}
 
     /**
      * Adds the MovieDetail View to the application.
@@ -185,14 +184,15 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addSearchMovieUseCase() {
-        final SearchMovieOutputBoundary searchMovieOutputBoundary = new SearchMoviePresenter(searchMovieViewModel);
+        final SearchMovieOutputBoundary searchMovieOutputBoundary = new SearchMoviePresenter(viewManagerModel,
+                searchMovieViewModel);
         final SearchMovieInputBoundary searchMovieInteractor = new SearchMovieInteractor(searchMovieOutputBoundary,
                 searchMovieDataAccessInterface);
-
-        final SearchMoviesController searchMovieController = new SearchMoviesController(searchMovieInteractor);
-        searchMovieView.setSearchMoviesController(searchMovieController);
+        final SearchMoviesController searchMoviesController = new SearchMoviesController(searchMovieInteractor);
+        loggedInView.setSearchMoviesController(searchMoviesController);
         return this;
     }
+
 
     /**
      * Adds the Change Password Use Case to the application.
@@ -207,7 +207,7 @@ public class AppBuilder {
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
+        //loggedInView.setChangePasswordController(changePasswordController);
         return this;
     }
 
