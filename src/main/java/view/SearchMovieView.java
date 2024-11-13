@@ -1,19 +1,15 @@
 package view;
 
 import java.awt.*;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import entity.Movie;
-import interface_adapter.login.LoginState;
-import interface_adapter.search_movie.SearchMoviesController;
+import interface_adapter.search_movie.SearchMovieController;
 import interface_adapter.search_movie.SearchMovieState;
 import interface_adapter.search_movie.SearchMovieViewModel;
 import use_case.search_movie.SearchMovieOutputData;
@@ -29,7 +25,7 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
     private final JLabel searchErrorField = new JLabel();
     private SearchMovieOutputData searchMovieOutputData;
 
-    private SearchMoviesController searchMoviesController;
+    private SearchMovieController searchMovieController;
 
     public SearchMovieView(SearchMovieViewModel searchMovieViewModel) {
 
@@ -90,7 +86,7 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
         this.searchMovieOutputData = searchMovieOutputData;
     }
 
-    public void setSearchMoviesController(SearchMoviesController searchMovieController) {
-        this.searchMoviesController = searchMovieController;
+    public void setSearchMoviesController(SearchMovieController searchMovieController) {
+        this.searchMovieController = searchMovieController;
     }
 }
