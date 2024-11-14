@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.CardLayout;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -146,7 +147,7 @@ public class AppBuilder {
      /** Adds the SearchMovie View to the application.
      * @return this builder
      */
-    public AppBuilder addSearchMovieView() {
+    public AppBuilder addSearchMovieView() throws IOException {
     searchMovieViewModel = new SearchMovieViewModel();
     searchMovieView = new SearchMovieView(searchMovieViewModel);
     cardPanel.add(searchMovieView, searchMovieView.getViewName());
