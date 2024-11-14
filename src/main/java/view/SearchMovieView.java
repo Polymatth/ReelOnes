@@ -3,9 +3,14 @@ package view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import entity.Movie;
@@ -27,7 +32,7 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
 
     private SearchMovieController searchMovieController;
 
-    public SearchMovieView(SearchMovieViewModel searchMovieViewModel) {
+    public SearchMovieView(SearchMovieViewModel searchMovieViewModel) throws IOException {
 
         this.searchMovieViewModel = searchMovieViewModel;
         this.searchMovieViewModel.addPropertyChangeListener(this);
@@ -38,12 +43,22 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
         final JList results = new JList<>();
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(Color.DARK_GRAY);
+        this.setBackground(Color.WHITE);
 
+        updateResults(searchMovieViewModel);
+        this.add(title);
+        this.add(results);
+    }
+
+    private void updateResults(SearchMovieViewModel searchMovieViewModel) throws IOException {
         if (searchMovieViewModel.getState().getMovies() != null) {
             for (Movie movie : searchMovieViewModel.getState().getMovies()) {
                 final JButton result = new JButton(movie.getTitle());
-                final Icon resultIcon = new ImageIcon(movie.getPosterPath());
+                URL url = new URL("https://image.tmdb.org/t/p/w500"+ movie.getPosterPath());
+                BufferedImage image = ImageIO.read(url);
+                final Icon resultIcon = new ImageIcon(image);
+                System.out.println("https://image.tmdb.org/t/p/w500"+ movie.getPosterPath());
+                result.setLabel(movie.getTitle());
                 result.setIcon(resultIcon);
                 result.addActionListener(
                         new ActionListener() {
@@ -54,11 +69,9 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
                             }
                         }
                 );
-                results.add(result);
+                this.add(result);
             }
         }
-        this.add(title);
-        this.add(results);
     }
 
     /**
@@ -71,7 +84,11 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        try {
+            updateResults(searchMovieViewModel);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setFields(SearchMovieState state) {

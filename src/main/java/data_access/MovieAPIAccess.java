@@ -62,8 +62,7 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                     }
 
                     Movie movie = new Movie(
-                            //movieJson.getString("poster_path"),
-                            "default",
+                            movieJson.getString("poster_path"),
                             movieJson.getBoolean("adult"),
                             movieJson.getString("overview"),
                             movieJson.getString("release_date"),
@@ -71,8 +70,7 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                             movieJson.getInt("id"),
                             movieJson.getString("original_language"),
                             movieJson.getString("title"),
-                            "default",
-                            //movieJson.getString("backdrop_path"),
+                            movieJson.getString("backdrop_path"),
                             movieJson.getFloat("popularity"),
                             movieJson.getInt("vote_count"),
                             movieJson.getBoolean("video"),
