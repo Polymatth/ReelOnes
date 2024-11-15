@@ -6,8 +6,8 @@ import use_case.movie_detail.MovieDetailOutputData;
 
 public class MovieDetailPresenter implements MovieDetailOutputBoundary {
 
-    private MovieDetailViewModel movieDetailViewModel;
-    private ViewManagerModel viewManagerModel;
+    private final MovieDetailViewModel movieDetailViewModel;
+    private final ViewManagerModel viewManagerModel;
 
     public MovieDetailPresenter(MovieDetailViewModel movieDetailViewModel, ViewManagerModel viewManagerModel) {
         this.movieDetailViewModel = movieDetailViewModel;
@@ -29,10 +29,5 @@ public class MovieDetailPresenter implements MovieDetailOutputBoundary {
         //Update the View Manager Model.
         this.viewManagerModel.setState(movieDetailViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
-    }
-
-    public void prepareFailView() {
-        //note: there is currently no way for this use case to fail.
-        ;
     }
 }

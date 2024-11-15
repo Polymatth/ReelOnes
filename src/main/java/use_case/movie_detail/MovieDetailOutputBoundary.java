@@ -8,8 +8,4 @@ public interface MovieDetailOutputBoundary {
      */
     void prepareSuccessView(MovieDetailOutputData movieDetailOutputData);
 
-    /**
-     * Prepares the fail view for the Movie Detail Selection Use Case.
-     */
-    void prepareFailView();
 }
