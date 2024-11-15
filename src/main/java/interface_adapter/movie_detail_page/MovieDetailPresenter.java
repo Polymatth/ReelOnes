@@ -31,8 +31,4 @@ public class MovieDetailPresenter implements MovieDetailOutputBoundary {
         this.viewManagerModel.firePropertyChanged();
     }
 
-    public void prepareFailView() {
-        //note: there is currently no way for this use case to fail.
-        ;
-    }
 }

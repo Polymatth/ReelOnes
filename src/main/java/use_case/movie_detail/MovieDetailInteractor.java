@@ -29,10 +29,7 @@ public class MovieDetailInteractor implements MovieDetailInputBoundary {
         movie.setGenres(genreList);
         final MovieDetailOutputData movieDetailOutputData = new MovieDetailOutputData(movie);
         this.movieDetailPresenter.prepareSuccessView(movieDetailOutputData);
-        //note: maybe no need to do preparesuccessview and preparefailview methods since there's no circumstance where
-        // this would fail? doing it just to follow the format that is generally seen in clean architecture, but maybe
-        // this should be changed.
-        this.movieDetailPresenter.prepareFailView();
+        //note: no prepareFailView because there is currently no way for this use case to fail.
     }
 
 }
