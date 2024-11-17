@@ -6,10 +6,10 @@ import use_case.search_movie.SearchMovieInputData;
 /**
  * Controller for the Search Movies Use Case
  */
-public class SearchMoviesController {
+public class SearchMovieController {
     private final SearchMovieInputBoundary inputBoundary;
 
-    public SearchMoviesController(SearchMovieInputBoundary inputBoundary) {
+    public SearchMovieController(SearchMovieInputBoundary inputBoundary) {
         this.inputBoundary = inputBoundary;
     }
 
