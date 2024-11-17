@@ -88,11 +88,11 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
     }
 
     public Map<Integer, String> getGenres() {
-        Map<Integer, String> genres = new HashMap();
+        Map<Integer, String> genres = new HashMap<>();
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
-                    .url("https://api.themoviedb.org/3/genre/movie/list?language=en")
+                    .url("https://api.themoviedb.org/3/genre/movie/list?language=en" + "&api_key=" + this.apiKey)
                     .get()
                     .addHeader("accept", CONTENT_TYPE_JSON)
                     .addHeader("Authorization", "Bearer application/json")
@@ -121,13 +121,14 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
 
     public String getDirector(int movieID) {
         try {
-            OkHttpClient client = new OkHttpClient();
-
+            String url = "https://api.themoviedb.org/3/movie/" + movieID + "/credits?language=en-US" + "&api_key=" + apiKey;
+            String authToken = "Bearer 688717ab16b692bc28e554309061593f";
+            //System.out.println("Url: " + url + " Auth Token: " + authToken);
             Request request = new Request.Builder()
-                    .url("https://api.themoviedb.org/3/movie/" + movieID + "/credits?language=en-US")
+                    .url(url)
                     .get()
                     .addHeader("accept", CONTENT_TYPE_JSON)
-                    .addHeader("Authorization", "Bearer application/json")
+                    .addHeader("Authorization", authToken)
                     .build();
             Response response = client.newCall(request).execute();
 
@@ -137,7 +138,7 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                 JSONArray results = jsonObject.getJSONArray("crew");
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject elem = results.getJSONObject(i);
-                    if (elem.getString("known_for_department").equals("Director")) {
+                    if (elem.getString("known_for_department").equals("Directing")) {
                         return elem.getString("name");
                     }
                 }

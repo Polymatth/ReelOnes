@@ -2,9 +2,11 @@ package use_case.movie_detail;
 
 import entity.Movie;
 
+import java.util.List;
+
 public class MovieDetailOutputData {
 
-    private Movie movie;
+    private final Movie movie;
 
     public MovieDetailOutputData(Movie movie) {
         this.movie = movie;
@@ -35,11 +37,19 @@ public class MovieDetailOutputData {
         return String.join(", ", this.movie.getGenres());
     }
 
+    public List<String> getGenres() {
+        return this.movie.getGenres();
+    }
+
     public String getTitle() {
         return this.movie.getTitle();
     }
 
     public String getPosterImagePath() {
         return this.movie.getPosterPath();
+    }
+
+    public int getID() {
+        return this.movie.getID();
     }
 }
