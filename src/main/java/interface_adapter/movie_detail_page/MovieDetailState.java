@@ -5,12 +5,12 @@ package interface_adapter.movie_detail_page;
  */
 public class MovieDetailState {
 
-    private String title;
-    private String genre;
-    private String director;
-    private String year;
-    private String streamingServices;
-    private String posterImagePath;
+    private String title = "";
+    private String genre = "";
+    private String director = "";
+    private String year = "";
+//    private String streamingServices;
+    private String posterImagePath = "";
 
     public void setTitle(String title) {
         this.title = title;
@@ -28,9 +28,8 @@ public class MovieDetailState {
         this.year = year;
     }
 
-    public void setStreamingServices(String streamingServices) {
-        this.streamingServices = streamingServices;
-    }
+//    public void setStreamingServices(String streamingServices) {
+//        this.streamingServices = streamingServices;}
 
     public void setPosterImagePath(String path) {
         this.posterImagePath = path;
@@ -52,9 +51,8 @@ public class MovieDetailState {
         return this.director;
     }
 
-    public String getStreamingServices() {
-        return this.streamingServices;
-    }
+//    public String getStreamingServices() {
+//        return this.streamingServices;//   }
 
     public String getPosterImagePath() {
         return this.posterImagePath;

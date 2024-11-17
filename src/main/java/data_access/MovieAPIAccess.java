@@ -136,12 +136,14 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                 String jsonResponse = response.body().string();
                 JSONObject jsonObject = new JSONObject(jsonResponse);
                 JSONArray results = jsonObject.getJSONArray("crew");
+                List<String> directors = new ArrayList<>();
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject elem = results.getJSONObject(i);
-                    if (elem.getString("known_for_department").equals("Directing")) {
-                        return elem.getString("name");
+                    if (elem.getString("job").equals("Director")) {
+                        directors.add(elem.getString("name"));
                     }
                 }
+                return String.join(", ", directors);
             }
             else {
                 System.out.println("API request failed with code: " + response.code());
