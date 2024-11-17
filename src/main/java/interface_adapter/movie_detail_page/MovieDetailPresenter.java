@@ -6,8 +6,8 @@ import use_case.movie_detail.MovieDetailOutputData;
 
 public class MovieDetailPresenter implements MovieDetailOutputBoundary {
 
-    private final MovieDetailViewModel movieDetailViewModel;
-    private final ViewManagerModel viewManagerModel;
+    private MovieDetailViewModel movieDetailViewModel;
+    private ViewManagerModel viewManagerModel;
 
     public MovieDetailPresenter(MovieDetailViewModel movieDetailViewModel, ViewManagerModel viewManagerModel) {
         this.movieDetailViewModel = movieDetailViewModel;
@@ -30,4 +30,5 @@ public class MovieDetailPresenter implements MovieDetailOutputBoundary {
         this.viewManagerModel.setState(movieDetailViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
+
 }
