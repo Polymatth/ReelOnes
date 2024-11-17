@@ -52,11 +52,6 @@ public class MovieDetailInteractorTest {
                 genreNames.add("Mystery");
                 assertEquals(String.join(", ", genreNames), movieDetailOutputData.getGenre());
             }
-
-            @Override
-            public void prepareFailView() {
-                ;
-            }
         };
         MovieDetailInputBoundary interactor = new MovieDetailInteractor(movieDetailPresenter, dataAccessInterface);
         interactor.execute(movieDetailInputData);
