@@ -11,9 +11,18 @@ import use_case.logout.LogoutOutputBoundary;
 public class GoProfileInteractor implements GoProfileInputBoundary {
 
 
-    private GoProfileOutputBoundary userProfilePresenter;
+    private final GoProfileOutputBoundary userProfilePresenter;
+
+    public GoProfileInteractor(GoProfileOutputBoundary userProfilePresenter) {
+        this.userProfilePresenter = userProfilePresenter;
+    }
     @Override
     public void execute(GoProfileInputData profileInputData) {
        userProfilePresenter.prepareSuccessView();
+    }
+
+    @Override
+    public void switchToProfileView() {
+        userProfilePresenter.switchToProfileView();
     }
 }

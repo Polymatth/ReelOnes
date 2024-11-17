@@ -54,12 +54,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         profileButton.setPreferredSize(new Dimension(40, 40));// Small circle
 
 
-//        profileButton.addActionListener(
-//                new ActionListener() {
-//                    public void actionPerformed(ActionEvent evt){cardLayout.show(views, "userprofile");;
-//                    }
-//                }
-//        );
         // Position profile button at the top-left
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -71,8 +65,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
          profileButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-               loginController.switchToProfileView();
+            public void actionPerformed(ActionEvent e) {userProfileController.switchToProfileView();
             }
         });
 
@@ -211,7 +204,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.logoutController = logoutController;
     }
 
-    public void setLoginController(LoginController logInController) {
+    public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
     }
 

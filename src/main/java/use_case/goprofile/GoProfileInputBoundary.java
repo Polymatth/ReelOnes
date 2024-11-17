@@ -12,4 +12,9 @@ public interface GoProfileInputBoundary {
 
     void execute(GoProfileInputData profileInputData);
 
+    /**
+     * Executes the switch to profile view use case.
+     */
+    void switchToProfileView();
+
 }

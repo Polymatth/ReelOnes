@@ -49,9 +49,4 @@ public class LoginPresenter implements LoginOutputBoundary {
         loginViewModel.firePropertyChanged();
     }
 
-    @Override
-    public void switchToProfileView(){
-        this.viewManagerModel.setState(userProfileViewModel.getViewName());
-        viewManagerModel.firePropertyChanged();
-    }
 }

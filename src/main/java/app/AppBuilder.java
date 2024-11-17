@@ -150,11 +150,14 @@ public class AppBuilder {
         return this;
     }
 
-
+    /**
+     * Adds the Go Profile Use Case to the application.
+     * @return this builder
+     */
     public AppBuilder addGoProfileUseCase() {
         GoProfileOutputBoundary goProfileOutputBoundary = new UserProfilePresenter(viewManagerModel,userProfileViewModel);
-        GoProfileInteractor goProfileInteractor = new GoProfileInteractor(); // Assuming this is implemented
-        UserProfileController userProfileController = new UserProfileController(goProfileInteractor); // Modify as needed
+        GoProfileInteractor goProfileInteractor = new GoProfileInteractor(goProfileOutputBoundary); // Assuming this is implemented
+        UserProfileController userProfileController = new UserProfileController(goProfileInteractor);
         loggedInView.setUserProfileController(userProfileController);
         return this;
     }
