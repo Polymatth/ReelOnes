@@ -11,11 +11,6 @@ import static org.junit.Assert.assertEquals;
 
 public class MovieDetailInteractorTest {
 
-    //List of tests to implement:
-    //test that you get the right list of genre names
-    //test that you get the right director
-    //test that the successview is called successfully?
-
     @Test
     void MovieDetailSuccess() {
         AppConfig config = new AppConfig();
