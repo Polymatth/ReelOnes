@@ -5,6 +5,8 @@ import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.userprofile.UserProfileState;
+import interface_adapter.userprofile.UserProfileViewModel;
 import use_case.logout.LogoutOutputBoundary;
 import use_case.logout.LogoutOutputData;
 
@@ -16,14 +18,15 @@ public class LogoutPresenter implements LogoutOutputBoundary {
     private LoggedInViewModel loggedInViewModel;
     private ViewManagerModel viewManagerModel;
     private LoginViewModel loginViewModel;
+    private UserProfileViewModel userProfileViewModel;
 
     public LogoutPresenter(ViewManagerModel viewManagerModel,
                           LoggedInViewModel loggedInViewModel,
-                           LoginViewModel loginViewModel) {
-        // TODO: assign to the three instance variables.
+                           LoginViewModel loginViewModel,UserProfileViewModel userProfileViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;
+        this.userProfileViewModel = userProfileViewModel;
     }
 
     @Override
@@ -42,6 +45,11 @@ public class LogoutPresenter implements LogoutOutputBoundary {
         // 2. set the username in the state to the empty string
         // 3. set the state in the LoggedInViewModel to the updated state
         // 4. firePropertyChanged so that the View that is listening is updated.
+
+       final UserProfileState userProfileState = userProfileViewModel.getState();
+       userProfileState.setUsername("");
+       this.userProfileViewModel.setState(userProfileState);
+       this.userProfileViewModel.firePropertyChanged();
 
         // TODO: have prepareSuccessView update the LoginState
         final LoginState loginState = loginViewModel.getState();
