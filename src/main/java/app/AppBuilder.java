@@ -250,6 +250,7 @@ public class AppBuilder {
                 movieDetailDataAccessInterface);
         final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor);
         movieDetailView.setMovieDetailController(movieDetailController);
+        searchMovieView.setMovieDetailController(movieDetailController);
         return this;
     }
 
