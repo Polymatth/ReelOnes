@@ -23,7 +23,7 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
                                                  LoginUserDataAccessInterface,
                                                  ChangePasswordUserDataAccessInterface {
 
-    private static final String HEADER = "username,password";
+    private static final String HEADER = "username,password,favMovie, favDirector";
 
     private final File csvFile;
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -35,6 +35,8 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         csvFile = new File(csvPath);
         headers.put("username", 0);
         headers.put("password", 1);
+        headers.put("favMovie", 2);
+        headers.put("favDirector", 3);
 
         if (csvFile.length() == 0) {
             save();
@@ -53,7 +55,9 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
                     final String[] col = row.split(",");
                     final String username = String.valueOf(col[headers.get("username")]);
                     final String password = String.valueOf(col[headers.get("password")]);
-                    final User user = userFactory.create(username, password);
+                    final String favMovie = String.valueOf(col[headers.get("favMovie")]);
+                    final String favDirector = String.valueOf(col[headers.get("favDirector")]);
+                    final User user = userFactory.create(username, password,favMovie, favDirector);
                     accounts.put(username, user);
                 }
             }

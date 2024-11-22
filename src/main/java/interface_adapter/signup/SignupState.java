@@ -10,6 +10,9 @@ public class SignupState {
     private String passwordError;
     private String repeatPassword = "";
     private String repeatPasswordError;
+    private String favMovie = "";
+    private String favDirector = "";
+
 
     public String getUsername() {
         return username;
@@ -58,6 +61,14 @@ public class SignupState {
     public void setRepeatPasswordError(String repeatPasswordError) {
         this.repeatPasswordError = repeatPasswordError;
     }
+
+    public void setFavMovie(String favMovie) {this.favMovie = favMovie;}
+
+    public void setFavDirector(String favDirector) {this.favDirector = favDirector;}
+
+    public String getFavMovie() {return favMovie;}
+
+    public String getFavDirector() {return favDirector;}
 
     @Override
     public String toString() {

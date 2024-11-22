@@ -6,15 +6,15 @@ import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class SignupInteractorTest {
 
+    private static final String FAVMOVIE = "favoriteMovie";
+    private static final String FAVDIRECTOR = "favoriteDirector";
     @Test
     void successTest() {
-        SignupInputData inputData = new SignupInputData("Paul", "password", "password");
+        SignupInputData inputData = new SignupInputData("Paul", "password", "password", FAVMOVIE, FAVDIRECTOR);
         SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // This creates a successPresenter that tests whether the test case is as we expect.
@@ -35,6 +35,11 @@ class SignupInteractorTest {
             public void switchToLoginView() {
                 // This is expected
             }
+
+            @Override
+            public void switchToSignUpView() {
+
+            }
         };
 
         SignupInputBoundary interactor = new SignupInteractor(userRepository, successPresenter, new CommonUserFactory());
@@ -43,7 +48,7 @@ class SignupInteractorTest {
 
     @Test
     void failurePasswordMismatchTest() {
-        SignupInputData inputData = new SignupInputData("Paul", "password", "wrong");
+        SignupInputData inputData = new SignupInputData("Paul", "password", "wrong",FAVMOVIE, FAVDIRECTOR);
         SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // This creates a presenter that tests whether the test case is as we expect.
@@ -63,6 +68,11 @@ class SignupInteractorTest {
             public void switchToLoginView() {
                 // This is expected
             }
+
+            @Override
+            public void switchToSignUpView() {
+
+            }
         };
 
         SignupInputBoundary interactor = new SignupInteractor(userRepository, failurePresenter, new CommonUserFactory());
@@ -71,12 +81,12 @@ class SignupInteractorTest {
 
     @Test
     void failureUserExistsTest() {
-        SignupInputData inputData = new SignupInputData("Paul", "password", "wrong");
+        SignupInputData inputData = new SignupInputData("Paul", "password", "wrong",FAVMOVIE, FAVDIRECTOR);
         SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add Paul to the repo so that when we check later they already exist
         UserFactory factory = new CommonUserFactory();
-        User user = factory.create("Paul", "pwd");
+        User user = factory.create("Paul", "pwd",FAVMOVIE, FAVDIRECTOR);
         userRepository.save(user);
 
         // This creates a presenter that tests whether the test case is as we expect.
@@ -95,6 +105,11 @@ class SignupInteractorTest {
             @Override
             public void switchToLoginView() {
                 // This is expected
+            }
+
+            @Override
+            public void switchToSignUpView() {
+
             }
         };
 
