@@ -17,4 +17,10 @@ public interface User {
      */
     String getPassword();
 
+
+    String toString();
+
+    String getFavMovie();
+
+    String getFavDirector();
 }

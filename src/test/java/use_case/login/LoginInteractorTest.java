@@ -6,11 +6,12 @@ import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginInteractorTest {
+
+    private static final String FAVMOVIE = "favoriteMovie";
+    private static final String FAVDIRECTOR = "favoriteDirector";
 
     @Test
     void successTest() {
@@ -19,7 +20,7 @@ class LoginInteractorTest {
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();
-        User user = factory.create("Paul", "password");
+        User user = factory.create("Paul", "password",FAVMOVIE,FAVDIRECTOR);
         userRepository.save(user);
 
         // This creates a successPresenter that tests whether the test case is as we expect.
@@ -46,7 +47,7 @@ class LoginInteractorTest {
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();
-        User user = factory.create("Paul", "password");
+        User user = factory.create("Paul", "password",FAVMOVIE,FAVDIRECTOR);
         userRepository.save(user);
 
         // This creates a successPresenter that tests whether the test case is as we expect.
@@ -76,7 +77,7 @@ class LoginInteractorTest {
         // For this failure test, we need to add Paul to the data access repository before we log in, and
         // the passwords should not match.
         UserFactory factory = new CommonUserFactory();
-        User user = factory.create("Paul", "password");
+        User user = factory.create("Paul", "password",FAVMOVIE,FAVDIRECTOR);
         userRepository.save(user);
 
         // This creates a presenter that tests whether the test case is as we expect.

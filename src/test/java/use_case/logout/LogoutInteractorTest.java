@@ -10,6 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LogoutInteractorTest {
 
+
+    private static final String FAVMOVIE = "favoriteMovie";
+    private static final String FAVDIRECTOR = "favoriteDirector";
+
     @Test
     void successTest() {
         LogoutInputData inputData = new LogoutInputData("Paul");
@@ -17,7 +21,7 @@ class LogoutInteractorTest {
 
         // For the success test, we need to add Paul to the data access repository before we log in.
         UserFactory factory = new CommonUserFactory();
-        User user = factory.create("Paul", "password");
+        User user = factory.create("Paul", "password",FAVMOVIE,FAVDIRECTOR);
         userRepository.save(user);
         userRepository.setCurrentUsername("Paul");
 
