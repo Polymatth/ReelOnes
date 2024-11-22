@@ -1,6 +1,8 @@
 package view;
 
 import interface_adapter.filter_categories.FilterCategoriesViewModel;
+import interface_adapter.filter_category.FilterCategoryState;
+import interface_adapter.filter_category.FilterCategoryViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,37 +25,46 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
         this.filterCategoriesViewModel = filterCategoriesViewModel;
         this.filterCategoriesViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel("Filters");
-        title.setAlignmentX(CENTER_ALIGNMENT);
+        JLabel title = new JLabel("Filters", SwingConstants.CENTER);
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.add(title);
 
         JButton genre = new JButton("Genre");
+        genre.setAlignmentX(Component.CENTER_ALIGNMENT);
         genre.setMaximumSize(new Dimension(Short.MAX_VALUE, 100));
         this.add(genre);
         JButton decade = new JButton("Decade of Release");
         decade.setMaximumSize(new Dimension(Short.MAX_VALUE, 100));
+        decade.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(decade);
         JButton streaming = new JButton("Streaming Services");
         streaming.setMaximumSize(new Dimension(Short.MAX_VALUE, 100));
+        streaming.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(streaming);
         JButton popularity = new JButton("Popularity");
         popularity.setMaximumSize(new Dimension(Short.MAX_VALUE, 100));
+        popularity.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(popularity);
 
+        JPanel otherButtons = new JPanel();
+        otherButtons.setLayout(new BoxLayout(otherButtons, BoxLayout.LINE_AXIS));
+        otherButtons.setMaximumSize(new Dimension(Short.MAX_VALUE, 50));
+        otherButtons.setAlignmentX(Component.CENTER_ALIGNMENT);
         apply = new JButton("Apply Filters");
-        this.add(apply);
+        otherButtons.add(apply);
         clear = new JButton("Clear All Filters");
-        this.add(clear);
+        otherButtons.add(clear);
         JButton back = new JButton("Back");
-        this.add(back);
+        otherButtons.add(back);
+
+        this.add(otherButtons);
 
         genre.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-//                        String[] genresListed = {"Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary", "Drama",
-//                                "Family", "Fantasy", "History", "Horror", "Music", "Mystery", "Romance", "Science Fiction"};
+                        String[] genresListed = {"Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary", "Drama",
+                                "Family", "Fantasy", "History", "Horror", "Music", "Mystery", "Romance", "Science Fiction"};
 //                        this.filterCategoryController.execute("Genre", genresListed);
                     }
                 }
