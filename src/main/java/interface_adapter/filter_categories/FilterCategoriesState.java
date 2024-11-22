@@ -9,15 +9,24 @@ import java.util.Map;
 
 public class FilterCategoriesState {
 
-    private List<Movie> movieList;
+    private List<Movie> originalMovieList;
+    private List<Movie> filteredMovieList = new ArrayList<>();
     private Map<String, List<String>> selectedFilters = new HashMap<>();
 
-    public void setMovieList(List<Movie> list) {
-        this.movieList = list;
+    public void setOriginalMovieList(List<Movie> list) {
+        this.originalMovieList = list;
     }
 
-    public List<Movie> getMovieList() {
-        return this.movieList;
+    public List<Movie> getOriginalMovieList() {
+        return this.originalMovieList;
+    }
+
+    public void addMovieToFilteredList(Movie movie) {
+        this.filteredMovieList.add(movie);
+    }
+
+    public List<Movie> getFilteredMovieList() {
+        return this.filteredMovieList;
     }
 
     public void addNewFilters(String filterCategory, String filterOption) {
