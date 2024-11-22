@@ -27,5 +27,11 @@ public class UserProfilePresenter implements GoProfileOutputBoundary {
         // Thought question: is this a reasonable assumption?
     }
 
+    @Override
+    public void switchToProfileView() {
+        viewManagerModel.setState(userProfileViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+
 
 }

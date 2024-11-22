@@ -194,11 +194,14 @@ public class AppBuilder {
         return this;
     }
 
-
+    /**
+     * Adds the Go Profile Use Case to the application.
+     * @return this builder
+     */
     public AppBuilder addGoProfileUseCase() {
         GoProfileOutputBoundary goProfileOutputBoundary = new UserProfilePresenter(viewManagerModel,userProfileViewModel);
-        GoProfileInteractor goProfileInteractor = new GoProfileInteractor(); // Assuming this is implemented
-        UserProfileController userProfileController = new UserProfileController(goProfileInteractor); // Modify as needed
+        GoProfileInteractor goProfileInteractor = new GoProfileInteractor(goProfileOutputBoundary); // Assuming this is implemented
+        UserProfileController userProfileController = new UserProfileController(goProfileInteractor);
         loggedInView.setUserProfileController(userProfileController);
         return this;
     }
@@ -247,6 +250,7 @@ public class AppBuilder {
                 movieDetailDataAccessInterface);
         final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor);
         movieDetailView.setMovieDetailController(movieDetailController);
+        searchMovieView.setMovieDetailController(movieDetailController);
         return this;
     }
 
@@ -256,15 +260,17 @@ public class AppBuilder {
      */
     public AppBuilder addLogoutUseCase() {
         final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+                loggedInViewModel, loginViewModel,userProfileViewModel);
 
         final LogoutInputBoundary logoutInteractor =
                 new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
+        userProfileView.setLogoutController(logoutController);
         return this;
     }
+
 
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
