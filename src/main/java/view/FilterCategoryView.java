@@ -16,11 +16,13 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
     private String categoryName;
     private final FilterCategoryViewModel filterCategoryViewModel;
     private String[] categoryOptions;
+    private List<String> optionsSelected;
 
     public FilterCategoryView(FilterCategoryViewModel filterCategoryViewModel) {
       this.filterCategoryViewModel = filterCategoryViewModel;
       this.categoryName = this.filterCategoryViewModel.getState().getCategoryName();
       this.categoryOptions = this.filterCategoryViewModel.getState().getCategoryOptions();
+      this.optionsSelected = this.filterCategoryViewModel.getState().getSelectedOptions();
       this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
       JLabel title = new JLabel(this.categoryName, SwingConstants.CENTER);
@@ -29,15 +31,25 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
       for (String option : this.categoryOptions) {
         JCheckBox addedFilter = new JCheckBox(option);
         this.add(addedFilter);
+        if (this.optionsSelected.contains(option)) {
+            addedFilter.setSelected(true);
+          }
         addedFilter.addActionListener(
                 new ActionListener() {
                   @Override
                   public void actionPerformed(ActionEvent e) {
-
+                      if (addedFilter.isSelected()) {
+                          optionsSelected.add(option);
+                      }
+                      else {
+                          optionsSelected.remove(option);
+                      }
                   }
                 }
         );
       }
+      JButton apply = new JButton("Apply Filters");
+      this.add(apply);
       JButton back = new JButton("Back to All Filters");
       this.add(back);
     }
