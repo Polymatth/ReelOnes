@@ -31,6 +31,8 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
+    private static final String FAVMOVIE = "favoriteMovie";
+    private static final String FAVDIRECTOR = "favoriteDirector";
     private final UserFactory userFactory;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
@@ -55,8 +57,10 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 final JSONObject userJSONObject = responseBody.getJSONObject("user");
                 final String name = userJSONObject.getString(USERNAME);
                 final String password = userJSONObject.getString(PASSWORD);
+                final String favMovie = userJSONObject.getString(FAVMOVIE);
+                final String favDirector = userJSONObject.getString(FAVDIRECTOR);
 
-                return userFactory.create(name, password);
+                return userFactory.create(name, password,favMovie, favDirector);
             }
             else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));

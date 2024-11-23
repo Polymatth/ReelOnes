@@ -1,5 +1,6 @@
 package interface_adapter.signup;
 
+import interface_adapter.user_repository.SaveUserController;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInputData;
 
@@ -16,13 +17,16 @@ public class SignupController {
 
     /**
      * Executes the Signup Use Case.
-     * @param username the username to sign up
-     * @param password1 the password
-     * @param password2 the password repeated
+     *
+     * @param username    the username to sign up
+     * @param password1   the password
+     * @param password2   the password repeated
+     * @param favMovie
+     * @param favDirector
      */
-    public void execute(String username, String password1, String password2) {
+    public void execute(String username, String password1, String password2, String favMovie, String favDirector) {
         final SignupInputData signupInputData = new SignupInputData(
-                username, password1, password2);
+                username, password1, password2, favMovie,favDirector);
 
         userSignupUseCaseInteractor.execute(signupInputData);
     }
@@ -33,4 +37,12 @@ public class SignupController {
     public void switchToLoginView() {
         userSignupUseCaseInteractor.switchToLoginView();
     }
+
+    /**
+     * Executes the "switch to SignUpView" Use Case.
+     */
+    public void switchToSignUpView() {
+        userSignupUseCaseInteractor.switchToSignUpView();
+    }
+
 }

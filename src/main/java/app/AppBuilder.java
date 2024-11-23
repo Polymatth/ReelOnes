@@ -28,6 +28,8 @@ import interface_adapter.search_movie.SearchMovieViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.user_repository.FileSaveUserRepository;
+import interface_adapter.user_repository.SaveUserController;
 import interface_adapter.userprofile.UserProfileController;
 import interface_adapter.userprofile.UserProfilePresenter;
 import interface_adapter.userprofile.UserProfileViewModel;
@@ -46,6 +48,9 @@ import use_case.movie_detail.MovieDetailDataAccessInterface;
 import use_case.movie_detail.MovieDetailInputBoundary;
 import use_case.movie_detail.MovieDetailInteractor;
 import use_case.movie_detail.MovieDetailOutputBoundary;
+import use_case.saveuser.SaveUserInputBoundary;
+import use_case.saveuser.SaveUserInteractor;
+import use_case.saveuser.SaveUserOutputBoundary;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
@@ -194,6 +199,17 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addSaveUserUseCase() {
+            final UserFactory userFactory = new CommonUserFactory();
+            String filePath = "users_info.csv";
+            FileSaveUserRepository repository = new FileSaveUserRepository(filePath);
+            final SaveUserInputBoundary interactor = new SaveUserInteractor(repository, userFactory);
+            final SaveUserController saveUserController = new SaveUserController(interactor);
+            signupView.setSaveUserController(saveUserController);
+
+            return this;
+
+    }
     /**
      * Adds the Go Profile Use Case to the application.
      * @return this builder
@@ -250,6 +266,7 @@ public class AppBuilder {
                 movieDetailDataAccessInterface);
         final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor);
         movieDetailView.setMovieDetailController(movieDetailController);
+        searchMovieView.setMovieDetailController(movieDetailController);
         return this;
     }
 
@@ -259,15 +276,17 @@ public class AppBuilder {
      */
     public AppBuilder addLogoutUseCase() {
         final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+                loggedInViewModel, loginViewModel,userProfileViewModel);
 
         final LogoutInputBoundary logoutInteractor =
                 new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
+        userProfileView.setLogoutController(logoutController);
         return this;
     }
+
 
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
