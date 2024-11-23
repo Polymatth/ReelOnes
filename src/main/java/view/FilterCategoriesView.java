@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.filter_categories.FilterCategoriesViewModel;
+import interface_adapter.filter_category.FilterCategoryController;
 import interface_adapter.filter_category.FilterCategoryState;
 import interface_adapter.filter_category.FilterCategoryViewModel;
 
@@ -16,7 +17,7 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
     private final String viewName = "filter categories page";
     private final FilterCategoriesViewModel filterCategoriesViewModel;
 
-    //private FilterCategoryController filterCategoryController;
+    private FilterCategoryController filterCategoryController;
 
     private JButton apply;
     private JButton clear;
@@ -65,7 +66,8 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
                     public void actionPerformed(ActionEvent evt) {
                         String[] genresListed = {"Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary", "Drama",
                                 "Family", "Fantasy", "History", "Horror", "Music", "Mystery", "Romance", "Science Fiction"};
-//                        this.filterCategoryController.execute("Genre", genresListed);
+                        filterCategoryController.execute("Genre", genresListed, filterCategoriesViewModel
+                                .getState().getSelectedFilters().get("Genre"));
                     }
                 }
         );
@@ -73,9 +75,10 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
         decade.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-//                        String[] decadeListed = {"2020S", "2010s", "2000s", "1990s", "1980s", "1970s", "1960s",
-//                                "1950s", "1940s", "1930s", "1920s", "1910s", "1900s"};
-//                        this.filterCategoryController.execute("Decade of Release", decadeListed);
+                        String[] decadeListed = {"2020S", "2010s", "2000s", "1990s", "1980s", "1970s", "1960s",
+                                "1950s", "1940s", "1930s", "1920s", "1910s", "1900s"};
+                        filterCategoryController.execute("Decade of Release", decadeListed,
+                                filterCategoriesViewModel.getState().getSelectedFilters().get("Decade of Release"));
                     }
                 }
         );
@@ -83,9 +86,10 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
         streaming.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-//                        String[] servicesListed = {"Netflix", "Amazon Prime", "Disney+", "Iqiyi", "Apple TV+", "Max",
-//                                "Other"};
-//                        this.filterCategoryController.execute("Streaming Services", servicesListed);
+                        String[] servicesListed = {"Netflix", "Amazon Prime", "Disney+", "Iqiyi", "Apple TV+", "Max",
+                                "Other"};
+                        filterCategoryController.execute("Streaming Services", servicesListed,
+                                filterCategoriesViewModel.getState().getSelectedFilters().get("Streaming Services"));
                     }
                 }
         );
@@ -93,9 +97,10 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
         popularity.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-//                        String[] ratingsList = {"0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69",
-//                                "70-79", "80-89", "90-100"};
-//                        this.filterCategoryController.execute("Popularity Ratings", ratingsList);
+                        String[] ratingsList = {"0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69",
+                                "70-79", "80-89", "90-100"};
+                        filterCategoryController.execute("Popularity Ratings", ratingsList,
+                                filterCategoriesViewModel.getState().getSelectedFilters().get("Popularity"));
                     }
                 }
         );
@@ -104,13 +109,15 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
     public void actionPerformed(ActionEvent e) {
     }
 
-    public void propertyChange(PropertyChangeEvent evt) {}
+    public void propertyChange(PropertyChangeEvent evt) {
+    }
 
     public String getViewName() {
         return this.viewName;
     }
 
-  //  public void setFilterCategoryController(FilterCategoryController filterCategoryController) {
-    //    this.filterCategoryController = filterCategoryController;
+    public void setFilterCategoryController(FilterCategoryController filterCategoryController) {
+        this.filterCategoryController = filterCategoryController;
     }
+}
 
