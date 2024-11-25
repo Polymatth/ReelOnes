@@ -10,23 +10,33 @@ import java.util.Map;
 public class FilterCategoriesState {
 
     private List<Movie> originalMovieList;
-    private List<Movie> filteredMovieList = new ArrayList<>();
+    private Map<String, List<Movie>> filterToMovies = new HashMap<>();
     private Map<String, List<String>> selectedFilters = new HashMap<>();
+
+    public void FilterCategoriesState() {
+        for (String category : new String[]{"Genre", "Decade of Release", "Streaming Services", "Rating"}) {
+            this.filterToMovies.put(category, new ArrayList<>());
+        }
+    }
 
     public void setOriginalMovieList(List<Movie> list) {
         this.originalMovieList = list;
     }
 
+    public Map<String, List<Movie>> getFilterToMovies() {
+        return this.filterToMovies;
+    }
+
+    public void setFilterToMovies(Map<String, List<Movie>> filterToMovies) {
+        this.filterToMovies = filterToMovies;
+    }
+
+    public void setMoviestoFilter(String category, List<Movie> movies) {
+        this.filterToMovies.replace(category, movies);
+    }
+
     public List<Movie> getOriginalMovieList() {
         return this.originalMovieList;
-    }
-
-    public void addMovieToFilteredList(Movie movie) {
-        this.filteredMovieList.add(movie);
-    }
-
-    public List<Movie> getFilteredMovieList() {
-        return this.filteredMovieList;
     }
 
     public void addNewFilters(String filterCategory, String filterOption) {
