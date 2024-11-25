@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.filter_category.FilterCategoryController;
 import interface_adapter.filter_category.FilterCategoryViewModel;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
     private final FilterCategoryViewModel filterCategoryViewModel;
     private String[] categoryOptions;
     private List<String> optionsSelected;
+    private FilterCategoryController filterCategoryController;
 
     public FilterCategoryView(FilterCategoryViewModel filterCategoryViewModel) {
       this.filterCategoryViewModel = filterCategoryViewModel;
@@ -50,6 +52,15 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
       }
       JButton apply = new JButton("Apply Filters");
       this.add(apply);
+      apply.addActionListener(
+              new ActionListener() {
+                  @Override
+                  public void actionPerformed(ActionEvent e) {
+                      filterCategoryController.executeFilterApplication(categoryName, optionsSelected,
+                              filterCategoryViewModel.getState().getOriginalList());
+                  }
+              }
+      );
       JButton back = new JButton("Back to All Filters");
       this.add(back);
     }
@@ -66,5 +77,9 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
 
   public String getViewName() {
     return this.viewName;
+  }
+
+  public void setFilterCategoryController(FilterCategoryController filterCategoryController) {
+        this.filterCategoryController = filterCategoryController;
   }
 }
