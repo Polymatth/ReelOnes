@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Filter;
 
@@ -57,7 +58,7 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
                   @Override
                   public void actionPerformed(ActionEvent e) {
                       filterCategoryController.executeFilterApplication(categoryName, optionsSelected,
-                              filterCategoryViewModel.getState().getOriginalList());
+                              Arrays.asList(categoryOptions), filterCategoryViewModel.getState().getOriginalList());
                   }
               }
       );

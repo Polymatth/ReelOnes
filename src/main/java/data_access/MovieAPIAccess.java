@@ -56,13 +56,14 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                     JSONArray genreJsonArray = movieJson.getJSONArray("genre_ids");
                     List genre_ids = new ArrayList();
                     int size = genreJsonArray.length();
-                    while (i< size){
-                        genre_ids.add(genreJsonArray.get(i));
-                        i++;
+                    int j = 0;
+                    while (j< size){
+                        genre_ids.add(genreJsonArray.get(j));
+                        j++;
                     }
 
                     Movie movie = new Movie(
-                            movieJson.getString("poster_path"),
+                            movieJson.optString("poster_path"),
                             movieJson.getBoolean("adult"),
                             movieJson.getString("overview"),
                             movieJson.getString("release_date"),
@@ -70,7 +71,7 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                             movieJson.getInt("id"),
                             movieJson.getString("original_language"),
                             movieJson.getString("title"),
-                            movieJson.getString("backdrop_path"),
+                            movieJson.optString("backdrop_path"),
                             movieJson.getFloat("popularity"),
                             movieJson.getInt("vote_count"),
                             movieJson.getBoolean("video"),

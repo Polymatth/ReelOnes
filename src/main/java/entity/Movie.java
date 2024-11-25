@@ -93,4 +93,8 @@ public class Movie {
     public int getID() {
         return this.id;
     }
+
+    public float getVote_average() {
+        return this.vote_average;
+    }
 }

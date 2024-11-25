@@ -31,10 +31,10 @@ public class FilterCategoryController {
         filterCategorySelectionUseCaseInteractor.execute(filterCategorySelectionInputData);
     }
 
-    public void executeFilterApplication(String categoryName, List<String> optionsSelected,
+    public void executeFilterApplication(String categoryName, List<String> optionsSelected, List<String> allOptions,
                                          List<Movie> originalList) {
         final FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(categoryName,
-                optionsSelected, originalList);
+                optionsSelected, allOptions, originalList);
         filterApplicationUseCaseInteractor.execute(filterApplicationInputData);
     }
 }
