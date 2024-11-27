@@ -38,7 +38,9 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
 
     private final JButton logOut;
     private final JButton backToMainView;
+    private final JButton changePassword;
     private final JLabel username;
+
 
     public UserProfileView(UserProfileViewModel userProfileViewModel) {
         this.userProfileViewModel = userProfileViewModel;
@@ -61,6 +63,10 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         // Create "Back to Main View" button
         backToMainView = new JButton("Home");
         topPanel.add(backToMainView, BorderLayout.EAST);
+
+        changePassword = new JButton("Change Password");
+        topPanel.add(changePassword, BorderLayout.WEST);
+
 
         // Add log out button to top left
         topPanel.add(logOut = new JButton("Log Out"), BorderLayout.WEST);
