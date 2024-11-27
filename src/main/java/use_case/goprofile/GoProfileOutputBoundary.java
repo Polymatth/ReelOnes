@@ -9,4 +9,9 @@ public interface GoProfileOutputBoundary {
      * Switches to the Profile View.
      */
     void switchToProfileView();
+
+    /**
+     * Switches to the Main View.
+     */
+    void switchToMainView();
 }

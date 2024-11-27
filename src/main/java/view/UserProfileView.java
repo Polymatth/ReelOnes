@@ -3,11 +3,14 @@ package view;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.userprofile.CircularButton;
+import interface_adapter.userprofile.UserProfileController;
 import interface_adapter.userprofile.UserProfileState;
 import interface_adapter.userprofile.UserProfileViewModel;
 
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 
 import java.beans.PropertyChangeEvent;
@@ -31,8 +34,10 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
     private final String viewName = "userprofile";
     private final UserProfileViewModel userProfileViewModel;
     private LogoutController logoutController;
+    private UserProfileController userProfileController;
 
     private final JButton logOut;
+    private final JButton backToMainView;
     private final JLabel username;
 
     public UserProfileView(UserProfileViewModel userProfileViewModel) {
@@ -40,15 +45,26 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         this.userProfileViewModel.addPropertyChangeListener(this);
 
         // Main layout configuration
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BorderLayout()); // Changed to BorderLayout for better control
         this.setBackground(Color.DARK_GRAY);
 
-        // Title
+        // Title (Center aligned using BorderLayout)
         JLabel title = new JLabel("Profile");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setHorizontalAlignment(SwingConstants.CENTER); // Center text
         title.setForeground(Color.WHITE);
-        this.add(title);
+        this.add(title, BorderLayout.NORTH);
 
+        // Top-right panel for buttons (log out and back)
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(Color.DARK_GRAY);
+
+        // Create "Back to Main View" button
+        backToMainView = new JButton("Home");
+        topPanel.add(backToMainView, BorderLayout.EAST);
+
+        // Add log out button to top left
+        topPanel.add(logOut = new JButton("Log Out"), BorderLayout.WEST);
+        this.add(topPanel, BorderLayout.NORTH);
 
         // Right panel (Profile and Lists)
         JPanel profilePanel = new JPanel();
@@ -60,9 +76,8 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         profileSection.setBackground(Color.WHITE);
         profileSection.setLayout(new BoxLayout(profileSection, BoxLayout.Y_AXIS));
 
-        CircularButton profilePictureButton = new CircularButton("profile picture");
+        CircularButton profilePictureButton = new CircularButton("Profile Picture");
         profilePictureButton.setPreferredSize(new Dimension(80, 80));
-
 
         username = new JLabel("Username"); // Initialize the username label here
         username.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -72,7 +87,7 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         profileSection.add(username);
         profileSection.add(movieLabel);
 
-
+        // Lists section
         JPanel listsSection = new JPanel(new GridLayout(1, 5, 10, 10));
         listsSection.setBackground(Color.WHITE);
         for (int i = 0; i < 5; i++) {
@@ -84,12 +99,16 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         profilePanel.add(profileSection);
         profilePanel.add(Box.createVerticalStrut(20)); // Space
         profilePanel.add(listsSection);
-        this.add(profilePanel);
+        this.add(profilePanel, BorderLayout.CENTER);
 
-        final JPanel buttons = new JPanel( new BorderLayout());
-        logOut = new JButton("Log Out");
-        buttons.add(logOut, BorderLayout.NORTH);
-        this.add(buttons, BorderLayout.NORTH);
+        // Back Button ActionListener
+        backToMainView.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    userProfileController.switchToMainView();
+                }
+            }
+        );
 
         logOut.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
@@ -123,8 +142,8 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         return viewName;
     }
 
-    public void setLogoutController(LogoutController logoutController) {
-        this.logoutController = logoutController;
-    }
+    public void setLogoutController(LogoutController logoutController) {this.logoutController = logoutController;}
+
+    public void setUserProfileController(UserProfileController userProfileController) { this.userProfileController = userProfileController;}
 
 }
