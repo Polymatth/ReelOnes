@@ -57,8 +57,10 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 final JSONObject userJSONObject = responseBody.getJSONObject("user");
                 final String name = userJSONObject.getString(USERNAME);
                 final String password = userJSONObject.getString(PASSWORD);
-                final String favMovie = userJSONObject.getString(FAVMOVIE);
-                final String favDirector = userJSONObject.getString(FAVDIRECTOR);
+
+                final JSONObject infoObject = userJSONObject.getJSONObject("info");
+                final String favMovie = infoObject.getString(FAVMOVIE);
+                final String favDirector = infoObject.getString(FAVDIRECTOR);
 
                 return userFactory.create(name, password,favMovie, favDirector);
             }
@@ -129,6 +131,49 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         }
     }
 
+
+    public void modifyInfo(User user){
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+        // Create JSON body with user data
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+        final JSONObject requestBody = new JSONObject();
+
+        // Add username and password
+        requestBody.put(USERNAME, user.getName());
+        requestBody.put(PASSWORD, user.getPassword());
+
+        // Add "info" object with favorite movie and favorite director
+        JSONObject infoObject = new JSONObject();
+        infoObject.put(FAVMOVIE, user.getFavMovie());
+        infoObject.put(FAVDIRECTOR, user.getFavDirector());
+
+        // Attach "info" object to the main request body
+        requestBody.put("info", infoObject);
+
+        // Create request body for the HTTP call
+        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
+        final Request request = new Request.Builder()
+                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo") // Adjusted endpoint
+                .method("PUT", body) // Use PUT for updating/saving user information
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+
+        try {
+            // Execute the request
+            final Response response = client.newCall(request).execute();
+            final JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
+                System.out.println("User info saved successfully!");
+            } else {
+                throw new RuntimeException(responseBody.getString(MESSAGE));
+            }
+        } catch (IOException | JSONException ex) {
+            throw new RuntimeException("Error saving user info", ex);
+        }
+
+    }
     @Override
     public void changePassword(User user) {
         final OkHttpClient client = new OkHttpClient().newBuilder()
