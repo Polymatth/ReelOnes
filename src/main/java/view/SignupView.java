@@ -19,7 +19,6 @@ import javax.swing.event.DocumentListener;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
-import interface_adapter.user_repository.SaveUserController;
 
 import static interface_adapter.signup.SignupViewModel.FAV_DIRECTOR_LABEL;
 import static interface_adapter.signup.SignupViewModel.FAV_MOVIE_LABEL;
@@ -37,7 +36,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JTextField favMovieInputField = new JTextField(15);
     private final JTextField favDirectorInputField = new JTextField(15);
     private SignupController signupController;
-    private SaveUserController saveUserController;
 
     private final JButton signUp;
     private final JButton cancel;
@@ -57,7 +55,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         final LabelTextPanel repeatPasswordInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.REPEAT_PASSWORD_LABEL), repeatPasswordInputField);
         final LabelTextPanel favMovieInfo = new LabelTextPanel(
-                new JLabel(FAV_MOVIE_LABEL ), favMovieInputField);
+                new JLabel(FAV_MOVIE_LABEL), favMovieInputField);
         final LabelTextPanel favDirectorInfo = new LabelTextPanel(
                 new JLabel(FAV_DIRECTOR_LABEL), favDirectorInputField);
 
@@ -84,10 +82,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                                     currentState.getFavMovie(),
                                     currentState.getFavDirector()
                             );
-                            saveUserController.saveUser( currentState.getUsername(),
-                                    currentState.getPassword(),
-                                    currentState.getFavMovie(),
-                                    currentState.getFavDirector());
                         }
                     }
                 }
@@ -270,5 +264,4 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         this.signupController = controller;
     }
 
-    public void setSaveUserController(SaveUserController saveUserController) {this.saveUserController = saveUserController;}
 }

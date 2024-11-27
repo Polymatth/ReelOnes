@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import data_access.DBUserDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
@@ -28,8 +29,6 @@ import interface_adapter.search_movie.SearchMovieViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
-import interface_adapter.user_repository.FileSaveUserRepository;
-import interface_adapter.user_repository.SaveUserController;
 import interface_adapter.userprofile.UserProfileController;
 import interface_adapter.userprofile.UserProfilePresenter;
 import interface_adapter.userprofile.UserProfileViewModel;
@@ -48,9 +47,6 @@ import use_case.movie_detail.MovieDetailDataAccessInterface;
 import use_case.movie_detail.MovieDetailInputBoundary;
 import use_case.movie_detail.MovieDetailInteractor;
 import use_case.movie_detail.MovieDetailOutputBoundary;
-import use_case.saveuser.SaveUserInputBoundary;
-import use_case.saveuser.SaveUserInteractor;
-import use_case.saveuser.SaveUserOutputBoundary;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
@@ -80,7 +76,7 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     // thought question: is the hard dependency below a problem?
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
     private final SearchMovieDataAccessInterface searchMovieDataAccessInterface = new AppConfig().getMovieDataAccess();
     private final MovieDetailDataAccessInterface movieDetailDataAccessInterface = new AppConfig()
@@ -199,17 +195,6 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addSaveUserUseCase() {
-            final UserFactory userFactory = new CommonUserFactory();
-            String filePath = "users_info.csv";
-            FileSaveUserRepository repository = new FileSaveUserRepository(filePath);
-            final SaveUserInputBoundary interactor = new SaveUserInteractor(repository, userFactory);
-            final SaveUserController saveUserController = new SaveUserController(interactor);
-            signupView.setSaveUserController(saveUserController);
-
-            return this;
-
-    }
     /**
      * Adds the Go Profile Use Case to the application.
      * @return this builder

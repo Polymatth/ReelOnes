@@ -1,6 +1,5 @@
 package interface_adapter.signup;
 
-import interface_adapter.user_repository.SaveUserController;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInputData;
 
