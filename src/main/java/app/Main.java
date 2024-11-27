@@ -21,7 +21,6 @@ public class Main {
                                             .addMovieDetailView()
                                              .addUserProfileView()
                                             .addSignupUseCase()
-                                            .addSaveUserUseCase()
                                             .addLoginUseCase()
                                             .addLogoutUseCase()
                                             .addGoProfileUseCase()
