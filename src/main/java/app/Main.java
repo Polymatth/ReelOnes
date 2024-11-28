@@ -19,13 +19,15 @@ public class Main {
                                             .addLoggedInView()
                                             .addSearchMovieView()
                                             .addMovieDetailView()
-                                               .addUserProfileView()
+                                            .addUserProfileView()
+                                            .addOpenListView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addLogoutUseCase()
                                             .addGoProfileUseCase()
                                             .addSearchMovieUseCase()
                                             .addMovieDetailUseCase()
+                                            .addOpenListUseCase()
                                             .build();
 
         application.pack();
