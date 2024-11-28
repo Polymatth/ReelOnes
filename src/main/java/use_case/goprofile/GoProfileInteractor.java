@@ -33,4 +33,5 @@ public class GoProfileInteractor implements GoProfileInputBoundary {
     public void switchToChangePasswordView() {
         userProfilePresenter.switchToChangePasswordView();
     }
+
 }

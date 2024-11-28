@@ -17,6 +17,7 @@ public interface GoProfileInputBoundary {
      */
     void switchToProfileView();
 
+
     /**
      * Executes the switch to main view use case.
      */

@@ -36,6 +36,7 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
     private final JButton changePassword;
     private final JLabel username;
 
+
     public UserProfileView(UserProfileViewModel userProfileViewModel) {
         this.userProfileViewModel = userProfileViewModel;
         this.userProfileViewModel.addPropertyChangeListener(this);
@@ -58,10 +59,19 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         backToMainView = new JButton("Home");
         topPanel.add(backToMainView, BorderLayout.EAST);
 
+
         // Add log out button to top left
         topPanel.add(logOut = new JButton("Log Out"), BorderLayout.WEST);
         this.add(topPanel, BorderLayout.NORTH);
 
+
+        changePassword = new JButton("Change Password");
+        topPanel.add(changePassword, BorderLayout.WEST);
+
+
+        // Add log out button to top left
+        topPanel.add(logOut = new JButton("Log Out"), BorderLayout.WEST);
+        this.add(topPanel, BorderLayout.NORTH);
 
         // Right panel (Profile and Lists)
         JPanel profilePanel = new JPanel();
@@ -90,10 +100,12 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         profileSection.add(username);
         profileSection.add(movieLabel);
 
+
         changePassword.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {userProfileController.switchToChangePasswordView();
             }
         });
+
         // Lists section
         JPanel listsSection = new JPanel(new GridLayout(1, 5, 10, 10));
         listsSection.setBackground(Color.WHITE);
@@ -129,10 +141,8 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
-
-
-
     }
+  
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {

@@ -15,8 +15,10 @@ public interface GoProfileOutputBoundary {
      */
     void switchToMainView();
 
+
     /**
      * Switches to Change Password View.
      */
     void switchToChangePasswordView();
+  
 }

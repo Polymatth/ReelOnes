@@ -10,6 +10,7 @@ public class UserProfilePresenter implements GoProfileOutputBoundary {
     private ViewManagerModel viewManagerModel;
     private UserProfileViewModel userProfileViewModel;
     private LoggedInViewModel loggedInViewModel;
+
     private ChangePasswordViewModel changePasswordViewModel;
 
     public UserProfilePresenter(ViewManagerModel viewManagerModel, UserProfileViewModel userProfileViewModel, LoggedInViewModel loggedInViewModel,ChangePasswordViewModel changePasswordViewModel) {
@@ -36,6 +37,7 @@ public class UserProfilePresenter implements GoProfileOutputBoundary {
         viewManagerModel.setState(userProfileViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
+
 
     @Override
     public void switchToMainView() {
