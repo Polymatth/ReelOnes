@@ -25,4 +25,6 @@ public class GoProfileInteractor implements GoProfileInputBoundary {
     public void switchToProfileView() {
         userProfilePresenter.switchToProfileView();
     }
+
+    public void switchToMainView() {userProfilePresenter.switchToMainView();}
 }

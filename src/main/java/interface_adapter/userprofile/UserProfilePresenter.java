@@ -9,10 +9,12 @@ public class UserProfilePresenter implements GoProfileOutputBoundary {
 
     private ViewManagerModel viewManagerModel;
     private UserProfileViewModel userProfileViewModel;
+    private LoggedInViewModel loggedInViewModel;
 
-    public UserProfilePresenter(ViewManagerModel viewManagerModel, UserProfileViewModel userProfileViewModel) {
+    public UserProfilePresenter(ViewManagerModel viewManagerModel, UserProfileViewModel userProfileViewModel, LoggedInViewModel loggedInViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.userProfileViewModel = userProfileViewModel;
+        this.loggedInViewModel = loggedInViewModel;
     }
 
     @Override
@@ -33,5 +35,10 @@ public class UserProfilePresenter implements GoProfileOutputBoundary {
         viewManagerModel.firePropertyChanged();
     }
 
+    public void switchToMainView() {
+        System.out.println("Switching to main view...");
+        viewManagerModel.setState(loggedInViewModel.getViewName());
+        viewManagerModel.firePropertyChanged("state");
+    }
 
 }

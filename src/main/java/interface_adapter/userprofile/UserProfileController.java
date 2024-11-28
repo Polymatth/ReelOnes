@@ -14,10 +14,20 @@ public class UserProfileController {
     }
 
     /**
-     * Executes the "switch to LoginView" Use Case.
+     * Executes the "switch to UserProfileView" Use Case.
      */
     public void switchToProfileView() {
         goProfileUseCaseInteractor.switchToProfileView();
     }
+
+    /**
+     * Executes the "switch to MainView" Use Case.
+     */
+    public void switchToMainView() {
+        goProfileUseCaseInteractor.switchToMainView();
+    }
+
+
+
 }
 

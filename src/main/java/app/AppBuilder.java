@@ -186,7 +186,7 @@ public class AppBuilder {
      */
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel, userProfileViewModel);
+                loggedInViewModel, loginViewModel, signupViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -200,10 +200,11 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addGoProfileUseCase() {
-        GoProfileOutputBoundary goProfileOutputBoundary = new UserProfilePresenter(viewManagerModel,userProfileViewModel);
+        GoProfileOutputBoundary goProfileOutputBoundary = new UserProfilePresenter(viewManagerModel,userProfileViewModel,loggedInViewModel);
         GoProfileInteractor goProfileInteractor = new GoProfileInteractor(goProfileOutputBoundary); // Assuming this is implemented
         UserProfileController userProfileController = new UserProfileController(goProfileInteractor);
         loggedInView.setUserProfileController(userProfileController);
+        userProfileView.setUserProfileController(userProfileController);
         return this;
     }
 
