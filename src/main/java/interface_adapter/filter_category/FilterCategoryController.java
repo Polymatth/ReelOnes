@@ -21,7 +21,6 @@ public class FilterCategoryController {
                                     FilterApplicationInputBoundary filterApplicationUseCaseInteractor) {
         this.filterCategorySelectionUseCaseInteractor = filterCategorySelectionUseCaseInteractor;
         this.filterApplicationUseCaseInteractor = filterApplicationUseCaseInteractor;
-
     }
 
     public void executeFilterCategorySelection(String categoryName, String[] categoryOptions, List<Movie> originalList,
@@ -37,4 +36,5 @@ public class FilterCategoryController {
                 optionsSelected, allOptions, originalList);
         filterApplicationUseCaseInteractor.execute(filterApplicationInputData);
     }
+
 }
