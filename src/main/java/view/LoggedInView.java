@@ -14,12 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.loggedin.LoggedInState;
+import interface_adapter.loggedin.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.search_movie.SearchMovieController;
-import interface_adapter.signup.SignupState;
 import interface_adapter.userprofile.CircularButton;
 import interface_adapter.userprofile.UserProfileController;
 

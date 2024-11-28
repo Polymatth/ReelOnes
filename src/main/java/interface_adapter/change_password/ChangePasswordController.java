@@ -18,9 +18,13 @@ public class ChangePasswordController {
      * @param password the new password
      * @param username the user whose password to change
      */
-    public void execute(String password, String username,String favMovie, String favDirector) {
-        final ChangePasswordInputData changePasswordInputData = new ChangePasswordInputData(username, password,favDirector, favMovie);
+    public void execute(String username, String password,String favMovie, String favDirector) {
+        final ChangePasswordInputData changePasswordInputData = new ChangePasswordInputData(username, password,favMovie, favDirector);
 
         userChangePasswordUseCaseInteractor.execute(changePasswordInputData);
     }
+
+    public void switchToUserView() { userChangePasswordUseCaseInteractor.switchToUserView();}
+
+
 }
