@@ -28,6 +28,10 @@ public class UserProfileController {
     }
 
 
+    /**
+     * Executes the "switch to ChangePasswordView" Use Case.
+     */
+    public void switchToChangePasswordView() { goProfileUseCaseInteractor.switchToChangePasswordView(); }
 
 }
 

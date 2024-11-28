@@ -1,9 +1,9 @@
 package interface_adapter.userprofile;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.change_password.ChangePasswordViewModel;
+import interface_adapter.loggedin.LoggedInViewModel;
 import use_case.goprofile.GoProfileOutputBoundary;
-import use_case.goprofile.GoProfileOutputData;
 
 public class UserProfilePresenter implements GoProfileOutputBoundary {
 
@@ -11,10 +11,13 @@ public class UserProfilePresenter implements GoProfileOutputBoundary {
     private UserProfileViewModel userProfileViewModel;
     private LoggedInViewModel loggedInViewModel;
 
-    public UserProfilePresenter(ViewManagerModel viewManagerModel, UserProfileViewModel userProfileViewModel, LoggedInViewModel loggedInViewModel) {
+    private ChangePasswordViewModel changePasswordViewModel;
+
+    public UserProfilePresenter(ViewManagerModel viewManagerModel, UserProfileViewModel userProfileViewModel, LoggedInViewModel loggedInViewModel,ChangePasswordViewModel changePasswordViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.userProfileViewModel = userProfileViewModel;
         this.loggedInViewModel = loggedInViewModel;
+        this.changePasswordViewModel = changePasswordViewModel;
     }
 
     @Override
@@ -35,9 +38,17 @@ public class UserProfilePresenter implements GoProfileOutputBoundary {
         viewManagerModel.firePropertyChanged();
     }
 
+
+    @Override
     public void switchToMainView() {
         System.out.println("Switching to main view...");
         viewManagerModel.setState(loggedInViewModel.getViewName());
+        viewManagerModel.firePropertyChanged("state");
+    }
+
+    @Override
+    public void switchToChangePasswordView() {
+        viewManagerModel.setState(changePasswordViewModel.getViewName());
         viewManagerModel.firePropertyChanged("state");
     }
 

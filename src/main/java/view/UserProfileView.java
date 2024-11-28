@@ -1,6 +1,5 @@
 package view;
 
-import interface_adapter.change_password.LoggedInState;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.userprofile.CircularButton;
 import interface_adapter.userprofile.UserProfileController;
@@ -14,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.awt.*;
 
 import javax.swing.BoxLayout;
@@ -22,9 +20,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 /**
  * The View for when the user is in their profile.
@@ -64,6 +59,12 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         backToMainView = new JButton("Home");
         topPanel.add(backToMainView, BorderLayout.EAST);
 
+
+        // Add log out button to top left
+        topPanel.add(logOut = new JButton("Log Out"), BorderLayout.WEST);
+        this.add(topPanel, BorderLayout.NORTH);
+
+
         changePassword = new JButton("Change Password");
         topPanel.add(changePassword, BorderLayout.WEST);
 
@@ -89,9 +90,21 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         username.setAlignmentX(Component.CENTER_ALIGNMENT);
         JLabel movieLabel = new JLabel("<html>Favorite Movie:<br>Director:<br>Genre:<br>Streaming Services:</html>");
 
+        changePassword = new JButton("Change Password");
+        changePassword.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profileSection.add(Box.createVerticalStrut(10));
+
+
+        profileSection.add(changePassword);
         profileSection.add(profilePictureButton);
         profileSection.add(username);
         profileSection.add(movieLabel);
+
+
+        changePassword.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {userProfileController.switchToChangePasswordView();
+            }
+        });
 
         // Lists section
         JPanel listsSection = new JPanel(new GridLayout(1, 5, 10, 10));
@@ -128,10 +141,8 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
-
-
-
     }
+  
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {

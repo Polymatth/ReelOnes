@@ -8,13 +8,15 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import data_access.DBUserDataAccessObject;
-import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.change_password.ChangePasswordViewModel;
+import interface_adapter.get_currentuser.GetCurrentUserController;
+import interface_adapter.get_currentuser.GetCurrentUserPresenter;
+import interface_adapter.loggedin.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -35,6 +37,9 @@ import interface_adapter.userprofile.UserProfileViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.get_currentuser.GetCurrentOutputBoundary;
+import use_case.get_currentuser.GetCurrentUserInputBoundary;
+import use_case.get_currentuser.GetCurrentUserInteractor;
 import use_case.goprofile.GoProfileInteractor;
 import use_case.goprofile.GoProfileOutputBoundary;
 import use_case.login.LoginInputBoundary;
@@ -87,9 +92,11 @@ public class AppBuilder {
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
     private UserProfileViewModel userProfileViewModel;
+    private ChangePasswordViewModel changePasswordViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
     private UserProfileView userProfileView;
+    private ChangePasswordView changePasswordView;
 
     private SearchMovieView searchMovieView;
     private SearchMovieViewModel searchMovieViewModel;
@@ -144,8 +151,20 @@ public class AppBuilder {
         cardPanel.add(userProfileView, userProfileView.getViewName());
         return this;
     }
-      
-     /** Adds the SearchMovie View to the application.
+
+    /**
+     * Adds the Change Password View to the application.
+     * @return this builder
+     */
+    public AppBuilder addChangePasswordView() {
+        changePasswordViewModel = new ChangePasswordViewModel();
+        changePasswordView = new ChangePasswordView(changePasswordViewModel);
+        cardPanel.add(changePasswordView, changePasswordView.getViewName());
+        return this;
+    }
+
+
+    /** Adds the SearchMovie View to the application.
      * @return this builder
      */
     public AppBuilder addSearchMovieView() throws IOException {
@@ -196,11 +215,26 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Get Current User Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addGetCurrentUserUseCase() {
+        final GetCurrentOutputBoundary getCurrentUserOutputBoundary = new GetCurrentUserPresenter(viewManagerModel);
+        final GetCurrentUserInputBoundary getCurrentUserInteractor = new GetCurrentUserInteractor(
+                userDataAccessObject, getCurrentUserOutputBoundary);
+
+        final GetCurrentUserController getCurrentUserController = new GetCurrentUserController(getCurrentUserInteractor);
+        System.out.println("Created GetCurrentUserController: " + getCurrentUserController);
+        changePasswordView.setGetCurrentUserController(getCurrentUserController);
+        return this;
+    }
+
+    /**
      * Adds the Go Profile Use Case to the application.
      * @return this builder
      */
     public AppBuilder addGoProfileUseCase() {
-        GoProfileOutputBoundary goProfileOutputBoundary = new UserProfilePresenter(viewManagerModel,userProfileViewModel,loggedInViewModel);
+        GoProfileOutputBoundary goProfileOutputBoundary = new UserProfilePresenter(viewManagerModel,userProfileViewModel,loggedInViewModel,changePasswordViewModel);
         GoProfileInteractor goProfileInteractor = new GoProfileInteractor(goProfileOutputBoundary); // Assuming this is implemented
         UserProfileController userProfileController = new UserProfileController(goProfileInteractor);
         loggedInView.setUserProfileController(userProfileController);
@@ -229,7 +263,7 @@ public class AppBuilder {
      */
     public AppBuilder addChangePasswordUseCase() {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
+                new ChangePasswordPresenter(viewManagerModel,changePasswordViewModel, userProfileViewModel);
 
         final ChangePasswordInputBoundary changePasswordInteractor =
                 new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
@@ -237,7 +271,7 @@ public class AppBuilder {
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
-        //loggedInView.setChangePasswordController(changePasswordController);
+        changePasswordView.setChangePasswordController(changePasswordController);
         return this;
     }
 

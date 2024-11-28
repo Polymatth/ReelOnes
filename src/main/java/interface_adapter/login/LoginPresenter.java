@@ -1,13 +1,12 @@
 package interface_adapter.login;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+
+import interface_adapter.loggedin.LoggedInState;
+import interface_adapter.loggedin.LoggedInViewModel;
 import interface_adapter.signup.SignupViewModel;
-import interface_adapter.userprofile.UserProfileViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
-import view.UserProfileView;
 
 /**
  * The Presenter for the Login Use Case.
