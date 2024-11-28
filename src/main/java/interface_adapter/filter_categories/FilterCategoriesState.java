@@ -11,11 +11,13 @@ public class FilterCategoriesState {
 
     private List<Movie> originalMovieList;
     private Map<String, List<Movie>> filterToMovies = new HashMap<>();
-    private Map<String, List<String>> selectedFilters = new HashMap<>();
+    private Map<String, List<String>> filtersToSelections = new HashMap<>();
+    private String listView;
 
     public void FilterCategoriesState() {
         for (String category : new String[]{"Genre", "Decade of Release", "Streaming Services", "Rating"}) {
             this.filterToMovies.put(category, new ArrayList<>());
+            this.filtersToSelections.put(category, new ArrayList<>());
         }
     }
 
@@ -35,24 +37,27 @@ public class FilterCategoriesState {
         this.filterToMovies.replace(category, movies);
     }
 
+    public void setSelectedFilters(String category, List<String> selectedOptions) {
+        this.filtersToSelections.replace(category, selectedOptions);
+    }
+
     public List<Movie> getOriginalMovieList() {
         return this.originalMovieList;
     }
 
-    public void addNewFilters(String filterCategory, String filterOption) {
-        if (this.selectedFilters.keySet().contains(filterCategory)) {
-            if (!this.selectedFilters.get(filterCategory).contains(filterOption)) {
-                this.selectedFilters.get(filterCategory).add(filterOption);
-            }
-        }
-        else {
-            List<String> newValueList = new ArrayList<>();
-            newValueList.add(filterOption);
-            this.selectedFilters.put(filterCategory, newValueList);
-        }
+    public Map<String, List<String>> getFiltersToSelections() {
+        return this.filtersToSelections;
     }
 
-    public Map<String, List<String>> getSelectedFilters() {
-        return this.selectedFilters;
+    public void setFiltersToSelections(Map<String, List<String>> filtersToSelections) {
+        this.filtersToSelections = filtersToSelections;
+    }
+
+    public String getListView() {
+        return this.listView;
+    }
+
+    public void setListView(String listView) {
+        this.listView = listView;
     }
 }

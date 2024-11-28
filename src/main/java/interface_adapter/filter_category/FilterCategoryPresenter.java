@@ -26,6 +26,7 @@ public class FilterCategoryPresenter implements FilterCategorySelectionOutputBou
         filterCategoryState.setFilteredList(filterCategorySelectionOutputData.getFilteredList());
         filterCategoryState.setOriginalList(filterCategorySelectionOutputData.getOriginalList());
         //Update the State in the Filter Category View Model.
+        System.out.println("Made it!");
         this.filterCategoryViewModel.setState(filterCategoryState);
         this.filterCategoryViewModel.firePropertyChanged();
         //Update the View Manager Model.
