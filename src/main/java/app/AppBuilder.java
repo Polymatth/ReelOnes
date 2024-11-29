@@ -37,8 +37,6 @@ import interface_adapter.movie_detail_page.MovieDetailViewModel;
 import interface_adapter.open_list.OpenListController;
 import interface_adapter.open_list.OpenListPresenter;
 import interface_adapter.open_list.OpenListViewModel;
-import interface_adapter.user_repository.FileSaveUserRepository;
-import interface_adapter.user_repository.SaveUserController;
 import interface_adapter.search_movie.SearchMovieController;
 import interface_adapter.search_movie.SearchMoviePresenter;
 import interface_adapter.search_movie.SearchMovieViewModel;
@@ -80,8 +78,6 @@ import use_case.movie_detail.MovieDetailInputBoundary;
 import use_case.movie_detail.MovieDetailInteractor;
 import use_case.movie_detail.MovieDetailOutputBoundary;
 
-import use_case.saveuser.SaveUserInputBoundary;
-import use_case.saveuser.SaveUserInteractor;
 import use_case.open_list.OpenListDataAccessInterface;
 import use_case.open_list.OpenListInputBoundary;
 import use_case.open_list.OpenListInteractor;
@@ -239,6 +235,8 @@ public class AppBuilder {
         openListViewModel = new OpenListViewModel();
         openListView = new OpenListView(openListViewModel);
         cardPanel.add(openListView, openListView.getViewName());
+        return this;
+    }
 
     public AppBuilder addFilterCategoriesView() {
         filterCategoriesViewModel = new FilterCategoriesViewModel();

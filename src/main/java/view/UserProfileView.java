@@ -1,5 +1,4 @@
 package view;
-
 import entity.MovieList;
 import entity.UserList;
 import interface_adapter.logout.LogoutController;
@@ -80,9 +79,6 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         topPanel.add(changePassword, BorderLayout.WEST);
 
 
-        // Add log out button to top left
-        topPanel.add(logOut = new JButton("Log Out"), BorderLayout.WEST);
-        this.add(topPanel, BorderLayout.NORTH);
 
         // Right panel (Profile and Lists)
         JPanel profilePanel = new JPanel();
@@ -101,14 +97,11 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
 
         username = new JLabel(userProfileViewModel.getState().getUsername());
 
-        username = new JLabel("Username"); // Initialize the username label here
 
         username.setAlignmentX(Component.CENTER_ALIGNMENT);
         username.setFont(new Font("Arial", Font.BOLD, 16));
         JLabel movieLabel = new JLabel("<html>Favorite Movie:<br>Director:<br>Genre:<br>Streaming Services:</html>");
 
-        changePassword = new JButton("Change Password");
-        changePassword.setAlignmentX(Component.CENTER_ALIGNMENT);
         profileSection.add(Box.createVerticalStrut(10));
 
 
@@ -120,7 +113,6 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         profileSection.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         final JPanel buttons = new JPanel( new BorderLayout());
-        logOut = new JButton("Log Out");
 
 
 
@@ -129,27 +121,19 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
             }
         });
 
-        // Lists section
-        JPanel listsSection = new JPanel(new GridLayout(1, 5, 10, 10));
-        listsSection.setBackground(Color.WHITE);
-        for (int i = 0; i < 5; i++) {
-            JPanel listThumbnail = new JPanel();
-            listThumbnail.setBackground(new Color(100 + i * 30, 150, 200 - i * 30));
-            listsSection.add(listThumbnail);
-        }
+
 
         profilePanel.add(profileSection);
         profilePanel.add(Box.createVerticalStrut(20)); // Space
-        profilePanel.add(listsSection);
         this.add(profilePanel, BorderLayout.CENTER);
 
         // Back Button ActionListener
         backToMainView.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    userProfileController.switchToMainView();
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        userProfileController.switchToMainView();
+                    }
                 }
-            }
         );
 
 
@@ -267,53 +251,55 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
             listButton.setSize(200, 200);
             listButton.setHorizontalTextPosition(SwingConstants.CENTER);
             listButton.setBackground(Color.lightGray);
-                if (openListController != null) {
-                    listButton.addActionListener(
-                            evt -> {
-                                if (evt.getSource().equals(listButton)) {
-                                    openListController.execute(list.getListName());
-                                }
+            if (openListController != null) {
+                listButton.addActionListener(
+                        evt -> {
+                            if (evt.getSource().equals(listButton)) {
+                                openListController.execute(list.getListName());
                             }
-                    );
+                        }
+                );
 
-            listsSection.add(listButton);
-                }
-        listsSection.revalidate();
-        listsSection.repaint();
+                listsSection.add(listButton);
+            }
+            listsSection.revalidate();
+            listsSection.repaint();
         }
     }
 
 
-    }
-  
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("state")) {
-            final UserProfileState state = (UserProfileState) evt.getNewValue();
-            username.setText(state.getUsername());
-        }
-        else if (evt.getPropertyName().equals("password")) {
-            final UserProfileState state = (UserProfileState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
-        }
-        else if (evt.getPropertyName().equals("userLists")) {
+
+
+@Override
+public void propertyChange(PropertyChangeEvent evt) {
+    if (evt.getPropertyName().equals("state")) {
+        final UserProfileState state = (UserProfileState) evt.getNewValue();
+        username.setText(state.getUsername());
+    } else if (evt.getPropertyName().equals("password")) {
+        final UserProfileState state = (UserProfileState) evt.getNewValue();
+        JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+    } else if (evt.getPropertyName().equals("userLists")) {
         refreshLists();
-        }
-
-        else if (evt.getPropertyName().equals("username")) {
-            username.setText(userProfileViewModel.getState().getUsername());
-        }
+    } else if (evt.getPropertyName().equals("username")) {
+        username.setText(userProfileViewModel.getState().getUsername());
     }
+}
+
 
     public String getViewName() {
         return viewName;
     }
 
-    public void setLogoutController(LogoutController logoutController) {this.logoutController = logoutController;}
+    public void setLogoutController (LogoutController logoutController){
+        this.logoutController = logoutController;
+    }
 
-    public void setUserProfileController(UserProfileController userProfileController) { this.userProfileController = userProfileController;}
+    public void setUserProfileController (UserProfileController userProfileController){
+        this.userProfileController = userProfileController;
+    }
 
-    public void setOpenListController(OpenListController openListContoller) {
+    public void setOpenListController (OpenListController openListContoller){
         this.openListController = openListContoller;
     }
 }
+

@@ -24,7 +24,7 @@ public class Main {
 
                                              .addUserProfileView()
                                             .addFilterCategoryView()
-                                            .addFilterCategoriesView()
+                                             .addFilterCategoriesView()
                                    
                                             .addChangePasswordView()
 
