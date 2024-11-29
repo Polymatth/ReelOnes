@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+
+import data_access.InMemoryOpenListDataAccessObject;
+import data_access.InMemoryUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
@@ -31,6 +34,11 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.movie_detail_page.MovieDetailController;
 import interface_adapter.movie_detail_page.MovieDetailPresenter;
 import interface_adapter.movie_detail_page.MovieDetailViewModel;
+import interface_adapter.open_list.OpenListController;
+import interface_adapter.open_list.OpenListPresenter;
+import interface_adapter.open_list.OpenListViewModel;
+import interface_adapter.user_repository.FileSaveUserRepository;
+import interface_adapter.user_repository.SaveUserController;
 import interface_adapter.search_movie.SearchMovieController;
 import interface_adapter.search_movie.SearchMoviePresenter;
 import interface_adapter.search_movie.SearchMovieViewModel;
@@ -71,6 +79,13 @@ import use_case.movie_detail.MovieDetailDataAccessInterface;
 import use_case.movie_detail.MovieDetailInputBoundary;
 import use_case.movie_detail.MovieDetailInteractor;
 import use_case.movie_detail.MovieDetailOutputBoundary;
+
+import use_case.saveuser.SaveUserInputBoundary;
+import use_case.saveuser.SaveUserInteractor;
+import use_case.open_list.OpenListDataAccessInterface;
+import use_case.open_list.OpenListInputBoundary;
+import use_case.open_list.OpenListInteractor;
+import use_case.open_list.OpenListOutputBoundary;
 import use_case.return_to_filter_categories.ReturnToFilterCategoriesInputBoundary;
 import use_case.return_to_filter_categories.ReturnToFilterCategoriesInteractor;
 import use_case.return_to_filter_categories.ReturnToFilterCategoriesOutputBoundary;
@@ -111,6 +126,7 @@ public class AppBuilder {
     private final SearchMovieDataAccessInterface searchMovieDataAccessInterface = new AppConfig().getMovieDataAccess();
     private final MovieDetailDataAccessInterface movieDetailDataAccessInterface = new AppConfig()
             .getMovieDetailDataAccess();
+    private final OpenListDataAccessInterface openListDataAccessInterface = new InMemoryOpenListDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -121,10 +137,14 @@ public class AppBuilder {
     private LoggedInView loggedInView;
     private LoginView loginView;
     private UserProfileView userProfileView;
+
+    private OpenListViewModel openListViewModel;
     private ChangePasswordView changePasswordView;
+
 
     private SearchMovieView searchMovieView;
     private SearchMovieViewModel searchMovieViewModel;
+    private OpenListView openListView;
 
     private MovieDetailView movieDetailView;
     private MovieDetailViewModel movieDetailViewModel;
@@ -215,6 +235,11 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addOpenListView() {
+        openListViewModel = new OpenListViewModel();
+        openListView = new OpenListView(openListViewModel);
+        cardPanel.add(openListView, openListView.getViewName());
+
     public AppBuilder addFilterCategoriesView() {
         filterCategoriesViewModel = new FilterCategoriesViewModel();
         filterCategoriesView = new FilterCategoriesView(filterCategoriesViewModel);
@@ -226,6 +251,7 @@ public class AppBuilder {
         filterCategoryViewModel = new FilterCategoryViewModel();
         filterCategoryView = new FilterCategoryView(filterCategoryViewModel);
         cardPanel.add(filterCategoryView, filterCategoryView.getViewName());
+
         return this;
     }
 
@@ -282,7 +308,9 @@ public class AppBuilder {
         GoProfileInteractor goProfileInteractor = new GoProfileInteractor(goProfileOutputBoundary); // Assuming this is implemented
         UserProfileController userProfileController = new UserProfileController(goProfileInteractor);
         loggedInView.setUserProfileController(userProfileController);
-        userProfileView.setUserProfileController(userProfileController);
+
+         openListView.setUserProfileController(userProfileController);
+         userProfileView.setUserProfileController(userProfileController);
         return this;
     }
 
@@ -331,6 +359,7 @@ public class AppBuilder {
         final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor);
         movieDetailView.setMovieDetailController(movieDetailController);
         searchMovieView.setMovieDetailController(movieDetailController);
+        openListView.setMovieDetailController(movieDetailController);
         return this;
     }
 
@@ -383,6 +412,21 @@ public class AppBuilder {
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
         userProfileView.setLogoutController(logoutController);
+        return this;
+    }
+
+
+
+    /**
+     * Adds the Open List Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addOpenListUseCase() {
+        final OpenListOutputBoundary openListOutputBoundary = new OpenListPresenter(openListViewModel,
+                viewManagerModel);
+        final OpenListInputBoundary openListInteractor = new OpenListInteractor(openListDataAccessInterface, openListOutputBoundary);
+        final OpenListController openListController = new OpenListController(openListInteractor);
+        userProfileView.setOpenListController(openListController);
         return this;
     }
 
