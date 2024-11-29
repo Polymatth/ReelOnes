@@ -1,6 +1,7 @@
 package interface_adapter.filter_categories;
 
 import entity.Movie;
+import use_case.filter_application.FilterCategoryConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class FilterCategoriesState {
     private String listView;
 
     public void FilterCategoriesState() {
-        for (String category : new String[]{"Genre", "Decade of Release", "Streaming Services", "Rating"}) {
+        for (String category : FilterCategoryConstants.getCategories()) {
             this.filterToMovies.put(category, new ArrayList<>());
             this.filtersToSelections.put(category, new ArrayList<>());
         }

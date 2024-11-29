@@ -19,6 +19,9 @@ public class Main {
                                             .addLoggedInView()
                                             .addSearchMovieView()
                                             .addMovieDetailView()
+                                             .addUserProfileView()
+                                            .addFilterCategoryView()
+                                            .addFilterCategoriesView()
                                             .addUserProfileView()
                                             .addChangePasswordView()
                                             .addSignupUseCase()
@@ -29,6 +32,8 @@ public class Main {
                                             .addChangePasswordUseCase()
                                             .addSearchMovieUseCase()
                                             .addMovieDetailUseCase()
+                                            .addFilterCategoriesUseCases()
+                                            .addFilterCategoryUseCases()
                                             .build();
 
         application.pack();

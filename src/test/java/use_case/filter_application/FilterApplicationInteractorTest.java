@@ -2,6 +2,7 @@ package use_case.filter_application;
 
 import app.AppConfig;
 import entity.Movie;
+import interface_adapter.filter_categories.FilterCategoriesState;
 import org.junit.jupiter.api.Test;
 import use_case.movie_detail.*;
 import use_case.search_movie.SearchMovieDataAccessInterface;
@@ -27,7 +28,7 @@ public class FilterApplicationInteractorTest {
         List<String> allOptions = Arrays.asList(new String[]{"Action", "Adventure", "Animation", "Comedy", "Crime",
                 "Documentary", "Drama", "Family", "Fantasy", "History", "Horror", "Music", "Mystery", "Romance",
                 "Science Fiction"});
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Genre",
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(FilterCategoryConstants.GENRE,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
@@ -67,7 +68,7 @@ public class FilterApplicationInteractorTest {
                 "Documentary", "Drama", "Family", "Fantasy", "History", "Horror", "Music", "Mystery", "Romance",
                 "Science Fiction"});
         List<String> optionsSelected = new ArrayList<>(allOptions);
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Genre",
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(FilterCategoryConstants.GENRE,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
@@ -94,7 +95,7 @@ public class FilterApplicationInteractorTest {
         List<String> allOptions = Arrays.asList(new String[]{"Action", "Adventure", "Animation", "Comedy", "Crime",
                 "Documentary", "Drama", "Family", "Fantasy", "History", "Horror", "Music", "Mystery", "Romance",
                 "Science Fiction"});
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Genre",
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(FilterCategoryConstants.GENRE,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
@@ -123,7 +124,7 @@ public class FilterApplicationInteractorTest {
         List<String> allOptions = Arrays.asList(new String[]{"2020s", "2010s", "2000s", "1990s", "1980s", "1970s",
                 "1960s", "1950s", "1940s", "1930s", "1920s", "1910s", "1900s"});
 
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Decade of Release",
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(FilterCategoryConstants.DECADE_OF_RELEASE,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
@@ -165,7 +166,7 @@ public class FilterApplicationInteractorTest {
         List<String> allOptions = Arrays.asList(new String[]{"2020s", "2010s", "2000s", "1990s", "1980s", "1970s",
                 "1960s", "1950s", "1940s", "1930s", "1920s", "1910s", "1900s"});
         List<String> optionsSelected = new ArrayList<>(allOptions);
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Decade of Release",
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(FilterCategoryConstants.DECADE_OF_RELEASE,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
@@ -191,7 +192,7 @@ public class FilterApplicationInteractorTest {
         List<String> allOptions = Arrays.asList(new String[]{"2020s", "2010s", "2000s", "1990s", "1980s", "1970s",
                 "1960s", "1950s", "1940s", "1930s", "1920s", "1910s", "1900s"});
         List<String> optionsSelected = new ArrayList<>();
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Decade of Release",
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(FilterCategoryConstants.DECADE_OF_RELEASE,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
@@ -209,7 +210,7 @@ public class FilterApplicationInteractorTest {
     }
 
     @Test
-    void PopularityFilterApplicationSuccessThreeFilters() {
+    void PopularityFilterApplicationSuccessTwoFilters() {
         AppConfig config = new AppConfig();
         SearchMovieDataAccessInterface dataAccessInterface = config.getMovieDataAccess();
         //Create the Movie List that is being filtered.

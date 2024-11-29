@@ -4,6 +4,7 @@ import app.AppConfig;
 import entity.Movie;
 import org.junit.jupiter.api.Test;
 import use_case.clear_filters.*;
+import use_case.filter_application.FilterCategoryConstants;
 import use_case.go_to_filter_categories.*;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 
@@ -19,7 +20,7 @@ public class ClearAllFiltersInteractorTest {
         //Set the filters that have been selected and the movies that meet the filters for each category.
         Map<String, List<Movie>> filtersToMovies = new HashMap<>();
         Map<String, List<String>> filtersToSelections = new HashMap<>();
-        for (String category : new String[]{"Genre", "Decade of Release", "Streaming Services", "Rating"}) {
+        for (String category : FilterCategoryConstants.getCategories()) {
             filtersToMovies.put(category, new ArrayList<>());
             filtersToSelections.put(category, new ArrayList<>());
         }
