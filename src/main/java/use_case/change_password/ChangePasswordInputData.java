@@ -10,7 +10,7 @@ public class ChangePasswordInputData {
     private final String favMovie;
     private final String favDirector;
 
-    public ChangePasswordInputData(String password, String username, String favMovie, String favDirector) {
+    public ChangePasswordInputData(String username, String password, String favMovie, String favDirector) {
         this.password = password;
         this.username = username;
         this.favMovie = favMovie;
@@ -28,5 +28,6 @@ public class ChangePasswordInputData {
     String getFavMovie() {return favMovie;}
 
     String getFavDirector() {return favDirector;}
+
 
 }
