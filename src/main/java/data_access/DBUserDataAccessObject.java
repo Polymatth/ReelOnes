@@ -13,6 +13,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.get_currentuser.GetCurrentUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
@@ -23,7 +24,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface {
+        LogoutUserDataAccessInterface , GetCurrentUserDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -31,7 +32,11 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
+    private static final String FAVMOVIE = "favoriteMovie";
+    private static final String FAVDIRECTOR = "favoriteDirector";
     private final UserFactory userFactory;
+
+    private static String currentUsername;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
@@ -56,7 +61,11 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 final String name = userJSONObject.getString(USERNAME);
                 final String password = userJSONObject.getString(PASSWORD);
 
-                return userFactory.create(name, password);
+                final JSONObject infoObject = userJSONObject.getJSONObject("info");
+                final String favMovie = infoObject.getString(FAVMOVIE);
+                final String favDirector = infoObject.getString(FAVDIRECTOR);
+
+                return userFactory.create(name, password,favMovie, favDirector);
             }
             else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
@@ -69,7 +78,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     @Override
     public void setCurrentUsername(String name) {
-        // this isn't implemented for the lab
+        currentUsername = name;
     }
 
     @Override
@@ -125,6 +134,49 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         }
     }
 
+
+    public void modifyInfo(User user){
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+        // Create JSON body with user data
+        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+        final JSONObject requestBody = new JSONObject();
+
+        // Add username and password
+        requestBody.put(USERNAME, user.getName());
+        requestBody.put(PASSWORD, user.getPassword());
+
+        // Add "info" object with favorite movie and favorite director
+        JSONObject infoObject = new JSONObject();
+        infoObject.put(FAVMOVIE, user.getFavMovie());
+        infoObject.put(FAVDIRECTOR, user.getFavDirector());
+
+        // Attach "info" object to the main request body
+        requestBody.put("info", infoObject);
+
+        // Create request body for the HTTP call
+        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
+        final Request request = new Request.Builder()
+                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo") // Adjusted endpoint
+                .method("PUT", body) // Use PUT for updating/saving user information
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+
+        try {
+            // Execute the request
+            final Response response = client.newCall(request).execute();
+            final JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
+                System.out.println("User info saved successfully!");
+            } else {
+                throw new RuntimeException(responseBody.getString(MESSAGE));
+            }
+        } catch (IOException | JSONException ex) {
+            throw new RuntimeException("Error saving user info", ex);
+        }
+
+    }
     @Override
     public void changePassword(User user) {
         final OkHttpClient client = new OkHttpClient().newBuilder()
@@ -160,6 +212,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     @Override
     public String getCurrentUsername() {
-        return null;
+        return currentUsername;
     }
 }

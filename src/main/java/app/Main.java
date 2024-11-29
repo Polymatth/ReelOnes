@@ -21,13 +21,27 @@ public class Main {
                                             .addMovieDetailView()
                                             .addUserProfileView()
                                             .addOpenListView()
+
+                                             .addUserProfileView()
+                                            .addFilterCategoryView()
+                                            .addFilterCategoriesView()
+                                   
+                                            .addChangePasswordView()
+
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addLogoutUseCase()
+                                            .addGetCurrentUserUseCase()
                                             .addGoProfileUseCase()
+                                            .addChangePasswordUseCase()
                                             .addSearchMovieUseCase()
                                             .addMovieDetailUseCase()
+
                                             .addOpenListUseCase()
+
+                                            .addFilterCategoriesUseCases()
+                                            .addFilterCategoryUseCases()
+
                                             .build();
 
         application.pack();

@@ -52,4 +52,9 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public String getCurrentUsername() {
         return this.currentUsername;
     }
+
+    @Override
+    public void modifyInfo(User user) {
+        users.put(user.getName(), user);
+    }
 }

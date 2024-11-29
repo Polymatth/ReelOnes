@@ -20,6 +20,9 @@ import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
 
+import static interface_adapter.signup.SignupViewModel.FAV_DIRECTOR_LABEL;
+import static interface_adapter.signup.SignupViewModel.FAV_MOVIE_LABEL;
+
 /**
  * The View for the Signup Use Case.
  */
@@ -30,6 +33,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JTextField usernameInputField = new JTextField(15);
     private final JPasswordField passwordInputField = new JPasswordField(15);
     private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
+    private final JTextField favMovieInputField = new JTextField(15);
+    private final JTextField favDirectorInputField = new JTextField(15);
     private SignupController signupController;
 
     private final JButton signUp;
@@ -49,6 +54,11 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 new JLabel(SignupViewModel.PASSWORD_LABEL), passwordInputField);
         final LabelTextPanel repeatPasswordInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.REPEAT_PASSWORD_LABEL), repeatPasswordInputField);
+        final LabelTextPanel favMovieInfo = new LabelTextPanel(
+                new JLabel(FAV_MOVIE_LABEL), favMovieInputField);
+        final LabelTextPanel favDirectorInfo = new LabelTextPanel(
+                new JLabel(FAV_DIRECTOR_LABEL), favDirectorInputField);
+
 
         final JPanel buttons = new JPanel();
         toLogin = new JButton(SignupViewModel.TO_LOGIN_BUTTON_LABEL);
@@ -68,7 +78,9 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                             signupController.execute(
                                     currentState.getUsername(),
                                     currentState.getPassword(),
-                                    currentState.getRepeatPassword()
+                                    currentState.getRepeatPassword(),
+                                    currentState.getFavMovie(),
+                                    currentState.getFavDirector()
                             );
                         }
                     }
@@ -88,6 +100,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         addUsernameListener();
         addPasswordListener();
         addRepeatPasswordListener();
+        addFavMovieListener();
+        addFavDirectorListener();
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -95,6 +109,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         this.add(usernameInfo);
         this.add(passwordInfo);
         this.add(repeatPasswordInfo);
+        this.add(favMovieInfo);
+        this.add(favDirectorInfo);
         this.add(buttons);
     }
 
@@ -176,6 +192,57 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         });
     }
 
+    private void addFavMovieListener() {
+        favMovieInputField.getDocument().addDocumentListener(new DocumentListener() {
+            private void documentListenerHelper() {
+                final SignupState currentState = signupViewModel.getState();
+                currentState.setFavMovie(favMovieInputField.getText());
+                signupViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+    }
+
+    private void addFavDirectorListener() {
+        favDirectorInputField.getDocument().addDocumentListener(new DocumentListener() {
+            private void documentListenerHelper() {
+                final SignupState currentState = signupViewModel.getState();
+                currentState.setFavDirector(favDirectorInputField.getText());
+                signupViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+    }
+
+
     @Override
     public void actionPerformed(ActionEvent evt) {
         JOptionPane.showMessageDialog(this, "Cancel not implemented yet.");
@@ -196,4 +263,5 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     public void setSignupController(SignupController controller) {
         this.signupController = controller;
     }
+
 }

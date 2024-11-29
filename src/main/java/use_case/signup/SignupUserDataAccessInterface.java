@@ -19,4 +19,13 @@ public interface SignupUserDataAccessInterface {
      * @param user the user to save
      */
     void save(User user);
+
+    /**
+     * Saves the user's info.
+     * @param user the user to save
+     */
+    void modifyInfo(User user);
+
+
+
 }

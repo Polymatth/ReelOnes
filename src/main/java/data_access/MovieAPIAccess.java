@@ -9,10 +9,7 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Implementation of SearchMovieDataAccessInterface to fetch movie data from API
@@ -56,13 +53,14 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                     JSONArray genreJsonArray = movieJson.getJSONArray("genre_ids");
                     List genre_ids = new ArrayList();
                     int size = genreJsonArray.length();
-                    while (i< size){
-                        genre_ids.add(genreJsonArray.get(i));
-                        i++;
+                    int j = 0;
+                    while (j< size){
+                        genre_ids.add(genreJsonArray.get(j));
+                        j++;
                     }
 
                     Movie movie = new Movie(
-                            movieJson.getString("poster_path"),
+                            movieJson.optString("poster_path"),
                             movieJson.getBoolean("adult"),
                             movieJson.getString("overview"),
                             movieJson.getString("release_date"),
@@ -70,7 +68,7 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                             movieJson.getInt("id"),
                             movieJson.getString("original_language"),
                             movieJson.getString("title"),
-                            movieJson.getString("backdrop_path"),
+                            movieJson.optString("backdrop_path"),
                             movieJson.getFloat("popularity"),
                             movieJson.getInt("vote_count"),
                             movieJson.getBoolean("video"),
@@ -154,25 +152,59 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
         return "Unknown";
     }
 
-//    public List<String> getStreaming(int movieID) {
-//        try {
-//            OkHttpClient client = new OkHttpClient();
+    public List<String> getStreamingServices(int movieID) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url("https://api.themoviedb.org/3/movie/" + movieID + "/watch/providers" + "?api_key=" + this.apiKey)
+                    .get()
+                    .addHeader("accept", CONTENT_TYPE_JSON)
+                    .addHeader("Authorization", "Bearer application/json")
+                    .build();
 
-//            Request request = new Request.Builder()
-//                    .url("https://api.themoviedb.org/3/movie/movie_id/watch/providers")
-//                    .get()
-//                    .addHeader("accept", "application/json")
-//                    .addHeader("Authorization", "Bearer application/json")
-//                    .build();
 
-//            Response response = client.newCall(request).execute();
-//            if (response.isSuccessful() && response.body() != null) {
-//                String jsonResponse = response.body().string();
-//                JSONObject jsonObject = new JSONObject(jsonResponse);
-//                JSONArray results = jsonObject.getJSONArray("id");
-//            }
-//            } catch (IOException | org.json.JSONException e) {
-//            e.printStackTrace();
-//        }
- //   }
+            List<String> providerList = new ArrayList<>();
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful() && response.body() != null) {
+                String locale = Locale.getDefault().getCountry();
+                String jsonResponse = response.body().string();
+                Map<String, Map> resultsMap = (Map<String, Map>) new JSONObject(jsonResponse).toMap().get("results");
+                Map<String, Map<String, Object>> localeMap = resultsMap.get(locale);
+                if (localeMap == null) {
+                    // localemap is empty
+                    return new ArrayList<>();
+                }
+                Set<String> services = new HashSet<>();
+                List<Map<String, Object>> buyList = (List<Map<String, Object>>) localeMap.get("buy");
+                List<Map<String, Object>> rentList = (List<Map<String, Object>>) localeMap.get("rent");
+                List<Map<String, Object>> flatrateList = (List<Map<String, Object>>) localeMap.get("flatrate");
+                if (buyList != null) {
+                    for (Map<String, Object> elem: buyList) {
+                        services.add((String) elem.get("provider_name"));
+                    }
+                }
+                if (rentList != null) {
+                    for (Map<String, Object> elem: rentList) {
+                        services.add((String) elem.get("provider_name"));
+                    }
+                }
+
+                if (flatrateList != null) {
+                    for (Map<String, Object> elem: flatrateList) {
+                        services.add((String) elem.get("provider_name"));
+                    }
+                }
+
+                return new ArrayList<>(services);
+            }
+            else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+        List<String> failList = new ArrayList<>();
+        failList.add("Oops");
+        return failList;
+    }
 }

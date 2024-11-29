@@ -18,6 +18,7 @@ import javax.swing.event.DocumentListener;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.signup.SignupController;
 
 /**
  * The View for when the user is logging into the program.
@@ -35,7 +36,9 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     private final JButton logIn;
     private final JButton cancel;
+    private final JButton signUp;
     private LoginController loginController;
+    private SignupController signupController;
 
     public LoginView(LoginViewModel loginViewModel) {
 
@@ -55,6 +58,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         buttons.add(logIn);
         cancel = new JButton("cancel");
         buttons.add(cancel);
+        signUp = new JButton("sign up");
+        buttons.add(signUp);
 
         logIn.addActionListener(
                 new ActionListener() {
@@ -70,6 +75,15 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                     }
                 }
         );
+
+        signUp.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                      loginController.switchToSignUpView();
+                    }
+                }
+        );
+
 
         cancel.addActionListener(this);
 
