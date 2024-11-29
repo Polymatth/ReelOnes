@@ -20,12 +20,16 @@ public class Main {
                                             .addSearchMovieView()
                                             .addMovieDetailView()
                                              .addUserProfileView()
+                                            .addFilterCategoryView()
+                                            .addFilterCategoriesView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addLogoutUseCase()
                                             .addGoProfileUseCase()
                                             .addSearchMovieUseCase()
                                             .addMovieDetailUseCase()
+                                            .addFilterCategoriesUseCases()
+                                            .addFilterCategoryUseCases()
                                             .build();
 
         application.pack();

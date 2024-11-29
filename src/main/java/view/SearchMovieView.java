@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import entity.Movie;
+import interface_adapter.filter_categories.FilterCategoriesController;
 import interface_adapter.movie_detail_page.MovieDetailController;
 import interface_adapter.search_movie.SearchMovieController;
 import interface_adapter.search_movie.SearchMovieState;
@@ -38,6 +39,7 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
 
     private SearchMovieController searchMovieController;
     private MovieDetailController movieDetailController;
+    private FilterCategoriesController filterCategoriesController;
 
     private Color textColor = new Color(233, 232, 236);
     private Color backgroundColor = new Color(11, 5, 28);
@@ -52,18 +54,33 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
         this.searchMovieViewModel.addPropertyChangeListener(this);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(secondaryColor);
-        final JLabel title = new JLabel("Search Results", JLabel.CENTER);
-        title.setForeground(textColor);
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        this.add(title);
     }
 
     private void updateResults(SearchMovieViewModel searchMovieViewModel) throws IOException {
+        this.removeAll();
+        final JLabel title = new JLabel("Search Results", JLabel.CENTER);
+        final JButton filters = new JButton("Filters");
+        filters.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        filterCategoriesController.goToFilterCategoriesView(searchMovieViewModel.getState().getMovies(),
+                                searchMovieViewModel.getState().getFiltersToMovies(),
+                                searchMovieViewModel.getState().getFiltersToSelections(),
+                                searchMovieViewModel.getViewName());
+                    }
+                }
+        );
+        title.setForeground(textColor);
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        this.add(title);
+        this.add(filters);
+        //TODO: when you return to a list after looking at filters, you see double of the list. Clear Jpanel.
         final JPanel moviePosters = new JPanel();
         moviePosters.setLayout(new FlowLayout());
         moviePosters.setBackground(backgroundColor);
-        if (searchMovieViewModel.getState().getMovies() != null) {
-            for (Movie movie : searchMovieViewModel.getState().getMovies()) {
+        if (searchMovieViewModel.getState().moviesToDisplay() != null) {
+            for (Movie movie : searchMovieViewModel.getState().moviesToDisplay()) {
                 final JButton result = new JButton(movie.getTitle());
                 URL url = new URL("https://image.tmdb.org/t/p/w500"+ movie.getPosterPath());
                 Image image = ImageIO.read(url).getScaledInstance(160, 240, Image.SCALE_FAST);
@@ -123,5 +140,9 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
 
     public void setMovieDetailController(MovieDetailController movieDetailController) {
         this.movieDetailController = movieDetailController;
+    }
+
+    public void setFilterCategoriesController(FilterCategoriesController filterCategoriesController) {
+        this.filterCategoriesController = filterCategoriesController;
     }
 }

@@ -1,6 +1,7 @@
 package use_case.filter_application;
 
 import entity.Movie;
+import interface_adapter.filter_categories.FilterCategoriesState;
 import use_case.filter_category_selection.FilterCategorySelectionOutputBoundary;
 import use_case.movie_detail.MovieDetailDataAccessInterface;
 
@@ -28,7 +29,7 @@ public class FilterApplicationInteractor implements FilterApplicationInputBounda
         List<Movie> applicableMovies = new ArrayList<>();
         if (optionsSelected.isEmpty() || optionsSelected.size() == allOptions.size()) {
             applicableMovies.addAll(originalList);
-        } else if (categoryName.equals("Genre")) {
+        } else if (categoryName.equals(FilterCategoryConstants.GENRE)) {
             for (Movie movie : originalList) {
                 Map<Integer, String> genres = dataAccessInterface.getGenres();
                 List<String> genreList = new ArrayList<>();
@@ -42,7 +43,7 @@ public class FilterApplicationInteractor implements FilterApplicationInputBounda
                     applicableMovies.add(movie);
                 }
             }
-        } else if (categoryName.equals("Decade of Release")) {
+        } else if (categoryName.equals(FilterCategoryConstants.DECADE_OF_RELEASE)) {
             List<String> possibleDecades = new ArrayList<>();
             for (String option : optionsSelected) {
                 StringBuilder decade = new StringBuilder();
@@ -61,8 +62,15 @@ public class FilterApplicationInteractor implements FilterApplicationInputBounda
                     applicableMovies.add(movie);
                 }
             }
-        } else if (categoryName.equals("Streaming Services")) {
-        } else if (categoryName.equals("Popularity Ratings")) {
+        } else if (categoryName.equals(FilterCategoryConstants.STREAMING_SERVICES)) {
+            for (Movie movie : originalList) {
+                List<String> servicesAvailable = dataAccessInterface.getStreamingServices(movie.getID());
+                servicesAvailable.retainAll(optionsSelected);
+                if (!servicesAvailable.isEmpty()) {
+                    applicableMovies.add(movie);
+                }
+            }
+        } else if (categoryName.equals(FilterCategoryConstants.POPULARITY_RATING)) {
             for (Movie movie : originalList) {
                 for (String option : optionsSelected) {
                     List<String> popRange = Arrays.asList(option.split("-"));

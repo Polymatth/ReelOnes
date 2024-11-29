@@ -15,6 +15,12 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.filter_categories.FilterCategoriesController;
+import interface_adapter.filter_categories.FilterCategoriesPresenter;
+import interface_adapter.filter_categories.FilterCategoriesViewModel;
+import interface_adapter.filter_category.FilterCategoryController;
+import interface_adapter.filter_category.FilterCategoryPresenter;
+import interface_adapter.filter_category.FilterCategoryViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -35,6 +41,19 @@ import interface_adapter.userprofile.UserProfileViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.clear_filters.ClearAllFiltersInputBoundary;
+import use_case.clear_filters.ClearAllFiltersInteractor;
+import use_case.clear_filters.ClearAllFiltersOutputBoundary;
+import use_case.filter_application.FilterApplicationInputBoundary;
+import use_case.filter_application.FilterApplicationInteractor;
+import use_case.filter_application.FilterApplicationOutputBoundary;
+import use_case.filter_application.FilterApplicationOutputData;
+import use_case.filter_category_selection.FilterCategorySelectionInputBoundary;
+import use_case.filter_category_selection.FilterCategorySelectionInteractor;
+import use_case.filter_category_selection.FilterCategorySelectionOutputBoundary;
+import use_case.go_to_filter_categories.GoToFilterCategoriesInputBoundary;
+import use_case.go_to_filter_categories.GoToFilterCategoriesInteractor;
+import use_case.go_to_filter_categories.GoToFilterCategoriesOutputBoundary;
 import use_case.goprofile.GoProfileInteractor;
 import use_case.goprofile.GoProfileOutputBoundary;
 import use_case.login.LoginInputBoundary;
@@ -47,6 +66,12 @@ import use_case.movie_detail.MovieDetailDataAccessInterface;
 import use_case.movie_detail.MovieDetailInputBoundary;
 import use_case.movie_detail.MovieDetailInteractor;
 import use_case.movie_detail.MovieDetailOutputBoundary;
+import use_case.return_to_filter_categories.ReturnToFilterCategoriesInputBoundary;
+import use_case.return_to_filter_categories.ReturnToFilterCategoriesInteractor;
+import use_case.return_to_filter_categories.ReturnToFilterCategoriesOutputBoundary;
+import use_case.return_to_list_from_filter_categories.ReturnToListInputBoundary;
+import use_case.return_to_list_from_filter_categories.ReturnToListInteractor;
+import use_case.return_to_list_from_filter_categories.ReturnToListOutputBoundary;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
@@ -96,6 +121,12 @@ public class AppBuilder {
 
     private MovieDetailView movieDetailView;
     private MovieDetailViewModel movieDetailViewModel;
+
+    private FilterCategoriesView filterCategoriesView;
+    private FilterCategoriesViewModel filterCategoriesViewModel;
+
+    private FilterCategoryView filterCategoryView;
+    private FilterCategoryViewModel filterCategoryViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -165,6 +196,20 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addFilterCategoriesView() {
+        filterCategoriesViewModel = new FilterCategoriesViewModel();
+        filterCategoriesView = new FilterCategoriesView(filterCategoriesViewModel);
+        cardPanel.add(filterCategoriesView, filterCategoriesView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addFilterCategoryView() {
+        filterCategoryViewModel = new FilterCategoryViewModel();
+        filterCategoryView = new FilterCategoryView(filterCategoryViewModel);
+        cardPanel.add(filterCategoryView, filterCategoryView.getViewName());
+        return this;
+    }
+
     /**
      * Adds the Signup Use Case to the application.
      * @return this builder
@@ -189,7 +234,6 @@ public class AppBuilder {
                 loggedInViewModel, loginViewModel, userProfileViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
-
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
         return this;
@@ -252,6 +296,41 @@ public class AppBuilder {
         final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor);
         movieDetailView.setMovieDetailController(movieDetailController);
         searchMovieView.setMovieDetailController(movieDetailController);
+        return this;
+    }
+
+    public AppBuilder addFilterCategoriesUseCases() {
+        final GoToFilterCategoriesOutputBoundary goToFilterCategoriesOutputBoundary = new FilterCategoriesPresenter(
+                filterCategoriesViewModel, searchMovieViewModel, viewManagerModel);
+        final GoToFilterCategoriesInputBoundary goToFilterCategoriesInteractor = new GoToFilterCategoriesInteractor(
+                goToFilterCategoriesOutputBoundary);
+        final ClearAllFiltersInputBoundary clearAllFiltersInteractor = new ClearAllFiltersInteractor(
+                (ClearAllFiltersOutputBoundary)goToFilterCategoriesOutputBoundary);
+        final ReturnToListInputBoundary returnToListInteractor = new ReturnToListInteractor((ReturnToListOutputBoundary)
+                goToFilterCategoriesOutputBoundary);
+        final ReturnToFilterCategoriesInputBoundary returnToFilterCategoriesInteractor = new
+                ReturnToFilterCategoriesInteractor((ReturnToFilterCategoriesOutputBoundary)
+                goToFilterCategoriesOutputBoundary);
+        final FilterCategoriesController filterCategoriesController = new FilterCategoriesController(
+                returnToFilterCategoriesInteractor, goToFilterCategoriesInteractor, clearAllFiltersInteractor,
+                returnToListInteractor);
+        filterCategoriesView.setFilterCategoriesController(filterCategoriesController);
+        filterCategoryView.setFilterCategoriesController(filterCategoriesController);
+        searchMovieView.setFilterCategoriesController(filterCategoriesController);
+        return this;
+    }
+
+    public AppBuilder addFilterCategoryUseCases() {
+        final FilterCategorySelectionOutputBoundary filterCategoryPresenter = new FilterCategoryPresenter(
+                filterCategoryViewModel, filterCategoriesViewModel, viewManagerModel);
+        final FilterCategorySelectionInputBoundary filterCategorySelectionInteractor = new
+                FilterCategorySelectionInteractor(filterCategoryPresenter);
+        final FilterApplicationInputBoundary filterApplicationInteractor = new FilterApplicationInteractor(
+                (FilterApplicationOutputBoundary)filterCategoryPresenter, movieDetailDataAccessInterface);
+        final FilterCategoryController filterCategoryController = new FilterCategoryController(
+                filterCategorySelectionInteractor, filterApplicationInteractor);
+        filterCategoriesView.setFilterCategoryController(filterCategoryController);
+        filterCategoryView.setFilterCategoryController(filterCategoryController);
         return this;
     }
 
