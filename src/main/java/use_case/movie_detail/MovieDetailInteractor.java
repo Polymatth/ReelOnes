@@ -28,7 +28,10 @@ public class MovieDetailInteractor implements MovieDetailInputBoundary {
             genreList.add(genres.get(genreId));
         }
         movie.setGenres(genreList);
-        final MovieDetailOutputData movieDetailOutputData = new MovieDetailOutputData(movie);
+        List<String> streamingServices = dataAccessInterface.getStreamingServices(movie.getID());
+        movie.setStreaming(streamingServices);
+        final MovieDetailOutputData movieDetailOutputData = new MovieDetailOutputData(movie,
+                movieDetailInputData.getOriginView());
         this.movieDetailPresenter.prepareSuccessView(movieDetailOutputData);
         //note: no prepareFailView because there is currently no way for this use case to fail.
     }
