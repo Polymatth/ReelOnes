@@ -30,6 +30,7 @@ public class FilterCategoryPresenter implements FilterCategorySelectionOutputBou
         filterCategoryState.setCategoryOptions(filterCategorySelectionOutputData.getCategoryOptions());
         filterCategoryState.setFilteredList(filterCategorySelectionOutputData.getFilteredList());
         filterCategoryState.setOriginalList(filterCategorySelectionOutputData.getOriginalList());
+        filterCategoryState.setSelectedOptions(filterCategorySelectionOutputData.getSelectedOptions());
         //Update the State in the Filter Category View Model.
         this.filterCategoryViewModel.setState(filterCategoryState);
         this.filterCategoryViewModel.firePropertyChanged();
@@ -43,13 +44,16 @@ public class FilterCategoryPresenter implements FilterCategorySelectionOutputBou
         final FilterCategoryState filterCategoryState = filterCategoryViewModel.getState();
         //Set the appropriate instance variable values for the Filter Category State
         filterCategoryState.setFilteredList(filterApplicationOutputData.getApplicableMovies());
+        filterCategoryState.setSelectedOptions(filterApplicationOutputData.getOptionsSelected());
         //Update the State in the Filter Category View Model.
         this.filterCategoryViewModel.setState(filterCategoryState);
         this.filterCategoryViewModel.firePropertyChanged();
 
         final FilterCategoriesState filterCategoriesState = filterCategoriesViewModel.getState();
-        filterCategoriesState.setMoviestoFilter(filterCategoryState.getCategoryName(), filterApplicationOutputData.getApplicableMovies());
-        filterCategoriesState.setSelectedFilters(filterCategoryState.getCategoryName(), filterCategoryState.getSelectedOptions());
+        filterCategoriesState.setMoviestoFilter(filterCategoryState.getCategoryName(),
+                filterApplicationOutputData.getApplicableMovies());
+        filterCategoriesState.setSelectedFilters(filterCategoryState.getCategoryName(),
+                filterCategoryState.getSelectedOptions());
 
         filterCategoriesViewModel.setState(filterCategoriesState);
         filterCategoriesViewModel.firePropertyChanged();

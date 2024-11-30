@@ -82,7 +82,7 @@ public class FilterApplicationInteractor implements FilterApplicationInputBounda
             }
         }
         final FilterApplicationOutputData filterApplicationOutputData = new
-                FilterApplicationOutputData(applicableMovies);
+                FilterApplicationOutputData(applicableMovies, optionsSelected);
         this.filterApplicationPresenter.updateFilteredList(filterApplicationOutputData);
 
     }

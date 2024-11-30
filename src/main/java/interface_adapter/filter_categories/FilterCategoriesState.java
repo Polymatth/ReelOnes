@@ -17,7 +17,7 @@ public class FilterCategoriesState {
 
     public void FilterCategoriesState() {
         for (String category : FilterCategoryConstants.getCategories()) {
-            this.filterToMovies.put(category, new ArrayList<>());
+            this.filterToMovies.put(category, originalMovieList);
             this.filtersToSelections.put(category, new ArrayList<>());
         }
     }
