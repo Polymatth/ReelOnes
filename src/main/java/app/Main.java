@@ -35,7 +35,7 @@ public class Main {
                                             .addGoProfileUseCase()
                                             .addChangePasswordUseCase()
                                             .addSearchMovieUseCase()
-                                            .addMovieDetailUseCase()
+                                            .addMovieDetailUseCases()
 
                                             .addOpenListUseCase()
 

@@ -94,7 +94,7 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
                         new ActionListener() {
                             public void actionPerformed(ActionEvent evt) {
                                 if (evt.getSource().equals(result)) {
-                                    movieDetailController.execute(movie);
+                                    movieDetailController.execute(movie, viewName);
                                 }
                             }
                         }
