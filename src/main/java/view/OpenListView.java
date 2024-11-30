@@ -137,7 +137,7 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
 
         movieBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                movieDetailController.execute(movie);
+                movieDetailController.execute(movie, viewName);
             }
         });
 

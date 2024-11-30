@@ -94,6 +94,9 @@ import use_case.return_to_filter_categories.ReturnToFilterCategoriesOutputBounda
 import use_case.return_to_list_from_filter_categories.ReturnToListInputBoundary;
 import use_case.return_to_list_from_filter_categories.ReturnToListInteractor;
 import use_case.return_to_list_from_filter_categories.ReturnToListOutputBoundary;
+import use_case.return_to_list_from_movie_detail.ReturnToListFromMovieInputBoundary;
+import use_case.return_to_list_from_movie_detail.ReturnToListFromMovieInteractor;
+import use_case.return_to_list_from_movie_detail.ReturnToListFromMovieOutputBoundary;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
@@ -387,12 +390,15 @@ public class AppBuilder {
      * Adds the Movie Detail Selection Use Case to the application.
      * @return this builder
      */
-    public AppBuilder addMovieDetailUseCase() {
+    public AppBuilder addMovieDetailUseCases() {
         final MovieDetailOutputBoundary movieDetailOutputBoundary = new MovieDetailPresenter(movieDetailViewModel,
                 viewManagerModel);
         final MovieDetailInputBoundary movieDetailInteractor = new MovieDetailInteractor(movieDetailOutputBoundary,
                 movieDetailDataAccessInterface);
-        final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor);
+        final ReturnToListFromMovieInputBoundary returnToListFromMovieInteractor = new ReturnToListFromMovieInteractor(
+                (ReturnToListFromMovieOutputBoundary)movieDetailOutputBoundary);
+        final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor,
+                returnToListFromMovieInteractor);
         movieDetailView.setMovieDetailController(movieDetailController);
         searchMovieView.setMovieDetailController(movieDetailController);
         openListView.setMovieDetailController(movieDetailController);
