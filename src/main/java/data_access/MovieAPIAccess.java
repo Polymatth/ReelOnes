@@ -168,34 +168,48 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
             if (response.isSuccessful() && response.body() != null) {
                 String locale = Locale.getDefault().getCountry();
                 String jsonResponse = response.body().string();
-                Map<String, Map> resultsMap = (Map<String, Map>) new JSONObject(jsonResponse).toMap().get("results");
-                Map<String, Map<String, Object>> localeMap = resultsMap.get(locale);
-                if (localeMap == null) {
-                    // localemap is empty
-                    return new ArrayList<>();
-                }
-                Set<String> services = new HashSet<>();
-                List<Map<String, Object>> buyList = (List<Map<String, Object>>) localeMap.get("buy");
-                List<Map<String, Object>> rentList = (List<Map<String, Object>>) localeMap.get("rent");
-                List<Map<String, Object>> flatrateList = (List<Map<String, Object>>) localeMap.get("flatrate");
-                if (buyList != null) {
-                    for (Map<String, Object> elem: buyList) {
-                        services.add((String) elem.get("provider_name"));
+                System.out.println(jsonResponse);
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONObject countriesToOptions = jsonObject.getJSONObject("results");
+                if (countriesToOptions != null && !countriesToOptions.isEmpty() && countriesToOptions.keySet().contains(locale)) {
+                    JSONObject localeOptions = ((JSONObject)countriesToOptions.get(locale));
+                    if (localeOptions.keySet().contains("flatrate") && localeOptions.get("flatrate") != null) {
+                        for (int i = 0; i < ((JSONArray)(localeOptions.get("flatrate"))).length(); i++) {
+                            String provider = (String) ((JSONObject)((JSONArray)localeOptions.get("flatrate"))
+                                    .get(i)).get("provider_name");
+                            System.out.println(provider);
+                            providerList.add(provider);
+                        }
                     }
                 }
-                if (rentList != null) {
-                    for (Map<String, Object> elem: rentList) {
-                        services.add((String) elem.get("provider_name"));
-                    }
-                }
+//                Map<String, Map> resultsMap = (Map<String, Map>) new JSONObject(jsonResponse).toMap().get("results");
+//                Map<String, Map<String, Object>> localeMap = resultsMap.get(locale);
+//                if (localeMap == null) {
+//                    // localemap is empty
+//                    return new ArrayList<>();
+//                }
+//                Set<String> services = new HashSet<>();
+//                List<Map<String, Object>> buyList = (List<Map<String, Object>>) localeMap.get("buy");
+//                List<Map<String, Object>> rentList = (List<Map<String, Object>>) localeMap.get("rent");
+//                List<Map<String, Object>> flatrateList = (List<Map<String, Object>>) localeMap.get("flatrate");
+//                if (buyList != null) {
+//                    for (Map<String, Object> elem: buyList) {
+//                        services.add((String) elem.get("provider_name"));
+//                    }
+//                }
+//                if (rentList != null) {
+//                    for (Map<String, Object> elem: rentList) {
+//                        services.add((String) elem.get("provider_name"));
+//                    }
+//                }
+//
+//                if (flatrateList != null) {
+//                    for (Map<String, Object> elem: flatrateList) {
+//                        services.add((String) elem.get("provider_name"));
+//                    }
+//                }
 
-                if (flatrateList != null) {
-                    for (Map<String, Object> elem: flatrateList) {
-                        services.add((String) elem.get("provider_name"));
-                    }
-                }
-
-                return new ArrayList<>(services);
+                return providerList;
             }
             else {
                 System.out.println("API request failed with code: " + response.code());
