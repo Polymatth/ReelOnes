@@ -46,9 +46,9 @@ public class FilterCategoriesController {
     }
 
     public void executeClearAllFilters(Map<String, List<String>> filtersToSelections, Map<String, List<Movie>>
-            filtersToMovies) {
+            filtersToMovies, List<Movie> originalMovieList) {
         final ClearAllFiltersInputData clearAllFiltersInputData = new ClearAllFiltersInputData(filtersToSelections,
-                filtersToMovies);
+                filtersToMovies, originalMovieList);
         clearAllFiltersInteractor.execute(clearAllFiltersInputData);
     }
 

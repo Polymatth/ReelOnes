@@ -92,7 +92,8 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
         streaming.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        String[] servicesListed = {"Netflix", "Amazon Video", "Disney Plus", "Iqiyi", "Apple TV", "Max"};
+                        String[] servicesListed = {"Netflix", "Amazon Prime Video", "Disney Plus", "Iqiyi", "Apple TV",
+                                "Max"};
                         filterCategoryController.executeFilterCategorySelection(FilterCategoryConstants.STREAMING_SERVICES,
                                 servicesListed, filterCategoriesViewModel.getState().getOriginalMovieList(),
                                 filterCategoriesViewModel.getState().getFilterToMovies().get(FilterCategoryConstants.STREAMING_SERVICES),
@@ -119,7 +120,8 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         filterCategoriesController.executeClearAllFilters(filterCategoriesViewModel.getState()
-                                .getFiltersToSelections(), filterCategoriesViewModel.getState().getFilterToMovies());
+                                .getFiltersToSelections(), filterCategoriesViewModel.getState().getFilterToMovies(),
+                                filterCategoriesViewModel.getState().getOriginalMovieList());
                     }
                 }
         );

@@ -221,8 +221,8 @@ public class FilterApplicationInteractorTest {
         List<String> allOptions = Arrays.asList(new String[]{"0.0-0.9", "1.0-1.9", "2.0-2.9", "3.0-3.9", "4.0-4.9", "5.0-5.9",
                 "6.0-6.9", "7.0-7.9", "8.0-8.9", "9.0-10.0"});
 
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Popularity Ratings",
-                optionsSelected, allOptions, testList);
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(
+                FilterCategoryConstants.POPULARITY_RATING, optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
         FilterApplicationOutputBoundary filterApplicationPresenter = new FilterApplicationOutputBoundary() {
@@ -240,8 +240,8 @@ public class FilterApplicationInteractorTest {
                 assertEquals(expectedTitles, actualTitles);
                 //Test that there are no movies in the resulting list that are NOT released in the 2010s or 2020s.
                 for (Movie movie : filterApplicationOutputData.getApplicableMovies()) {
-                    assert((5.0 <= movie.getVote_average() || 5.9 >= movie.getVote_average()) ||
-                            (6.0 <= movie.getVote_average() || 6.9 >= movie.getVote_average()));
+                    assert(((float)5.0 <= movie.getVote_average() && (float)5.9 >= movie.getVote_average()) ||
+                            ((float)6.0 <= movie.getVote_average() && (float)6.9 >= movie.getVote_average()));
                 }
             }
         };
@@ -287,6 +287,100 @@ public class FilterApplicationInteractorTest {
                 "6.0-6.9", "7.0-7.9", "8.0-8.9", "9.0-10.0"});
         List<String> optionsSelected = new ArrayList<>();
         FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Popularity Ratings",
+                optionsSelected, allOptions, testList);
+
+        //Create a test presenter that tests that the interactor works as we expect.
+        FilterApplicationOutputBoundary filterApplicationPresenter = new FilterApplicationOutputBoundary() {
+            @Override
+            public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
+                //Test that all the movies of the original list are included.
+                assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+            }
+        };
+        FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
+                (MovieDetailDataAccessInterface) dataAccessInterface) {
+        };
+        interactor.execute(filterApplicationInputData);
+    }
+
+    @Test
+    void StreamingServiceFilterApplicationSuccessThreeFilters() {
+        AppConfig config = new AppConfig();
+        SearchMovieDataAccessInterface dataAccessInterface = config.getMovieDataAccess();
+        //Create the Movie List that is being filtered.
+        List<Movie> testList = dataAccessInterface.searchMoviesByQuery("The Substance");
+        List<String> optionsSelected = new ArrayList<>();
+        optionsSelected.add("Netflix");
+        optionsSelected.add("Amazon Prime Video");
+        List<String> allOptions = Arrays.asList(new String[]{"Netflix", "Amazon Prime Video", "Disney Plus", "Iqiyi",
+                "Apple TV", "Max"});
+
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(
+                FilterCategoryConstants.STREAMING_SERVICES, optionsSelected, allOptions, testList);
+
+        //Create a test presenter that tests that the interactor works as we expect.
+        FilterApplicationOutputBoundary filterApplicationPresenter = new FilterApplicationOutputBoundary() {
+            @Override
+            public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
+                //Test that you get the right number of movies
+                assertEquals(1, filterApplicationOutputData.getApplicableMovies().size());
+                //Test that you get the right movie titles
+                List<String> expectedTitles = Arrays.asList(new String[]{"The Substance of Things Hoped For"});
+                List<String> actualTitles = new ArrayList<>();
+                for (Movie movie : filterApplicationOutputData.getApplicableMovies()) {
+                    actualTitles.add(movie.getTitle());
+                }
+                assertEquals(expectedTitles, actualTitles);
+                //Test that there are no movies in the resulting list that are NOT released in the 2010s or 2020s.
+                for (Movie movie : filterApplicationOutputData.getApplicableMovies()) {
+                    assert(((MovieDetailDataAccessInterface)dataAccessInterface).getStreamingServices(movie.getID())
+                            .retainAll(optionsSelected));
+                }
+            }
+        };
+        FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
+                (MovieDetailDataAccessInterface) dataAccessInterface) {
+        };
+        interactor.execute(filterApplicationInputData);
+    }
+
+    @Test
+    void StreamingServicesFilterApplicationSuccessAllFilters() {
+        AppConfig config = new AppConfig();
+        SearchMovieDataAccessInterface dataAccessInterface = config.getMovieDataAccess();
+        //Create the Movie List that is being filtered.
+        List<Movie> testList = dataAccessInterface.searchMoviesByQuery("The Substance");
+        List<String> allOptions = Arrays.asList(new String[]{"Netflix", "Amazon Prime Video", "Disney Plus", "Iqiyi",
+                "Apple TV", "Max"});
+        List<String> optionsSelected = new ArrayList<>(allOptions);
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Popularity Ratings",
+                optionsSelected, allOptions, testList);
+
+        //Create a test presenter that tests that the interactor works as we expect.
+        FilterApplicationOutputBoundary filterApplicationPresenter = new FilterApplicationOutputBoundary() {
+            @Override
+            public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
+                //Test that all the movies of the original list are included.
+                assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+            }
+        };
+        FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
+                (MovieDetailDataAccessInterface) dataAccessInterface) {
+        };
+        interactor.execute(filterApplicationInputData);
+    }
+
+    @Test
+    void StreamingServicesFilterApplicationSuccessNoFilters() {
+        AppConfig config = new AppConfig();
+        SearchMovieDataAccessInterface dataAccessInterface = config.getMovieDataAccess();
+        //Create the Movie List that is being filtered.
+        List<Movie> testList = dataAccessInterface.searchMoviesByQuery("The Substance");
+        List<String> allOptions = Arrays.asList(new String[]{"0.0-0.9", "1.0-1.9", "2.0-2.9", "3.0-3.9", "4.0-4.9", "5.0-5.9",
+                "6.0-6.9", "7.0-7.9", "8.0-8.9", "9.0-10.0"});
+        List<String> optionsSelected = new ArrayList<>();
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(
+                FilterCategoryConstants.STREAMING_SERVICES,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.

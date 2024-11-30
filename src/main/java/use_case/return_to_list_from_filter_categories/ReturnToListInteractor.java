@@ -20,6 +20,7 @@ public class ReturnToListInteractor implements ReturnToListInputBoundary {
         Map<String, List<Movie>> filtersToMovies = returnToListInputData.getFiltersToMovies();
         List<Movie> finalFilteredList = new ArrayList<>(filtersToMovies.get(FilterCategoryConstants.GENRE));
         for (String category : filtersToMovies.keySet()) {
+            List<Movie> movies = filtersToMovies.get(category);
             finalFilteredList.retainAll(filtersToMovies.get(category));
         }
         final ReturnToListOutputData returnToListOutputData = new ReturnToListOutputData(filtersToMovies,
