@@ -4,6 +4,8 @@ public class UserProfileState {
     private String username = "";
     private String loginError;
     private String password = "";
+    private String favMovie;
+    private String favDirector;
 
     public String getUsername() {
         return username;
@@ -11,6 +13,22 @@ public class UserProfileState {
 
     public String getLoginError() {
         return loginError;
+    }
+
+    public String getFavDirector() {
+        return favDirector;
+    }
+
+    public String getFavMovie() {
+        return favMovie;
+    }
+
+    public void setFavDirector(String favDirector) {
+        this.favDirector = favDirector;
+    }
+
+    public void setFavMovie(String favMovie) {
+        this.favMovie = favMovie;
     }
 
     public String getPassword() {

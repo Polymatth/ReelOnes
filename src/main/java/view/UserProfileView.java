@@ -1,12 +1,14 @@
 package view;
 import entity.MovieList;
 import entity.UserList;
+import interface_adapter.change_favorites.ChangeFavoritesController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.open_list.OpenListController;
 import interface_adapter.userprofile.CircularButton;
 import interface_adapter.userprofile.UserProfileController;
 import interface_adapter.userprofile.UserProfileState;
 import interface_adapter.userprofile.UserProfileViewModel;
+
 
 
 import javax.swing.*;
@@ -34,17 +36,22 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
     private final String viewName = "userprofile";
     private final UserProfileViewModel userProfileViewModel;
     private LogoutController logoutController;
-
     private OpenListController openListController;
-
     private UserProfileController userProfileController;
+    private ChangeFavoritesController changeFavoritesController;
+    //private GetCurrentUserOutputData currentUser;
 
 
     private final JButton logOut;
     private final JButton backToMainView;
     private final JButton changePassword;
+    private final JButton updateFavoritesButton;
     private final JLabel username;
+    private final JLabel  movieLabel;
     private final JPanel listsSection;
+    private final JTextField favoriteMovieField;
+    private final JTextField favoriteDirectorField;
+
 
 
     public UserProfileView(UserProfileViewModel userProfileViewModel) {
@@ -56,7 +63,7 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         this.setBackground(Color.DARK_GRAY);
 
         // Title (Center aligned using BorderLayout)
-        JLabel title = new JLabel("Profile");
+        JLabel title = new JLabel(userProfileViewModel.getState().getUsername());
         title.setHorizontalAlignment(SwingConstants.CENTER); // Center text
         title.setForeground(Color.WHITE);
         this.add(title, BorderLayout.NORTH);
@@ -94,28 +101,22 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         profilePictureButton.setPreferredSize(new Dimension(80, 80));
 
 
-
         username = new JLabel(userProfileViewModel.getState().getUsername());
-
-
         username.setAlignmentX(Component.CENTER_ALIGNMENT);
         username.setFont(new Font("Arial", Font.BOLD, 16));
-        JLabel movieLabel = new JLabel("<html>Favorite Movie:<br>Director:<br>Genre:<br>Streaming Services:</html>");
 
+
+        movieLabel = new JLabel( );
         profileSection.add(Box.createVerticalStrut(10));
-
-
         profileSection.add(changePassword);
         profileSection.add(profilePictureButton);
         profileSection.add(username);
         profileSection.add(movieLabel);
-
         profileSection.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+        this.add(profilePanel, BorderLayout.CENTER);
+
         final JPanel buttons = new JPanel( new BorderLayout());
-
-
-
         changePassword.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {userProfileController.switchToChangePasswordView();
             }
@@ -151,8 +152,66 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
         );
 
 
+
+
         profilePanel.add(profileSection);
         profilePanel.add(Box.createVerticalStrut(20)); // Space
+
+
+
+        // Section for updating favorites
+        JPanel updateFavoritesPanel = new JPanel();
+        updateFavoritesPanel.setBackground(Color.WHITE);
+        updateFavoritesPanel.setLayout(new BoxLayout(updateFavoritesPanel, BoxLayout.Y_AXIS));
+        updateFavoritesPanel.setBorder(BorderFactory.createTitledBorder("Update Favorites"));
+
+        favoriteMovieField = new JTextField(userProfileViewModel.getState().getFavMovie(), 20);
+        favoriteDirectorField = new JTextField(userProfileViewModel.getState().getFavDirector(), 20);
+
+        updateFavoritesButton = new JButton("Update Favorites");
+
+        updateFavoritesPanel.add(new JLabel("Favorite Movie:"));
+        updateFavoritesPanel.add(favoriteMovieField);
+        updateFavoritesPanel.add(Box.createVerticalStrut(10)); // Space
+        updateFavoritesPanel.add(new JLabel("Favorite Director:"));
+        updateFavoritesPanel.add(favoriteDirectorField);
+        updateFavoritesPanel.add(Box.createVerticalStrut(10)); // Space
+        updateFavoritesPanel.add(updateFavoritesButton);
+
+
+        profilePanel.add(Box.createVerticalStrut(20)); // Space
+        profilePanel.add(updateFavoritesPanel);
+
+
+        updateFavoritesButton.addActionListener(e -> {
+            String newFavoriteMovie = favoriteMovieField.getText().trim();
+            String newFavoriteDirector = favoriteDirectorField.getText().trim();
+
+            if (newFavoriteMovie.isEmpty() || newFavoriteDirector.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Favorite Movie and Favorite Director cannot be empty.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                userProfileViewModel.updateFavorites(newFavoriteMovie, newFavoriteDirector);
+                UserProfileState currentState = userProfileViewModel.getState();
+                String username = currentState.getUsername();
+                String password = currentState.getPassword();
+                System.out.println(username);
+                System.out.println(password);
+                changeFavoritesController.execute(username,password,newFavoriteMovie,newFavoriteDirector );
+                JOptionPane.showMessageDialog(null,
+                        "Favorites updated successfully!",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                // Refresh the displayed data
+                movieLabel.setText("<html>Favorite Movie: " + newFavoriteMovie +
+                        "<br>Favorite Director: " + newFavoriteDirector + "</html>");
+            }
+        });
+
+
 
         // Add the "My Lists" section title
         JLabel myListsLabel = new JLabel("My Lists");
@@ -283,7 +342,17 @@ public void propertyChange(PropertyChangeEvent evt) {
     } else if (evt.getPropertyName().equals("username")) {
         username.setText(userProfileViewModel.getState().getUsername());
     }
+    else if (evt.getPropertyName().equals("loggedin")) {
+        username.setText(userProfileViewModel.getState().getUsername());
+        movieLabel.setText("<html>Favorite Movie: " + userProfileViewModel.getState().getFavMovie() +"<br> Favorite Director: " + userProfileViewModel.getState().getFavDirector());
+
+    }
+    else if (evt.getPropertyName().equals("favorites")) {
+        UserProfileState state = (UserProfileState) evt.getNewValue();
+        movieLabel.setText("<html>Favorite Movie: " + userProfileViewModel.getState().getFavMovie() +"<br> Favorite Director: " + userProfileViewModel.getState().getFavDirector());
+    }
 }
+
 
 
     public String getViewName() {
@@ -301,5 +370,11 @@ public void propertyChange(PropertyChangeEvent evt) {
     public void setOpenListController (OpenListController openListContoller){
         this.openListController = openListContoller;
     }
+
+    public void setChangeFavoritesController (ChangeFavoritesController changeFavoritesController){
+        this.changeFavoritesController = changeFavoritesController;
+    }
+
+
 }
 

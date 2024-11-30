@@ -22,6 +22,8 @@ import interface_adapter.search_movie.SearchMovieController;
 import interface_adapter.signup.SignupState;
 import interface_adapter.userprofile.CircularButton;
 import interface_adapter.userprofile.UserProfileController;
+import interface_adapter.userprofile.UserProfileState;
+import interface_adapter.userprofile.UserProfileViewModel;
 
 
 /**
@@ -74,7 +76,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
          profileButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {userProfileController.switchToProfileView();
+            public void actionPerformed(ActionEvent e){
+                userProfileController.switchToProfileView();
             }
         });
 
@@ -224,6 +227,17 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("loggedin")) {
+            final LoggedInState currentState =(LoggedInState) evt.getNewValue();
+            final UserProfileViewModel userProfileViewModel = new UserProfileViewModel();
+            UserProfileState state = userProfileViewModel.getState();
+            System.out.println("LoggedInState: " + currentState.getFavMovie() + ", " + currentState.getFavDirector());
+            state.setUsername(currentState.getUsername());
+            //System.out.println("LoggedInState: " + state.getUsername());
+            state.setFavMovie(currentState.getFavMovie());
+            state.setFavDirector(currentState.getFavDirector());
+
+        }
 
     }
 }
