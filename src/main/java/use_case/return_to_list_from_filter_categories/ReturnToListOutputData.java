@@ -5,6 +5,9 @@ import entity.Movie;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The output data for the return to list from filter categories use case.
+ */
 public class ReturnToListOutputData {
 
     private String listView;

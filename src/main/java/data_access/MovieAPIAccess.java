@@ -87,7 +87,11 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
         return movies;
     }
 
-    public Map<Integer, String> getGenres() {
+    /**
+     * Returns the name of the genre that corresponds to each genre ID in the API.
+     * @return the genre that corresponds to each genre ID.
+     */
+    public Map<Integer, String> getAllGenres() {
         Map<Integer, String> genres = new HashMap<>();
         try {
             OkHttpClient client = new OkHttpClient();
@@ -119,6 +123,25 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
         return genres;
     }
 
+    /**
+     * Returns the list of genre names that correspond to a list of genre IDs for a given movie
+     * @param genreIDs the list of genre IDs for a specific movie
+     * @return the list of the genre names for that movie.
+     */
+    public List<String> getGenres(List<Integer> genreIDs) {
+        Map<Integer, String> allGenres = getAllGenres();
+        List<String> genreList = new ArrayList<>();
+        for (int genreId : genreIDs) {
+            genreList.add(allGenres.get(genreId));
+        }
+        return genreList;
+    }
+
+    /**
+     * Returns the director(s) of a given movie, or unknown if not found.
+     * @param movieID The ID of the movie whose director we're looking for
+     * @return the name(s) of the director(s), or unknown if not found.
+     */
     public String getDirector(int movieID) {
         try {
             String url = "https://api.themoviedb.org/3/movie/" + movieID + "/credits?language=en-US" + "&api_key=" + apiKey;
@@ -154,6 +177,11 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
         return "Unknown";
     }
 
+    /**
+     * Returns the list of streaming services on which a given movie is available
+     * @param movieID the ID of the movie we want to find streaming services playing
+     * @return the list of the names of the streaming services that have that movie.
+     */
     public List<String> getStreamingServices(int movieID) {
         try {
             OkHttpClient client = new OkHttpClient();
@@ -173,7 +201,8 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                 System.out.println(jsonResponse);
                 JSONObject jsonObject = new JSONObject(jsonResponse);
                 JSONObject countriesToOptions = jsonObject.getJSONObject("results");
-                if (countriesToOptions != null && !countriesToOptions.isEmpty() && countriesToOptions.keySet().contains(locale)) {
+                if (countriesToOptions != null && !countriesToOptions.isEmpty() && countriesToOptions.keySet()
+                        .contains(locale)) {
                     JSONObject localeOptions = ((JSONObject)countriesToOptions.get(locale));
                     if (localeOptions.keySet().contains("flatrate") && localeOptions.get("flatrate") != null) {
                         for (int i = 0; i < ((JSONArray)(localeOptions.get("flatrate"))).length(); i++) {
@@ -184,33 +213,6 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                         }
                     }
                 }
-//                Map<String, Map> resultsMap = (Map<String, Map>) new JSONObject(jsonResponse).toMap().get("results");
-//                Map<String, Map<String, Object>> localeMap = resultsMap.get(locale);
-//                if (localeMap == null) {
-//                    // localemap is empty
-//                    return new ArrayList<>();
-//                }
-//                Set<String> services = new HashSet<>();
-//                List<Map<String, Object>> buyList = (List<Map<String, Object>>) localeMap.get("buy");
-//                List<Map<String, Object>> rentList = (List<Map<String, Object>>) localeMap.get("rent");
-//                List<Map<String, Object>> flatrateList = (List<Map<String, Object>>) localeMap.get("flatrate");
-//                if (buyList != null) {
-//                    for (Map<String, Object> elem: buyList) {
-//                        services.add((String) elem.get("provider_name"));
-//                    }
-//                }
-//                if (rentList != null) {
-//                    for (Map<String, Object> elem: rentList) {
-//                        services.add((String) elem.get("provider_name"));
-//                    }
-//                }
-//
-//                if (flatrateList != null) {
-//                    for (Map<String, Object> elem: flatrateList) {
-//                        services.add((String) elem.get("provider_name"));
-//                    }
-//                }
-
                 return providerList;
             }
             else {
@@ -220,7 +222,6 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
             e.printStackTrace();
         }
         List<String> failList = new ArrayList<>();
-        failList.add("Oops");
         return failList;
     }
 

@@ -1,5 +1,8 @@
 package use_case.filter_category_selection;
 
+/**
+ * The output boundary for the filter category selection use case
+ */
 public interface FilterCategorySelectionOutputBoundary {
 
     /**

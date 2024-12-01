@@ -5,12 +5,14 @@ import entity.Movie;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The Input Data for the Go To Filter Categories use case
+ */
 public class GoToFilterCategoriesInputData {
 
     private List<Movie> originalList;
     private Map<String, List<Movie>> filtersToMovies;
     private Map<String, List<String>> filtersToSelections;
-    //hacky
     private String listView;
 
     public GoToFilterCategoriesInputData(List<Movie> originalList, Map<String,

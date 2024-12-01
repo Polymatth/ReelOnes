@@ -18,6 +18,10 @@ import view.SearchMovieView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The presenter for the Filter Categories use cases: Go To Filter Categories, Return to Filter Categories from Filter
+ * Category, Clear All Filters, and Return to List from Filter Categories
+ */
 public class FilterCategoriesPresenter implements ReturnToFilterCategoriesOutputBoundary,
         GoToFilterCategoriesOutputBoundary, ClearAllFiltersOutputBoundary, ReturnToListOutputBoundary {
 

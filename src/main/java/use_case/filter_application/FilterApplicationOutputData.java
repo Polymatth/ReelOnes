@@ -4,6 +4,9 @@ import entity.Movie;
 
 import java.util.List;
 
+/**
+ * Output data for the filter application use case.
+ */
 public class FilterApplicationOutputData {
 
     private List<Movie> applicableMovies;

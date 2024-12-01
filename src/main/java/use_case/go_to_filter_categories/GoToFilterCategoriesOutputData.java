@@ -5,6 +5,9 @@ import entity.Movie;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Output data for the go to filter categories use case
+ */
 public class GoToFilterCategoriesOutputData {
 
     private List<Movie> originalList;

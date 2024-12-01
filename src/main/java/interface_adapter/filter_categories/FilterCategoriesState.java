@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The state for the filter categories view.
+ */
 public class FilterCategoriesState {
 
     private List<Movie> originalMovieList;

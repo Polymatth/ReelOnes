@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The filter application interactor.
+ */
 public class FilterApplicationInteractor implements FilterApplicationInputBoundary {
 
     private FilterApplicationOutputBoundary filterApplicationPresenter;
@@ -31,13 +34,9 @@ public class FilterApplicationInteractor implements FilterApplicationInputBounda
             applicableMovies.addAll(originalList);
         } else if (categoryName.equals(FilterCategoryConstants.GENRE)) {
             for (Movie movie : originalList) {
-                Map<Integer, String> genres = dataAccessInterface.getGenres();
-                List<String> genreList = new ArrayList<>();
-                for (int genreId : movie.getGenre_ids()) {
-                    genreList.add(genres.get(genreId));
-                }
-                movie.setGenres(genreList);
-                List<String> copyList = movie.getGenres();
+                List<String> genres = dataAccessInterface.getGenres(movie.getGenre_ids());
+                movie.setGenres(genres);
+                List<String> copyList = new ArrayList<>(genres);
                 copyList.retainAll(optionsSelected);
                 if (!copyList.isEmpty()) {
                     applicableMovies.add(movie);
