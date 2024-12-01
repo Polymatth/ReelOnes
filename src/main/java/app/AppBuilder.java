@@ -358,11 +358,12 @@ public class AppBuilder {
      */
     public AppBuilder addSearchMovieUseCase() {
         final SearchMovieOutputBoundary searchMovieOutputBoundary = new SearchMoviePresenter(viewManagerModel,
-                searchMovieViewModel);
+                searchMovieViewModel, loggedInViewModel);
         final SearchMovieInputBoundary searchMovieInteractor = new SearchMovieInteractor(searchMovieOutputBoundary,
                 searchMovieDataAccessInterface);
         final SearchMovieController searchMovieController = new SearchMovieController(searchMovieInteractor);
         loggedInView.setSearchMoviesController(searchMovieController);
+        searchMovieView.setSearchMoviesController(searchMovieController);
         return this;
     }
 

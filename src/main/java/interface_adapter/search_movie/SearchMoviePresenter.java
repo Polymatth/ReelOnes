@@ -1,6 +1,7 @@
 package interface_adapter.search_movie;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.loggedin.LoggedInViewModel;
 import use_case.filter_application.FilterCategoryConstants;
 import use_case.search_movie.SearchMovieOutputBoundary;
 import use_case.search_movie.SearchMovieOutputData;
@@ -10,10 +11,12 @@ import java.util.ArrayList;
 public class SearchMoviePresenter implements SearchMovieOutputBoundary {
     private final SearchMovieViewModel viewModel;
     private final ViewManagerModel viewManagerModel;
+    private final LoggedInViewModel loggedInViewModel;
 
-    public SearchMoviePresenter(ViewManagerModel viewManagerModel, SearchMovieViewModel viewModel) {
+    public SearchMoviePresenter(ViewManagerModel viewManagerModel, SearchMovieViewModel viewModel, LoggedInViewModel loggedInViewModel) {
         this.viewModel = viewModel;
         this.viewManagerModel = viewManagerModel;
+        this.loggedInViewModel = loggedInViewModel;
     }
 
     @Override
@@ -34,4 +37,8 @@ public class SearchMoviePresenter implements SearchMovieOutputBoundary {
         viewModel.setErrorMessage(errorMessage);
         viewModel.firePropertyChanged("error");
     }
+     public void switchToMainView() {
+         viewManagerModel.setState(loggedInViewModel.getViewName());
+         viewManagerModel.firePropertyChanged();
+     }
 }

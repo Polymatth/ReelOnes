@@ -40,6 +40,8 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
     private SearchMovieController searchMovieController;
     private MovieDetailController movieDetailController;
     private FilterCategoriesController filterCategoriesController;
+    private JButton backButton;
+
 
     private Color textColor = new Color(233, 232, 236);
     private Color backgroundColor = new Color(11, 5, 28);
@@ -54,10 +56,22 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
         this.searchMovieViewModel.addPropertyChangeListener(this);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(secondaryColor);
+
+        backButton = new JButton("Back to Main View");
+        backButton.setBackground(accent);
+        backButton.setForeground(backgroundColor);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchMovieController.switchToMainView();
+            }
+        });
+        this.add(backButton);
     }
 
     private void updateResults(SearchMovieViewModel searchMovieViewModel) throws IOException {
         this.removeAll();
+        this.add(backButton);
         final JLabel title = new JLabel("Search Results", JLabel.CENTER);
         final JButton filters = new JButton("Filters");
         filters.addActionListener(
@@ -82,11 +96,24 @@ public class SearchMovieView extends JPanel implements ActionListener, PropertyC
         if (searchMovieViewModel.getState().moviesToDisplay() != null) {
             for (Movie movie : searchMovieViewModel.getState().moviesToDisplay()) {
                 final JButton result = new JButton(movie.getTitle());
-                URL url = new URL("https://image.tmdb.org/t/p/w500"+ movie.getPosterPath());
-                Image image = ImageIO.read(url).getScaledInstance(160, 240, Image.SCALE_FAST);
-                final Icon resultIcon = new ImageIcon(image);
+                if (movie.getPosterPath() != null && !movie.getPosterPath().isEmpty()) {
+                    try {
+                        String baseUrl = "https://image.tmdb.org/t/p/w500/";
+                        URL fullUrl = new URL(baseUrl + movie.getPosterPath());
+                        // Load and scale the image
+                        Image image = ImageIO.read(fullUrl).getScaledInstance(160, 240, Image.SCALE_SMOOTH);
+                        final Icon resultIcon = new ImageIcon(image);
+                        result.setIcon(resultIcon); // Set the image icon
+                    } catch (Exception e) {
+                        System.err.println("Error loading movie poster for " + movie.getTitle() + ": " + e.getMessage());
+                        // Fallback to a placeholder if the poster can't be loaded
+                        result.setIcon(new ImageIcon("src/main/resources/images/placeholder.png"));
+                    }
+                } else {
+                    // Fallback to a placeholder if no poster path is provided
+                    result.setIcon(new ImageIcon("src/main/resources/images/placeholder.png"));
+                }
                 result.setLabel(movie.getTitle());
-                result.setIcon(resultIcon);
                 result.setVerticalTextPosition(SwingConstants.BOTTOM);
                 result.setHorizontalTextPosition(SwingConstants.CENTER);
                 result.setBackground(primaryColor);
