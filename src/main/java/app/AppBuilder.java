@@ -14,6 +14,9 @@ import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.change_favorites.ChangeFavoritesController;
+import interface_adapter.change_favorites.ChangeFavoritesPresenter;
+import interface_adapter.change_favorites.ChangeFavoritesViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.ChangePasswordViewModel;
@@ -46,6 +49,9 @@ import interface_adapter.signup.SignupViewModel;
 import interface_adapter.userprofile.UserProfileController;
 import interface_adapter.userprofile.UserProfilePresenter;
 import interface_adapter.userprofile.UserProfileViewModel;
+import use_case.change_favorites.ChangeFavoritesInputBoundary;
+import use_case.change_favorites.ChangeFavoritesInteractor;
+import use_case.change_favorites.ChangeFavoritesOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -133,6 +139,7 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private UserProfileViewModel userProfileViewModel;
     private ChangePasswordViewModel changePasswordViewModel;
+    private ChangeFavoritesViewModel changeFavoritesViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
     private UserProfileView userProfileView;
@@ -154,9 +161,11 @@ public class AppBuilder {
     private FilterCategoryView filterCategoryView;
     private FilterCategoryViewModel filterCategoryViewModel;
 
+
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
+
 
     /**
      * Adds the Signup View to the application.
@@ -199,6 +208,7 @@ public class AppBuilder {
         userProfileViewModel = new UserProfileViewModel();
         userProfileView = new UserProfileView(userProfileViewModel);
         cardPanel.add(userProfileView, userProfileView.getViewName());
+
         return this;
     }
 
@@ -257,6 +267,15 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Signup View to the application.
+     * @return this builder
+     */
+    public AppBuilder addChangeFavoritesView() {
+        changeFavoritesViewModel = new ChangeFavoritesViewModel();
+        return this;
+    }
+
+    /**
      * Adds the Signup Use Case to the application.
      * @return this builder
      */
@@ -297,6 +316,8 @@ public class AppBuilder {
         final GetCurrentUserController getCurrentUserController = new GetCurrentUserController(getCurrentUserInteractor);
         System.out.println("Created GetCurrentUserController: " + getCurrentUserController);
         changePasswordView.setGetCurrentUserController(getCurrentUserController);
+        userProfileViewModel.setGetCurrentUserController(getCurrentUserController);
+
         return this;
     }
 
@@ -347,6 +368,23 @@ public class AppBuilder {
         changePasswordView.setChangePasswordController(changePasswordController);
         return this;
     }
+
+
+
+    /**
+     * Adds the Change Favorites Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addChangeFavoritesUseCase() {
+        final ChangeFavoritesOutputBoundary changeFavoritesOutputBoundary = new ChangeFavoritesPresenter(viewManagerModel,changeFavoritesViewModel,userProfileViewModel);
+
+        final ChangeFavoritesInputBoundary changeFavoritesInteractor = new ChangeFavoritesInteractor(userDataAccessObject,changeFavoritesOutputBoundary,userFactory);
+
+        final ChangeFavoritesController changeFavoritesController = new ChangeFavoritesController(changeFavoritesInteractor);
+        userProfileView.setChangeFavoritesController(changeFavoritesController);
+        return this;
+    }
+
 
     /**
      * Adds the Movie Detail Selection Use Case to the application.

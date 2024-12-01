@@ -14,25 +14,25 @@ public class Main {
     public static void main(String[] args) throws IOException {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
+
                                             .addLoginView()
                                             .addSignupView()
                                             .addLoggedInView()
                                             .addSearchMovieView()
                                             .addMovieDetailView()
                                             .addUserProfileView()
+                                             .addChangeFavoritesView()
                                             .addOpenListView()
-
                                              .addUserProfileView()
                                             .addFilterCategoryView()
                                              .addFilterCategoriesView()
-                                   
                                             .addChangePasswordView()
-
+                                            .addGetCurrentUserUseCase()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addLogoutUseCase()
-                                            .addGetCurrentUserUseCase()
                                             .addGoProfileUseCase()
+                                            .addChangeFavoritesUseCase()
                                             .addChangePasswordUseCase()
                                             .addSearchMovieUseCase()
                                             .addMovieDetailUseCases()
