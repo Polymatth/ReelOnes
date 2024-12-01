@@ -12,4 +12,13 @@ public interface ChangePasswordUserDataAccessInterface {
      * @param user the user whose password is to be updated
      */
     void changePassword(User user);
+
+    /**
+     *Saves user to the system.
+     * @param user the user who will be saved.
+     */
+    void save(User user);
+
+    User get(String username);
+
 }
