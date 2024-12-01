@@ -5,6 +5,9 @@ import entity.Movie;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The go to filter categories interactor.
+ */
 public class GoToFilterCategoriesInteractor implements GoToFilterCategoriesInputBoundary {
     private GoToFilterCategoriesOutputBoundary goToFilterCategoriesPresenter;
 

@@ -4,6 +4,9 @@ import entity.Movie;
 
 import java.util.List;
 
+/**
+ * The output data for the movie detail selection use case
+ */
 public class MovieDetailOutputData {
 
     private final Movie movie;

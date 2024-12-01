@@ -5,6 +5,9 @@ import entity.Movie;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The filter category selection interactor
+ */
 public class FilterCategorySelectionInteractor implements FilterCategorySelectionInputBoundary {
 
     private FilterCategorySelectionOutputBoundary filterCategorySelectionPresenter;

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The movie detail interactor.
+ */
 public class MovieDetailInteractor implements MovieDetailInputBoundary {
 
     private MovieDetailOutputBoundary movieDetailPresenter;
@@ -22,12 +25,8 @@ public class MovieDetailInteractor implements MovieDetailInputBoundary {
         Movie movie = movieDetailInputData.getMovie();
         String dir = dataAccessInterface.getDirector(movie.getID());
         movie.setDirector(dir);
-        Map<Integer, String> genres = dataAccessInterface.getGenres();
-        List<String> genreList = new ArrayList<>();
-        for (int genreId : movie.getGenre_ids()) {
-            genreList.add(genres.get(genreId));
-        }
-        movie.setGenres(genreList);
+        List<String> genres = dataAccessInterface.getGenres(movie.getGenre_ids());
+        movie.setGenres(genres);
         List<String> streamingServices = dataAccessInterface.getStreamingServices(movie.getID());
         movie.setStreaming(streamingServices);
         final MovieDetailOutputData movieDetailOutputData = new MovieDetailOutputData(movie,

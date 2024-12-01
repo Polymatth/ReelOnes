@@ -31,6 +31,10 @@ public class MovieDetailController {
         movieDetailUseCaseInteractor.execute(movieDetailInputData);
     }
 
+    /**
+     * Executes the Return to List from Movie Detail view use case
+     * @param originView the list view that the user wants to return to
+     */
     public void executeReturnToListView(String originView) {
         final ReturnToListFromMovieInputData returnToListFromMovieInputData = new
                 ReturnToListFromMovieInputData(originView);

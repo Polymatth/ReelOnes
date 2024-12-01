@@ -4,6 +4,9 @@ import entity.Movie;
 
 import java.util.List;
 
+/**
+ * The input data for the return to filter categories use case
+ */
 public class ReturnToFilterCategoriesInputData {
 
     private String categoryName;

@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The view when the user selects a specific filter category to view.
+ */
 public class FilterCategoryView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "filter category page";
@@ -31,12 +34,7 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
 
     public FilterCategoryView(FilterCategoryViewModel filterCategoryViewModel) {
       this.filterCategoryViewModel = filterCategoryViewModel;
-      this.filterCategoryViewModel.addPropertyChangeListener(this);
-
-      this.filterCategoryViewModel.addPropertyChangeListener(evt -> {
-          this.add(new JLabel("Filter Applied"), 0);
-          System.out.println(evt);
-      });
+      this.filterCategoryViewModel.addPropertyChangeListener(this);;
 
       this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -48,7 +46,12 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
       }
     }
 
+    /**
+     * Displays the options for the selected filter category.
+     */
     private void displayOptions() {
+        //SwingWorker object with a doInBackground method to ensure that the GUI does not freeze when the "Apply
+        //"Filters" button is selected.
         SwingWorker<Void, Void> applyFiltersWorker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() {
@@ -56,17 +59,20 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
                     filterCategoryController.executeFilterApplication(categoryName, optionsSelected,
                             Arrays.asList(categoryOptions), filterCategoryViewModel.getState().getOriginalList());
                 } catch (Exception e) {
-                    System.out.println("Fail silently");
                     e.printStackTrace();
                 }
                 return null;
             }
         };
-        JPanel container = this;
+
         clearPanels();
+
+        //Set the title.
         JLabel title = new JLabel(this.categoryName, SwingConstants.CENTER);
         titlePanel.add(title);
         this.add(titlePanel);
+
+        //Set the checkboxes for each of the filter options in the category.
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
         for (String option : this.categoryOptions) {
             JCheckBox addedFilter = new JCheckBox(option);
@@ -90,6 +96,8 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
             optionsPanel.add(filterPanel);
         }
         this.add(optionsPanel);
+
+        //Set the buttons to apply all filters and to go back to filter categories page.
         JButton apply = new JButton("Apply Filters");
         otherButtons.add(apply);
         JButton back = new JButton("Back to All Filters");
@@ -106,6 +114,8 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
                 }
         );
         this.add(otherButtons);
+
+        //Place the different components together.
         allTogether.setLayout(new BoxLayout(allTogether, BoxLayout.PAGE_AXIS));
         allTogether.add(titlePanel);
         allTogether.add(optionsPanel);
@@ -113,6 +123,9 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
         this.add(allTogether);
     }
 
+    /**
+     * Clears components in each panel.
+     */
     private void clearPanels() {
         titlePanel.removeAll();
         optionsPanel.removeAll();
@@ -121,13 +134,17 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
         this.removeAll();
     }
 
+    /**
+     * React to a button click that results in evt.
+     * @param e the ActionEvent to react to
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        displayOptions();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        //Set the instance variables to the currently selected filter categry name, options, and options selected.
         this.categoryName = this.filterCategoryViewModel.getState().getCategoryName();
         this.categoryOptions = this.filterCategoryViewModel.getState().getCategoryOptions();
         this.optionsSelected = new ArrayList<>(this.filterCategoryViewModel.getState().getSelectedOptions());
