@@ -18,4 +18,5 @@ public class SearchMovieViewModel extends ViewModel<SearchMovieState> {
     public void setErrorMessage(String errorMessage) {
         getState().setErrorMessage(errorMessage);
     }
+
 }
