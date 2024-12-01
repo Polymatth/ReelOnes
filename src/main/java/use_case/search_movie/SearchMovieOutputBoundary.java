@@ -13,4 +13,9 @@ public interface SearchMovieOutputBoundary {
      * @param errorMessage a message describing the failure
      */
     void prepareFailView(String errorMessage);
+
+    /**
+     * Switches to Main View.
+     */
+    void switchToMainView();
 }

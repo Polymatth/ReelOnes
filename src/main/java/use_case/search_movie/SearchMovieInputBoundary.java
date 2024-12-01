@@ -7,4 +7,9 @@ public interface SearchMovieInputBoundary {
      * @param inputData the input data containing the search query
      */
     void search(SearchMovieInputData inputData);
+
+    /**
+     * Switches to Main View
+     */
+    void switchToMainView();
 }

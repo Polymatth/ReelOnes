@@ -25,4 +25,7 @@ public class SearchMovieInteractor implements SearchMovieInputBoundary {
             presenter.prepareFailView("Failed to retrieve movies.");
         }
     }
+
+    @Override
+    public void switchToMainView(){presenter.switchToMainView();}
 }

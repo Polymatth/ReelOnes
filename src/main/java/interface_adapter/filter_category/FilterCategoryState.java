@@ -34,6 +34,10 @@ public class FilterCategoryState {
         return this.selectedOptions;
     }
 
+    public void setSelectedOptions(List<String> selectedOptions) {
+        this.selectedOptions = selectedOptions;
+    }
+
     public void addSelection(String option) {
         this.selectedOptions.add(option);
     }

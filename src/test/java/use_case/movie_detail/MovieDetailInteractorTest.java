@@ -31,7 +31,7 @@ public class MovieDetailInteractorTest {
         Movie testMovie = new Movie(path, false, overview, "2016-10-19", genreIds, id,
                 "en", "Jack Reacher: Never Go Back", backDropPath, (float)26.818468,
                 201, false, (float)4.19);
-        MovieDetailInputData movieDetailInputData = new MovieDetailInputData(testMovie);
+        MovieDetailInputData movieDetailInputData = new MovieDetailInputData(testMovie, "movie search");
 
         //Create a test presenter that tests that the interactor works as we expect.
         MovieDetailOutputBoundary movieDetailPresenter = new MovieDetailOutputBoundary() {
@@ -51,6 +51,14 @@ public class MovieDetailInteractorTest {
                 genreNames.add("Drama");
                 genreNames.add("Mystery");
                 assertEquals(String.join(", ", genreNames), movieDetailOutputData.getGenre());
+                //Test that you get the right list of streaming services.
+                List<String> services = new ArrayList<>();
+                services.add("Netflix");
+                services.add("Paramount+ Amazon Channel");
+                services.add("Netflix basic with Ads");
+                assertEquals(String.join(", ", services), movieDetailOutputData.getStreamingServices());
+                //Test that you get the right view name.
+                assertEquals("movie search", movieDetailOutputData.getOriginView());
             }
         };
         MovieDetailInputBoundary interactor = new MovieDetailInteractor(movieDetailPresenter, dataAccessInterface);

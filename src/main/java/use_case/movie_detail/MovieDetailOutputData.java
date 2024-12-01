@@ -7,9 +7,11 @@ import java.util.List;
 public class MovieDetailOutputData {
 
     private final Movie movie;
+    private final String originView;
 
-    public MovieDetailOutputData(Movie movie) {
+    public MovieDetailOutputData(Movie movie, String originView) {
         this.movie = movie;
+        this.originView = originView;
     }
 
     public Movie getMovie(){
@@ -24,9 +26,9 @@ public class MovieDetailOutputData {
         return this.movie.getYear();
     }
 
-//    public String getStreamingServices() {
-//        return String.join(",", this.movie.getStreamingServices());
-//    }
+    public String getStreamingServices() {
+        return String.join(", ", this.movie.getStreaming());
+    }
 
     public String getGenre() {
 //        StringBuilder genres = new StringBuilder();
@@ -51,5 +53,9 @@ public class MovieDetailOutputData {
 
     public int getID() {
         return this.movie.getID();
+    }
+
+    public String getOriginView() {
+        return this.originView;
     }
 }

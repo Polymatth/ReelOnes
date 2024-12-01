@@ -1,5 +1,6 @@
 package interface_adapter.login;
 
+import interface_adapter.userprofile.UserProfileViewModel;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInputData;
 
@@ -9,6 +10,7 @@ import use_case.login.LoginInputData;
 public class LoginController {
 
     private final LoginInputBoundary loginUseCaseInteractor;
+    private UserProfileViewModel userProfileViewModel;
 
     public LoginController(LoginInputBoundary loginUseCaseInteractor) {
         this.loginUseCaseInteractor = loginUseCaseInteractor;

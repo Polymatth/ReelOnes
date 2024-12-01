@@ -23,4 +23,5 @@ public class GetCurrentUserInteractor implements GetCurrentUserInputBoundary {
 
         return outputData;
     }
+
 }

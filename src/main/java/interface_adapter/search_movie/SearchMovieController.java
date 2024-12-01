@@ -21,4 +21,8 @@ public class SearchMovieController {
         SearchMovieInputData inputData = new SearchMovieInputData(searchQuery);
         inputBoundary.search(inputData);
     }
+
+    public void switchToMainView() {
+       inputBoundary.switchToMainView();
+    }
 }
