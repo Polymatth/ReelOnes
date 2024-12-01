@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 
+import data_access.InMemoryMovieListDataAccessObject;
 import data_access.InMemoryOpenListDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
@@ -17,6 +18,9 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.ChangePasswordViewModel;
+import interface_adapter.edit_list.EditListPresenter;
+import interface_adapter.edit_list.EditListViewModel;
+import interface_adapter.edit_list.EditListController;
 import interface_adapter.get_currentuser.GetCurrentUserController;
 import interface_adapter.get_currentuser.GetCurrentUserPresenter;
 import interface_adapter.loggedin.LoggedInViewModel;
@@ -49,6 +53,7 @@ import interface_adapter.userprofile.UserProfileViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.edit_list.EditListOutputBoundary;
 import use_case.get_currentuser.GetCurrentOutputBoundary;
 import use_case.get_currentuser.GetCurrentUserInputBoundary;
 import use_case.get_currentuser.GetCurrentUserInteractor;
@@ -82,6 +87,10 @@ import use_case.open_list.OpenListDataAccessInterface;
 import use_case.open_list.OpenListInputBoundary;
 import use_case.open_list.OpenListInteractor;
 import use_case.open_list.OpenListOutputBoundary;
+import use_case.edit_list.EditListDataAccessInterface;
+import use_case.edit_list.EditListInputBoundary;
+import use_case.edit_list.EditListInteractor;
+import use_case.edit_list.EditListOutputBoundary;
 import use_case.return_to_filter_categories.ReturnToFilterCategoriesInputBoundary;
 import use_case.return_to_filter_categories.ReturnToFilterCategoriesInteractor;
 import use_case.return_to_filter_categories.ReturnToFilterCategoriesOutputBoundary;
@@ -123,6 +132,8 @@ public class AppBuilder {
     private final MovieDetailDataAccessInterface movieDetailDataAccessInterface = new AppConfig()
             .getMovieDetailDataAccess();
     private final OpenListDataAccessInterface openListDataAccessInterface = new InMemoryOpenListDataAccessObject();
+    private final EditListDataAccessInterface editListDataAccessInterface = new InMemoryMovieListDataAccessObject();
+
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -135,12 +146,14 @@ public class AppBuilder {
     private UserProfileView userProfileView;
 
     private OpenListViewModel openListViewModel;
+    private EditListViewModel editListViewModel;
     private ChangePasswordView changePasswordView;
 
 
     private SearchMovieView searchMovieView;
     private SearchMovieViewModel searchMovieViewModel;
     private OpenListView openListView;
+    private EditListView editListView;
 
     private MovieDetailView movieDetailView;
     private MovieDetailViewModel movieDetailViewModel;
@@ -231,10 +244,25 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the OpenList View to the application.
+     * @return this builder
+     */
     public AppBuilder addOpenListView() {
         openListViewModel = new OpenListViewModel();
         openListView = new OpenListView(openListViewModel);
         cardPanel.add(openListView, openListView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the EditList View to the application.
+     * @return this builder
+     */
+    public AppBuilder addEditListView() {
+        editListViewModel = new EditListViewModel();
+        editListView = new EditListView(editListViewModel);
+        cardPanel.add(editListView, editListView.getViewName());
         return this;
     }
 
@@ -294,6 +322,7 @@ public class AppBuilder {
         final GetCurrentUserController getCurrentUserController = new GetCurrentUserController(getCurrentUserInteractor);
         System.out.println("Created GetCurrentUserController: " + getCurrentUserController);
         changePasswordView.setGetCurrentUserController(getCurrentUserController);
+        editListView.setGetCurrentUserController(getCurrentUserController);
         return this;
     }
 
@@ -425,6 +454,20 @@ public class AppBuilder {
         final OpenListInputBoundary openListInteractor = new OpenListInteractor(openListDataAccessInterface, openListOutputBoundary);
         final OpenListController openListController = new OpenListController(openListInteractor);
         userProfileView.setOpenListController(openListController);
+        editListView.setOpenListController(openListController);
+        return this;
+    }
+
+    /**
+     * Adds the Edit List Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addEditListUseCase() {
+        final EditListOutputBoundary editListOutputBoundary = new EditListPresenter(viewManagerModel, editListViewModel, openListViewModel);
+        final EditListInputBoundary editListInteractor = new EditListInteractor(editListDataAccessInterface, editListOutputBoundary);
+        final EditListController editListController = new EditListController(editListInteractor);
+        editListView.setEditListController(editListController);
+        openListView.setEditListController(editListController);
         return this;
     }
 

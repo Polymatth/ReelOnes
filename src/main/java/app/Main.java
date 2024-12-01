@@ -21,8 +21,7 @@ public class Main {
                                             .addMovieDetailView()
                                             .addUserProfileView()
                                             .addOpenListView()
-
-                                             .addUserProfileView()
+                                            .addEditListView()
                                             .addFilterCategoryView()
                                              .addFilterCategoriesView()
                                    
@@ -38,6 +37,7 @@ public class Main {
                                             .addMovieDetailUseCase()
 
                                             .addOpenListUseCase()
+                                            .addEditListUseCase()
 
                                             .addFilterCategoriesUseCases()
                                             .addFilterCategoryUseCases()

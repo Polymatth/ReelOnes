@@ -3,6 +3,8 @@ package use_case.movie_list;
 import entity.Movie;
 import entity.MovieList;
 import entity.UserList;
+import use_case.movie_detail.MovieDetailInputData;
+import use_case.movie_detail.MovieDetailOutputData;
 
 
 import java.util.ArrayList;
@@ -45,43 +47,8 @@ public class MovieListInteractor implements MovieListInputBoundary {
     }
 
     @Override
-    public List<Movie> getMoviesForList(String listName) {
-        MovieList list = movieListDataAccessInterface.getMovieListByName(listName);
-        if (list != null) {
-            return list.getMovies();
-        }
-        return java.util.Collections.emptyList();
-    }
-
-    @Override
     public List<MovieList> getUserListsForUser(String userId) {
         return movieListDataAccessInterface.getUserListsForUser(userId);
     }
 
-
-    @Override
-    public void updateMovieList(MovieList movieList) {
-        movieListDataAccessInterface.updateMovieList(movieList);
-    }
-
-
-    @Override
-    public void addMovieToList(String listName, Movie movie) {
-        movieListDataAccessInterface.addMovieToList(listName, movie);
-    }
-
-    @Override
-    public void renameList(String listId, String newName) {
-        movieListDataAccessInterface.renameList(listId, newName);
-    }
-
-    @Override
-    public void deleteMovieFromList(String listName, Movie movie) {
-        movieListDataAccessInterface.removeMovieFromList(listName, movie);
-    }
-
-    @Override
-    public void deleteMovieList(String listName) {
-        movieListDataAccessInterface.deleteMovieList(listName);
-    }
 }
