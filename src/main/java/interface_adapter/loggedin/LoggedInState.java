@@ -11,8 +11,7 @@ public class LoggedInState {
     private String favDirector;
 
     public String getUsername() {
-        return username;
-    }
+        return username;}
 
     public String getLoginError() {
         return loginError;
