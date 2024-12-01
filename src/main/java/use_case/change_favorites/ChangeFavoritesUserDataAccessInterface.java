@@ -14,4 +14,7 @@ public interface ChangeFavoritesUserDataAccessInterface {
     void modifyInfo(User user);
 
     void save(User user);
+
+    User get(String username);
+
 }
