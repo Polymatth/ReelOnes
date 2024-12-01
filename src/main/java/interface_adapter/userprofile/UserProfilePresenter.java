@@ -28,14 +28,15 @@ public class UserProfilePresenter implements GoProfileOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        // No need to add code here. We'll assume that logout can't fail.
-        // Thought question: is this a reasonable assumption?
+
     }
 
     @Override
     public void switchToProfileView() {
         viewManagerModel.setState(userProfileViewModel.getViewName());
+        userProfileViewModel.loadCurrentUser();
         viewManagerModel.firePropertyChanged();
+        System.out.println(userProfileViewModel.getState().getFavDirector());
     }
 
 

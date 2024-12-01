@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
                             Arrays.asList(categoryOptions), filterCategoryViewModel.getState().getOriginalList());
                 } catch (Exception e) {
                     System.out.println("Fail silently");
-                    System.out.println(e);
+                    e.printStackTrace();
                 }
                 return null;
             }
@@ -98,7 +99,8 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        filterCategoriesController.executeReturnToFilterCategoriesView(categoryName, optionsSelected,
+                        filterCategoriesController.executeReturnToFilterCategoriesView(categoryName,
+                                filterCategoryViewModel.getState().getSelectedOptions(),
                                 filterCategoryViewModel.getState().getFilteredList());
                     }
                 }
@@ -128,7 +130,7 @@ public class FilterCategoryView extends JPanel implements ActionListener, Proper
     public void propertyChange(PropertyChangeEvent evt) {
         this.categoryName = this.filterCategoryViewModel.getState().getCategoryName();
         this.categoryOptions = this.filterCategoryViewModel.getState().getCategoryOptions();
-        this.optionsSelected = this.filterCategoryViewModel.getState().getSelectedOptions();
+        this.optionsSelected = new ArrayList<>(this.filterCategoryViewModel.getState().getSelectedOptions());
         displayOptions();
     }
 

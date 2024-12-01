@@ -17,14 +17,18 @@ public class ClearAllFiltersInteractorTest {
     @Test
     void ClearAllFiltersTest() {
         AppConfig config = new AppConfig();
+        //Create the original list that was being filtered through.
+        SearchMovieDataAccessInterface dataAccessInterface = config.getMovieDataAccess();
+        List<Movie> testList = dataAccessInterface.searchMoviesByQuery("The Substance");
         //Set the filters that have been selected and the movies that meet the filters for each category.
         Map<String, List<Movie>> filtersToMovies = new HashMap<>();
         Map<String, List<String>> filtersToSelections = new HashMap<>();
         for (String category : FilterCategoryConstants.getCategories()) {
-            filtersToMovies.put(category, new ArrayList<>());
+            filtersToMovies.put(category, testList);
             filtersToSelections.put(category, new ArrayList<>());
         }
-        filtersToSelections.replace("Popularity Ratings", Arrays.asList(new String[]{"5.0-5.9", "6.0-6.9"}));
+        filtersToSelections.replace(FilterCategoryConstants.POPULARITY_RATING,
+                Arrays.asList(new String[]{"5.0-5.9", "6.0-6.9"}));
         List<Movie> moviesToAdd = new ArrayList<>();
         moviesToAdd.add(new Movie("/jpXGGmLfY5q8t8c5nkqZjuHNtQ1.jpg", false,
                 "By coincidence rather than by design, the Swiss chemist Albert Hofmann makes a sensational " +
@@ -58,21 +62,23 @@ public class ClearAllFiltersInteractorTest {
                 "Christians?", "2015-09-17", Arrays.asList(new Integer[]{99, 10402, 36}), 389112,
                 "ar","A Magical Substance Flows Into Me",
                 "/cWE42cHbmk2z9u9NlAvUews36Ev.jpg", (float)0.446, 4, false, (float)6.8));
-        filtersToMovies.replace("Popularity Ratings", moviesToAdd);
+        filtersToMovies.replace(FilterCategoryConstants.POPULARITY_RATING, moviesToAdd);
         ClearAllFiltersInputData clearAllFiltersInputData = new ClearAllFiltersInputData(filtersToSelections,
-                filtersToMovies);
+                filtersToMovies, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
         ClearAllFiltersOutputBoundary clearAllFiltersPresenter = new ClearAllFiltersOutputBoundary() {
             @Override
             public void executeClearAllFilters(ClearAllFiltersOutputData clearAllFiltersOutputData) {
-                //Test that there are no selected filters and that no movies that correspond to specific selected
-                //filters; i.e. that for each key in filtersToMovies and filtersToSelections, the value is an empty
-                //list.
+                //Test that there are no selected filters that correspond to any given category (i.e. that for every
+                // filter category key, the corresponding list value is empty), and that for every filter category,
+                //every movie is considered applicable, since by clearing filters there are no movies being filtered out
+                //(i.e. check that for every filter category key, the corresponding list value is the same as the
+                //original list
                 //Note: filtersToMovies and filtersToSelections have the same keyset.
                 for (String category : clearAllFiltersOutputData.getFiltersToMovies().keySet()) {
                     assert(clearAllFiltersOutputData.getFiltersToSelections().get(category).isEmpty());
-                    assert(clearAllFiltersOutputData.getFiltersToMovies().get(category).isEmpty());
+                    assertEquals(testList, clearAllFiltersOutputData.getFiltersToMovies().get(category));
                 }
             }
         };

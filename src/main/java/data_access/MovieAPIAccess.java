@@ -1,6 +1,8 @@
 package data_access;
 
 import entity.Movie;
+import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesDataAccessInterface;
+import use_case.fetch_popularmovies.FetchPopularMoviesDataAccessInterface;
 import use_case.movie_detail.MovieDetailDataAccessInterface;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 import okhttp3.OkHttpClient;
@@ -14,7 +16,7 @@ import java.util.*;
 /**
  * Implementation of SearchMovieDataAccessInterface to fetch movie data from API
  */
-public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDetailDataAccessInterface {
+public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDetailDataAccessInterface, FetchNowPlayingMoviesDataAccessInterface , FetchPopularMoviesDataAccessInterface {
 
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -168,34 +170,48 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
             if (response.isSuccessful() && response.body() != null) {
                 String locale = Locale.getDefault().getCountry();
                 String jsonResponse = response.body().string();
-                Map<String, Map> resultsMap = (Map<String, Map>) new JSONObject(jsonResponse).toMap().get("results");
-                Map<String, Map<String, Object>> localeMap = resultsMap.get(locale);
-                if (localeMap == null) {
-                    // localemap is empty
-                    return new ArrayList<>();
-                }
-                Set<String> services = new HashSet<>();
-                List<Map<String, Object>> buyList = (List<Map<String, Object>>) localeMap.get("buy");
-                List<Map<String, Object>> rentList = (List<Map<String, Object>>) localeMap.get("rent");
-                List<Map<String, Object>> flatrateList = (List<Map<String, Object>>) localeMap.get("flatrate");
-                if (buyList != null) {
-                    for (Map<String, Object> elem: buyList) {
-                        services.add((String) elem.get("provider_name"));
+                System.out.println(jsonResponse);
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONObject countriesToOptions = jsonObject.getJSONObject("results");
+                if (countriesToOptions != null && !countriesToOptions.isEmpty() && countriesToOptions.keySet().contains(locale)) {
+                    JSONObject localeOptions = ((JSONObject)countriesToOptions.get(locale));
+                    if (localeOptions.keySet().contains("flatrate") && localeOptions.get("flatrate") != null) {
+                        for (int i = 0; i < ((JSONArray)(localeOptions.get("flatrate"))).length(); i++) {
+                            String provider = (String) ((JSONObject)((JSONArray)localeOptions.get("flatrate"))
+                                    .get(i)).get("provider_name");
+                            System.out.println(provider);
+                            providerList.add(provider);
+                        }
                     }
                 }
-                if (rentList != null) {
-                    for (Map<String, Object> elem: rentList) {
-                        services.add((String) elem.get("provider_name"));
-                    }
-                }
+//                Map<String, Map> resultsMap = (Map<String, Map>) new JSONObject(jsonResponse).toMap().get("results");
+//                Map<String, Map<String, Object>> localeMap = resultsMap.get(locale);
+//                if (localeMap == null) {
+//                    // localemap is empty
+//                    return new ArrayList<>();
+//                }
+//                Set<String> services = new HashSet<>();
+//                List<Map<String, Object>> buyList = (List<Map<String, Object>>) localeMap.get("buy");
+//                List<Map<String, Object>> rentList = (List<Map<String, Object>>) localeMap.get("rent");
+//                List<Map<String, Object>> flatrateList = (List<Map<String, Object>>) localeMap.get("flatrate");
+//                if (buyList != null) {
+//                    for (Map<String, Object> elem: buyList) {
+//                        services.add((String) elem.get("provider_name"));
+//                    }
+//                }
+//                if (rentList != null) {
+//                    for (Map<String, Object> elem: rentList) {
+//                        services.add((String) elem.get("provider_name"));
+//                    }
+//                }
+//
+//                if (flatrateList != null) {
+//                    for (Map<String, Object> elem: flatrateList) {
+//                        services.add((String) elem.get("provider_name"));
+//                    }
+//                }
 
-                if (flatrateList != null) {
-                    for (Map<String, Object> elem: flatrateList) {
-                        services.add((String) elem.get("provider_name"));
-                    }
-                }
-
-                return new ArrayList<>(services);
+                return providerList;
             }
             else {
                 System.out.println("API request failed with code: " + response.code());
@@ -207,4 +223,180 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
         failList.add("Oops");
         return failList;
     }
+
+    public List<Movie> getNowPlayingMovies(){
+        List<Movie> movies = new ArrayList<>();
+        try {
+            String requestUrl = apiUrl + apiKey +"&language=en-US&page=1 ";
+
+            Request request = new Request.Builder()
+                    .url(requestUrl)
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
+
+            // Execute the API call
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                String jsonResponse = response.body().string();
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray results = jsonObject.getJSONArray("results");
+
+                // Parse each movie from the response
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject movieJson = results.getJSONObject(i);
+
+                    JSONArray genreJsonArray = movieJson.optJSONArray("genre_ids");
+                    List<Integer> genreIds = new ArrayList<>();
+                    if (genreJsonArray != null) {
+                        for (int j = 0; j < genreJsonArray.length(); j++) {
+                            genreIds.add(genreJsonArray.getInt(j));
+                        }
+                    }
+
+                    // Create a Movie object
+                    Movie movie = new Movie(
+                            movieJson.optString("poster_path"),
+                            movieJson.optBoolean("adult", false),
+                            movieJson.optString("overview"),
+                            movieJson.optString("release_date"),
+                            genreIds,
+                            movieJson.optInt("id"),
+                            movieJson.optString("original_language"),
+                            movieJson.optString("title"),
+                            movieJson.optString("backdrop_path"),
+                            movieJson.optFloat("popularity", 0),
+                            movieJson.optInt("vote_count", 0),
+                            movieJson.optBoolean("video", false),
+                            movieJson.optFloat("vote_average", 0)
+                    );
+                    movies.add(movie);
+                }
+            } else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+        return movies;
+    }
+
+    public List<Movie> getUpcomingMovies() {
+        List<Movie> movies = new ArrayList<>();
+        try {
+            String requestUrl = apiUrl + "/movie/upcoming?language=en-US&page=1&api_key=" + apiKey;
+
+            Request request = new Request.Builder()
+                    .url(requestUrl)
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
+
+            // Execute the API call
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                String jsonResponse = response.body().string();
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray results = jsonObject.getJSONArray("results");
+
+                // Parse each movie from the response
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject movieJson = results.getJSONObject(i);
+
+                    JSONArray genreJsonArray = movieJson.optJSONArray("genre_ids");
+                    List<Integer> genreIds = new ArrayList<>();
+                    if (genreJsonArray != null) {
+                        for (int j = 0; j < genreJsonArray.length(); j++) {
+                            genreIds.add(genreJsonArray.getInt(j));
+                        }
+                    }
+
+                    // Create a Movie object
+                    Movie movie = new Movie(
+                            movieJson.optString("poster_path"),
+                            movieJson.optBoolean("adult", false),
+                            movieJson.optString("overview"),
+                            movieJson.optString("release_date"),
+                            genreIds,
+                            movieJson.optInt("id"),
+                            movieJson.optString("original_language"),
+                            movieJson.optString("title"),
+                            movieJson.optString("backdrop_path"),
+                            movieJson.optFloat("popularity", 0),
+                            movieJson.optInt("vote_count", 0),
+                            movieJson.optBoolean("video", false),
+                            movieJson.optFloat("vote_average", 0)
+                    );
+                    movies.add(movie);
+                }
+            } else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+        return movies;
+
+    }
+
+    public List<Movie> getPopularMovies(){
+        List<Movie> movies = new ArrayList<>();
+        try {
+            // Build the request URL for upcoming movies
+            String requestUrl =  apiUrl+ "&api_key=" + apiKey+"&language=en-US&page=1 ";
+
+            Request request = new Request.Builder()
+                    .url(requestUrl)
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
+
+            // Execute the API call
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                String jsonResponse = response.body().string();
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray results = jsonObject.getJSONArray("results");
+
+                // Parse each movie from the response
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject movieJson = results.getJSONObject(i);
+
+                    JSONArray genreJsonArray = movieJson.optJSONArray("genre_ids");
+                    List<Integer> genreIds = new ArrayList<>();
+                    if (genreJsonArray != null) {
+                        for (int j = 0; j < genreJsonArray.length(); j++) {
+                            genreIds.add(genreJsonArray.getInt(j));
+                        }
+                    }
+
+                    // Create a Movie object
+                    Movie movie = new Movie(
+                            movieJson.optString("poster_path"),
+                            movieJson.optBoolean("adult", false),
+                            movieJson.optString("overview"),
+                            movieJson.optString("release_date"),
+                            genreIds,
+                            movieJson.optInt("id"),
+                            movieJson.optString("original_language"),
+                            movieJson.optString("title"),
+                            movieJson.optString("backdrop_path"),
+                            movieJson.optFloat("popularity", 0),
+                            movieJson.optInt("vote_count", 0),
+                            movieJson.optBoolean("video", false),
+                            movieJson.optFloat("vote_average", 0)
+                    );
+                    movies.add(movie);
+                }
+            } else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+        return movies;
+    }
+
+
+
 }

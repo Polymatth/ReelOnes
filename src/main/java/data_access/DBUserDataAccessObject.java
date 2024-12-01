@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import use_case.change_favorites.ChangeFavoritesUserDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.get_currentuser.GetCurrentUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -24,7 +25,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface , GetCurrentUserDataAccessInterface {
+        LogoutUserDataAccessInterface , GetCurrentUserDataAccessInterface , ChangeFavoritesUserDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";

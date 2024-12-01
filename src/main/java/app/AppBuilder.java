@@ -12,15 +12,23 @@ import data_access.InMemoryMovieListDataAccessObject;
 import data_access.InMemoryOpenListDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
+import data_access.MovieAPIAccess;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.change_favorites.ChangeFavoritesController;
+import interface_adapter.change_favorites.ChangeFavoritesPresenter;
+import interface_adapter.change_favorites.ChangeFavoritesViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.ChangePasswordViewModel;
 import interface_adapter.edit_list.EditListPresenter;
 import interface_adapter.edit_list.EditListViewModel;
 import interface_adapter.edit_list.EditListController;
+import interface_adapter.fetch_nowplayingmovies.FetchNowPlayingMoviesController;
+import interface_adapter.fetch_nowplayingmovies.FetchNowPlayingMoviesPresenter;
+import interface_adapter.fetch_popularmovies.FetchPopularMoviesController;
+import interface_adapter.fetch_popularmovies.FetchPopularMoviesPresenter;
 import interface_adapter.get_currentuser.GetCurrentUserController;
 import interface_adapter.get_currentuser.GetCurrentUserPresenter;
 import interface_adapter.loggedin.LoggedInViewModel;
@@ -50,10 +58,21 @@ import interface_adapter.signup.SignupViewModel;
 import interface_adapter.userprofile.UserProfileController;
 import interface_adapter.userprofile.UserProfilePresenter;
 import interface_adapter.userprofile.UserProfileViewModel;
+import use_case.change_favorites.ChangeFavoritesInputBoundary;
+import use_case.change_favorites.ChangeFavoritesInteractor;
+import use_case.change_favorites.ChangeFavoritesOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.edit_list.EditListOutputBoundary;
+import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesDataAccessInterface;
+import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesInputBoundary;
+import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesInteractor;
+import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesOutputBoundary;
+import use_case.fetch_popularmovies.FetchPopularMoviesDataAccessInterface;
+import use_case.fetch_popularmovies.FetchPopularMoviesInputBoundary;
+import use_case.fetch_popularmovies.FetchPopularMoviesOutputBoundary;
+import use_case.fetch_popularmovies.FetchPopularMoviesInteractor;
 import use_case.get_currentuser.GetCurrentOutputBoundary;
 import use_case.get_currentuser.GetCurrentUserInputBoundary;
 import use_case.get_currentuser.GetCurrentUserInteractor;
@@ -97,6 +116,9 @@ import use_case.return_to_filter_categories.ReturnToFilterCategoriesOutputBounda
 import use_case.return_to_list_from_filter_categories.ReturnToListInputBoundary;
 import use_case.return_to_list_from_filter_categories.ReturnToListInteractor;
 import use_case.return_to_list_from_filter_categories.ReturnToListOutputBoundary;
+import use_case.return_to_list_from_movie_detail.ReturnToListFromMovieInputBoundary;
+import use_case.return_to_list_from_movie_detail.ReturnToListFromMovieInteractor;
+import use_case.return_to_list_from_movie_detail.ReturnToListFromMovieOutputBoundary;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
@@ -128,7 +150,10 @@ public class AppBuilder {
     // thought question: is the hard dependency below a problem?
     private final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
+
     private final SearchMovieDataAccessInterface searchMovieDataAccessInterface = new AppConfig().getMovieDataAccess();
+    private final FetchNowPlayingMoviesDataAccessInterface fetchNowPlayingMoviesDataAccessInterface =  new AppConfig().getNowPlayingMovieDataAccess();
+    private final FetchPopularMoviesDataAccessInterface fetchPopularMoviesDataAccessInterface =  new AppConfig().getPopularMoviesDataAccess();
     private final MovieDetailDataAccessInterface movieDetailDataAccessInterface = new AppConfig()
             .getMovieDetailDataAccess();
     private final OpenListDataAccessInterface openListDataAccessInterface = new InMemoryOpenListDataAccessObject();
@@ -141,6 +166,7 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private UserProfileViewModel userProfileViewModel;
     private ChangePasswordViewModel changePasswordViewModel;
+    private ChangeFavoritesViewModel changeFavoritesViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
     private UserProfileView userProfileView;
@@ -164,9 +190,11 @@ public class AppBuilder {
     private FilterCategoryView filterCategoryView;
     private FilterCategoryViewModel filterCategoryViewModel;
 
+
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
+
 
     /**
      * Adds the Signup View to the application.
@@ -209,6 +237,7 @@ public class AppBuilder {
         userProfileViewModel = new UserProfileViewModel();
         userProfileView = new UserProfileView(userProfileViewModel);
         cardPanel.add(userProfileView, userProfileView.getViewName());
+
         return this;
     }
 
@@ -282,6 +311,15 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Signup View to the application.
+     * @return this builder
+     */
+    public AppBuilder addChangeFavoritesView() {
+        changeFavoritesViewModel = new ChangeFavoritesViewModel();
+        return this;
+    }
+
+    /**
      * Adds the Signup Use Case to the application.
      * @return this builder
      */
@@ -323,6 +361,8 @@ public class AppBuilder {
         System.out.println("Created GetCurrentUserController: " + getCurrentUserController);
         changePasswordView.setGetCurrentUserController(getCurrentUserController);
         editListView.setGetCurrentUserController(getCurrentUserController);
+        userProfileViewModel.setGetCurrentUserController(getCurrentUserController);
+
         return this;
     }
 
@@ -347,11 +387,12 @@ public class AppBuilder {
      */
     public AppBuilder addSearchMovieUseCase() {
         final SearchMovieOutputBoundary searchMovieOutputBoundary = new SearchMoviePresenter(viewManagerModel,
-                searchMovieViewModel);
+                searchMovieViewModel, loggedInViewModel);
         final SearchMovieInputBoundary searchMovieInteractor = new SearchMovieInteractor(searchMovieOutputBoundary,
                 searchMovieDataAccessInterface);
         final SearchMovieController searchMovieController = new SearchMovieController(searchMovieInteractor);
         loggedInView.setSearchMoviesController(searchMovieController);
+        searchMovieView.setSearchMoviesController(searchMovieController);
         return this;
     }
 
@@ -374,19 +415,40 @@ public class AppBuilder {
         return this;
     }
 
+
+
+    /**
+     * Adds the Change Favorites Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addChangeFavoritesUseCase() {
+        final ChangeFavoritesOutputBoundary changeFavoritesOutputBoundary = new ChangeFavoritesPresenter(viewManagerModel,changeFavoritesViewModel,userProfileViewModel);
+
+        final ChangeFavoritesInputBoundary changeFavoritesInteractor = new ChangeFavoritesInteractor(userDataAccessObject,changeFavoritesOutputBoundary,userFactory);
+
+        final ChangeFavoritesController changeFavoritesController = new ChangeFavoritesController(changeFavoritesInteractor);
+        userProfileView.setChangeFavoritesController(changeFavoritesController);
+        return this;
+    }
+
+
     /**
      * Adds the Movie Detail Selection Use Case to the application.
      * @return this builder
      */
-    public AppBuilder addMovieDetailUseCase() {
+    public AppBuilder addMovieDetailUseCases() {
         final MovieDetailOutputBoundary movieDetailOutputBoundary = new MovieDetailPresenter(movieDetailViewModel,
                 viewManagerModel);
         final MovieDetailInputBoundary movieDetailInteractor = new MovieDetailInteractor(movieDetailOutputBoundary,
                 movieDetailDataAccessInterface);
-        final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor);
+        final ReturnToListFromMovieInputBoundary returnToListFromMovieInteractor = new ReturnToListFromMovieInteractor(
+                (ReturnToListFromMovieOutputBoundary)movieDetailOutputBoundary);
+        final MovieDetailController movieDetailController = new MovieDetailController(movieDetailInteractor,
+                returnToListFromMovieInteractor);
         movieDetailView.setMovieDetailController(movieDetailController);
         searchMovieView.setMovieDetailController(movieDetailController);
         openListView.setMovieDetailController(movieDetailController);
+        loggedInViewModel.setMovieDetailController(movieDetailController);
         return this;
     }
 
@@ -470,6 +532,32 @@ public class AppBuilder {
         openListView.setEditListController(editListController);
         return this;
     }
+
+    /**
+     * Adds the  FetchNowPlayingMovies Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addFetchNowPlayingMoviesUseCase() {
+        final FetchNowPlayingMoviesOutputBoundary fetchNowPlayingMoviesOutputBoundary = new FetchNowPlayingMoviesPresenter(viewManagerModel,loggedInViewModel);
+        final FetchNowPlayingMoviesInputBoundary fetchNowPlayingMoviesInteractor = new FetchNowPlayingMoviesInteractor(fetchNowPlayingMoviesOutputBoundary,fetchNowPlayingMoviesDataAccessInterface);
+        final FetchNowPlayingMoviesController fetchNowPlayingMoviesController = new FetchNowPlayingMoviesController(fetchNowPlayingMoviesInteractor);
+        loggedInViewModel.setFetchNowPlayingMoviesController(fetchNowPlayingMoviesController);
+        return this;
+    }
+
+    /**
+     * Adds the FetchPopularMovies Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addFetchPopularMoviesUseCase() {
+        final FetchPopularMoviesOutputBoundary fetchPopularMoviesOutputBoundary = new FetchPopularMoviesPresenter(viewManagerModel,loggedInViewModel);
+        final FetchPopularMoviesInputBoundary fetchPopularMoviesInteractor = new FetchPopularMoviesInteractor(fetchPopularMoviesOutputBoundary,fetchPopularMoviesDataAccessInterface);
+        final FetchPopularMoviesController fetchPopularMoviesController = new FetchPopularMoviesController(fetchPopularMoviesInteractor);
+        loggedInViewModel.setFetchPopularMoviesController(fetchPopularMoviesController);
+        return this;
+    }
+
+
 
 
     /**

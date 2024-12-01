@@ -8,13 +8,18 @@ import entity.Movie;
 public class MovieDetailInputData {
 
     private final Movie movie;
+    private final String originView;
 
-    public MovieDetailInputData(Movie movie) {
+    public MovieDetailInputData(Movie movie, String originView) {
         this.movie = movie;
+        this.originView = originView;
     }
 
-    Movie getMovie() {
+    public Movie getMovie() {
         return this.movie;
     }
 
+    public String getOriginView() {
+        return this.originView;
+    }
 }

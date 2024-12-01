@@ -45,11 +45,11 @@ public class FilterCategoriesPresenter implements ReturnToFilterCategoriesOutput
                 filterCategoriesState.setFilterToMovies(goToFilterCategoriesOutputData.getFiltersToMovies());
         //    }
         //}
-        for (List<String> optionsList : goToFilterCategoriesOutputData.getFiltersToSelections().values()) {
-            if (!optionsList.isEmpty()) {
+        //for (List<String> optionsList : goToFilterCategoriesOutputData.getFiltersToSelections().values()) {
+       //     if (!optionsList.isEmpty()) {
                 filterCategoriesState.setFiltersToSelections(goToFilterCategoriesOutputData.getFiltersToSelections());
-            }
-        }
+        //    }
+        //}
         filterCategoriesState.setListView(goToFilterCategoriesOutputData.getListView());
         //Update the State in the Filter Category View Model.
         this.filterCategoriesViewModel.setState(filterCategoriesState);

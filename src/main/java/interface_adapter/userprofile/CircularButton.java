@@ -3,56 +3,64 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
 public class CircularButton extends JButton {
 
     public CircularButton(String label) {
         super(label);
-
-        // Remove default button decorations
-        setContentAreaFilled(false);
+        setFont(new Font("Arial", Font.BOLD, 14));
+        setForeground(Color.WHITE);
+        setBackground(new Color(70, 130, 180));  // Steel Blue Color
         setFocusPainted(false);
         setBorderPainted(false);
+        setContentAreaFilled(false);
         setOpaque(false);
 
-        // Add action listener for button click
-        addActionListener(new ActionListener() {
+        setPreferredSize(new Dimension(80, 80));  // Larger size for better visibility
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Add hover effect
+        addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Button Clicked!");
+            public void mouseEntered(MouseEvent e) {
+                setBackground(new Color(100, 149, 237));  // Cornflower Blue
+                repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setBackground(new Color(70, 130, 180));  // Reset to Steel Blue
+                repaint();
             }
         });
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        // Enable antialiasing for smoother circle
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Set background color and draw the circular shape
-        g2.setColor(Color.CYAN);
+        // Draw background circle
+        g2.setColor(getBackground());
         g2.fillOval(0, 0, getWidth(), getHeight());
 
-        // Call the super method to handle button label (text) drawing
+        // Draw label text
+        FontMetrics fm = g2.getFontMetrics();
+        int x = (getWidth() - fm.stringWidth(getText())) / 2;
+        int y = (getHeight() + fm.getAscent()) / 2 - 3;
+        g2.setColor(getForeground());
+        g2.drawString(getText(), x, y);
+
+        g2.dispose();
         super.paintComponent(g);
     }
 
     @Override
-    protected void paintBorder(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Draw a circular border
-        g2.setColor(Color.GRAY);
-        g2.setStroke(new BasicStroke(3));
-        g2.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
-    }
-
-    @Override
     public Dimension getPreferredSize() {
-        return new Dimension(80, 80); // Set preferred size (width and height should be equal for a circle)
+        return new Dimension(80, 80);  // Ensure the button stays circular
     }
 
     @Override

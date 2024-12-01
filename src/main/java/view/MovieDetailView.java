@@ -29,7 +29,7 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
         this.movieDetailViewModel = movieDetailViewModel;
         this.movieDetailViewModel.addPropertyChangeListener(this);
 
-        this.setLayout(new GridLayout(1, 2));
+        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
         if (poster != null) {
             displayDetails();
@@ -41,17 +41,20 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
     }
 
     public void displayDetails() {
+        this.removeAll();
         final JLabel title = new JLabel(this.movieDetailViewModel.getState().getTitle() +
                 " (" + this.movieDetailViewModel.getState().getYear() + ")");
-        title.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         final JLabel director = new JLabel("dir. " + this.movieDetailViewModel.getState().getDirector());
-        title.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        final JLabel genre = new JLabel(this.movieDetailViewModel.getState().getGenre());
-        title.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        final JLabel genre = new JLabel("Genres: " + this.movieDetailViewModel.getState().getGenre());
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        //        final JLabel streaming = new JLabel(this.movieDetailViewModel.getState().getStreamingServices());
+        final JLabel streaming = new JLabel("Streaming on: " + this.movieDetailViewModel.getState()
+                .getStreamingServices());
+
         String posterUrl = "https://image.tmdb.org/t/p/w500" + this.movieDetailViewModel.getState().getPosterImagePath();
         URL url = null;
         try {
@@ -67,26 +70,41 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
         }
 
         final JLabel posterPic = new JLabel(new ImageIcon(poster));
-        posterPic.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         addTo = new JButton("Add to");
+        final JButton back = new JButton("Back to list");
 
         final JPanel movieInfo = new JPanel();
         movieInfo.setLayout(new BoxLayout(movieInfo, BoxLayout.PAGE_AXIS));
         movieInfo.add(title);
         movieInfo.add(director);
         movieInfo.add(genre);
-//        movieInfo.add(streaming);
+        movieInfo.add(streaming);
 
         final JPanel addButton = new JPanel();
         addButton.add(addTo);
+
+        final JPanel backButton = new JPanel();
+        backButton.add(back);
+
+        back.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        movieDetailController.executeReturnToListView(movieDetailViewModel.getState().getOriginView());
+                    }
+                }
+        );
 
         final JPanel addPoster = new JPanel();
         addPoster.add(posterPic);
 
         final JPanel rightSide = new JPanel();
+        rightSide.setLayout(new BoxLayout(rightSide, BoxLayout.PAGE_AXIS));
+        rightSide.setAlignmentX(Component.LEFT_ALIGNMENT);
         rightSide.add(movieInfo);
         rightSide.add(addButton);
+        rightSide.add(backButton);
 
         this.add(addPoster);
         this.add(rightSide);

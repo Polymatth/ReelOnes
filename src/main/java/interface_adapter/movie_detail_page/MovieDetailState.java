@@ -9,8 +9,9 @@ public class MovieDetailState {
     private String genre = "";
     private String director = "";
     private String year = "";
-//    private String streamingServices;
+    private String streamingServices = "";
     private String posterImagePath = "";
+    private String originView;
 
     public void setTitle(String title) {
         this.title = title;
@@ -28,8 +29,9 @@ public class MovieDetailState {
         this.year = year;
     }
 
-//    public void setStreamingServices(String streamingServices) {
-//        this.streamingServices = streamingServices;}
+    public void setStreamingServices(String streamingServices) {
+        this.streamingServices = streamingServices;
+    }
 
     public void setPosterImagePath(String path) {
         this.posterImagePath = path;
@@ -44,18 +46,35 @@ public class MovieDetailState {
     }
 
     public String getGenre() {
+        if (this.genre.equals("")) {
+            return "Unknown";
+        }
         return this.genre;
     }
 
     public String getDirector() {
+        if (this.director.equals("")) {
+            return "Unknown";
+        }
         return this.director;
     }
 
-//    public String getStreamingServices() {
-//        return this.streamingServices;//   }
+    public String getStreamingServices() {
+        if (this.streamingServices.equals("")) {
+            return "Unavailable";
+        }
+        return this.streamingServices;
+    }
 
     public String getPosterImagePath() {
         return this.posterImagePath;
     }
 
+    public String getOriginView() {
+        return this.originView;
+    }
+
+    public void setOriginView(String originView) {
+        this.originView = originView;
+    }
 }
