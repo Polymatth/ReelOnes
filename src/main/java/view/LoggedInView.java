@@ -172,7 +172,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         nowPlayingTitle.setFont(new Font("Arial", Font.BOLD, 24));
         nowPlayingTitle.setForeground(Color.WHITE);
 
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.CENTER;
         add(nowPlayingTitle, gbc);
 
@@ -180,7 +180,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         nowPlayingMoviesPanel = new JPanel(new GridLayout(1, 5, 10, 10));
         nowPlayingMoviesPanel.setBackground(Color.DARK_GRAY);
 
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         add(nowPlayingMoviesPanel, gbc);
 
         // Popular Movies Title
@@ -188,21 +188,21 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         popularMoviesTitle.setFont(new Font("Arial", Font.BOLD, 24));
         popularMoviesTitle.setForeground(Color.WHITE);
 
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         add(popularMoviesTitle, gbc);
 
         // Popular Movies Panel
         popularMoviesPanel = new JPanel(new GridLayout(1, 5, 10, 10));
         popularMoviesPanel.setBackground(Color.DARK_GRAY);
 
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         add(popularMoviesPanel, gbc);
 
         // Log Out Button
         logOutButton = new JButton("Log Out");
         logOutButton.addActionListener(e -> logoutController.execute(loggedInViewModel.getState().getUsername()));
 
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         gbc.insets = new Insets(20, 10, 10, 10);
         gbc.anchor = GridBagConstraints.SOUTH;
         add(logOutButton, gbc);

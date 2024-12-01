@@ -48,6 +48,10 @@ public class Movie {
         return this.poster_path;
     }
 
+    public String getOverview() {return this.overview;}
+
+    public String getOriginal_language() {return this.original_language;}
+
     public String getReleaseDate() {
         return this.release_date;
     }

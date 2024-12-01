@@ -58,6 +58,8 @@ public abstract class MovieList {
         movies.remove(movie);
     }
 
+    public int size() {return movies.size();}
+
     public boolean containsMovie(Movie movie) {
         return movies.contains(movie);
     }

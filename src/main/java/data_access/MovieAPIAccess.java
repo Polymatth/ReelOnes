@@ -87,6 +87,68 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
         return movies;
     }
 
+    public List<Movie> searchMoviesByGenre(List<Integer> genreList) {
+        List<Movie> movies = new ArrayList<>();
+        try {
+            StringBuilder requestUrl = new StringBuilder("https://api.themoviedb.org/3/discover/movie?api_key=" +
+                    apiKey + "&with_genres=");
+            for (Integer id: genreList) {
+                requestUrl.append(id).append(",");
+            }
+            if (requestUrl.substring(requestUrl.length() - 1) == ","){
+                requestUrl.deleteCharAt(requestUrl.length() - 1);
+            }
+            Request request = new Request.Builder()
+                    .url(requestUrl.toString())
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                String jsonResponse = response.body().string();
+                System.out.println(jsonResponse);
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray results = jsonObject.getJSONArray("results");
+
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject movieJson = results.getJSONObject(i);
+
+                    JSONArray genreJsonArray = movieJson.getJSONArray("genre_ids");
+                    List genre_ids = new ArrayList();
+                    int size = genreJsonArray.length();
+                    int j = 0;
+                    while (j< size){
+                        genre_ids.add(genreJsonArray.get(j));
+                        j++;
+                    }
+
+                    Movie movie = new Movie(
+                            movieJson.optString("poster_path"),
+                            movieJson.getBoolean("adult"),
+                            movieJson.getString("overview"),
+                            movieJson.getString("release_date"),
+                            genre_ids,
+                            movieJson.getInt("id"),
+                            movieJson.getString("original_language"),
+                            movieJson.getString("title"),
+                            movieJson.optString("backdrop_path"),
+                            movieJson.getFloat("popularity"),
+                            movieJson.getInt("vote_count"),
+                            movieJson.getBoolean("video"),
+                            movieJson.getFloat("vote_average")
+                    );
+                    movies.add(movie);
+                }
+            } else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+        return movies;
+    }
+
     /**
      * Returns the name of the genre that corresponds to each genre ID in the API.
      * @return the genre that corresponds to each genre ID.
@@ -396,6 +458,91 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
             e.printStackTrace();
         }
         return movies;
+    }
+
+    public List<Movie> searchByDirector(String favDirector) {
+        String directorId = "0";
+        List<Movie> movies = new ArrayList<>();
+        try {
+            Request request = new Request.Builder()
+                    .url("https://api.themoviedb.org/3/search/person?query=" + favDirector +
+                            "&include_adult=false&language=en-US&page=1" + "&api_key=" + apiKey)
+                    .get()
+                    .addHeader("accept", "application/json")
+                    .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ODg3MTdhYjE2YjY5MmJjMjhlNTU0MzA5MDYxNTkzZiIsIm5iZiI6MTczMTIzNDg0NS43NDM4NTIxLCJzdWIiOiI2NzMwMjM2ODU5MDM2ZDJiY2YwOTAzOTgiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.PaOY-5JX5RkcffDVGUBwNaR_Sz-IEt0yCzimtuuYXng")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                String jsonResponse = response.body().string();
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray results = jsonObject.getJSONArray("results");
+                JSONObject directorJSON = results.getJSONObject(0);
+                directorId = directorJSON.optString("id");
+            } else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            // Build the request URL for upcoming movies
+            Request request = new Request.Builder()
+                    .url("https://api.themoviedb.org/3/person/"+ directorId + "/movie_credits?api_key=" + apiKey)
+                    .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                    .build();
+
+            // Execute the API call
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                String jsonResponse = response.body().string();
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray results = jsonObject.getJSONArray("results");
+
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject movieJson = results.getJSONObject(i);
+
+                    JSONArray genreJsonArray = movieJson.getJSONArray("genre_ids");
+                    List genre_ids = new ArrayList();
+                    int size = genreJsonArray.length();
+                    int j = 0;
+                    while (j< size){
+                        genre_ids.add(genreJsonArray.get(j));
+                        j++;
+                    }
+
+                    Movie movie = new Movie(
+                            movieJson.optString("poster_path"),
+                            movieJson.getBoolean("adult"),
+                            movieJson.getString("overview"),
+                            movieJson.getString("release_date"),
+                            genre_ids,
+                            movieJson.getInt("id"),
+                            movieJson.getString("original_language"),
+                            movieJson.getString("title"),
+                            movieJson.optString("backdrop_path"),
+                            movieJson.getFloat("popularity"),
+                            movieJson.getInt("vote_count"),
+                            movieJson.getBoolean("video"),
+                            movieJson.getFloat("vote_average")
+                    );
+                    movies.add(movie);
+                }
+            } else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+
+        return movies;
+
+
+
+
     }
 
 
