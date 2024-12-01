@@ -11,6 +11,7 @@ import javax.swing.WindowConstants;
 import data_access.InMemoryOpenListDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import data_access.DBUserDataAccessObject;
+import data_access.MovieAPIAccess;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
@@ -20,6 +21,10 @@ import interface_adapter.change_favorites.ChangeFavoritesViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.ChangePasswordViewModel;
+import interface_adapter.fetch_nowplayingmovies.FetchNowPlayingMoviesController;
+import interface_adapter.fetch_nowplayingmovies.FetchNowPlayingMoviesPresenter;
+import interface_adapter.fetch_popularmovies.FetchPopularMoviesController;
+import interface_adapter.fetch_popularmovies.FetchPopularMoviesPresenter;
 import interface_adapter.get_currentuser.GetCurrentUserController;
 import interface_adapter.get_currentuser.GetCurrentUserPresenter;
 import interface_adapter.loggedin.LoggedInViewModel;
@@ -55,6 +60,14 @@ import use_case.change_favorites.ChangeFavoritesOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesDataAccessInterface;
+import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesInputBoundary;
+import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesInteractor;
+import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesOutputBoundary;
+import use_case.fetch_popularmovies.FetchPopularMoviesDataAccessInterface;
+import use_case.fetch_popularmovies.FetchPopularMoviesInputBoundary;
+import use_case.fetch_popularmovies.FetchPopularMoviesOutputBoundary;
+import use_case.fetch_popularmovies.FetchPopularMoviesInteractor;
 import use_case.get_currentuser.GetCurrentOutputBoundary;
 import use_case.get_currentuser.GetCurrentUserInputBoundary;
 import use_case.get_currentuser.GetCurrentUserInteractor;
@@ -128,7 +141,10 @@ public class AppBuilder {
     // thought question: is the hard dependency below a problem?
     private final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
+
     private final SearchMovieDataAccessInterface searchMovieDataAccessInterface = new AppConfig().getMovieDataAccess();
+    private final FetchNowPlayingMoviesDataAccessInterface fetchNowPlayingMoviesDataAccessInterface =  new AppConfig().getNowPlayingMovieDataAccess();
+    private final FetchPopularMoviesDataAccessInterface fetchPopularMoviesDataAccessInterface =  new AppConfig().getPopularMoviesDataAccess();
     private final MovieDetailDataAccessInterface movieDetailDataAccessInterface = new AppConfig()
             .getMovieDetailDataAccess();
     private final OpenListDataAccessInterface openListDataAccessInterface = new InMemoryOpenListDataAccessObject();
@@ -402,6 +418,7 @@ public class AppBuilder {
         movieDetailView.setMovieDetailController(movieDetailController);
         searchMovieView.setMovieDetailController(movieDetailController);
         openListView.setMovieDetailController(movieDetailController);
+        loggedInViewModel.setMovieDetailController(movieDetailController);
         return this;
     }
 
@@ -471,6 +488,32 @@ public class AppBuilder {
         userProfileView.setOpenListController(openListController);
         return this;
     }
+
+    /**
+     * Adds the  FetchNowPlayingMovies Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addFetchNowPlayingMoviesUseCase() {
+        final FetchNowPlayingMoviesOutputBoundary fetchNowPlayingMoviesOutputBoundary = new FetchNowPlayingMoviesPresenter(viewManagerModel,loggedInViewModel);
+        final FetchNowPlayingMoviesInputBoundary fetchNowPlayingMoviesInteractor = new FetchNowPlayingMoviesInteractor(fetchNowPlayingMoviesOutputBoundary,fetchNowPlayingMoviesDataAccessInterface);
+        final FetchNowPlayingMoviesController fetchNowPlayingMoviesController = new FetchNowPlayingMoviesController(fetchNowPlayingMoviesInteractor);
+        loggedInViewModel.setFetchNowPlayingMoviesController(fetchNowPlayingMoviesController);
+        return this;
+    }
+
+    /**
+     * Adds the FetchPopularMovies Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addFetchPopularMoviesUseCase() {
+        final FetchPopularMoviesOutputBoundary fetchPopularMoviesOutputBoundary = new FetchPopularMoviesPresenter(viewManagerModel,loggedInViewModel);
+        final FetchPopularMoviesInputBoundary fetchPopularMoviesInteractor = new FetchPopularMoviesInteractor(fetchPopularMoviesOutputBoundary,fetchPopularMoviesDataAccessInterface);
+        final FetchPopularMoviesController fetchPopularMoviesController = new FetchPopularMoviesController(fetchPopularMoviesInteractor);
+        loggedInViewModel.setFetchPopularMoviesController(fetchPopularMoviesController);
+        return this;
+    }
+
+
 
 
     /**

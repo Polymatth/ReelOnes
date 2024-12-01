@@ -26,6 +26,8 @@ public class Main {
                                              .addUserProfileView()
                                             .addFilterCategoryView()
                                              .addFilterCategoriesView()
+                                       .addFetchNowPlayingMoviesUseCase()
+                                         .addFetchPopularMoviesUseCase()
                                             .addChangePasswordView()
                                             .addGetCurrentUserUseCase()
                                             .addSignupUseCase()
