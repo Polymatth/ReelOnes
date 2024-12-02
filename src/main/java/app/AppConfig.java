@@ -2,6 +2,7 @@ package app;
 
 import data_access.MovieAPIAccess;
 import use_case.fetch_popularmovies.FetchPopularMoviesDataAccessInterface;
+import use_case.filter_application.FilterApplicationDataAccessInterface;
 import use_case.movie_detail.MovieDetailDataAccessInterface;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesDataAccessInterface;
@@ -21,6 +22,10 @@ public class AppConfig {
     public FetchPopularMoviesDataAccessInterface getPopularMoviesDataAccess() {return new MovieAPIAccess(API_KEY,API_URL_POPULAR);}
 
     public MovieDetailDataAccessInterface getMovieDetailDataAccess() {
+        return new MovieAPIAccess(API_KEY, API_URL);
+    }
+
+    public FilterApplicationDataAccessInterface getFilterApplicationDataAccess() {
         return new MovieAPIAccess(API_KEY, API_URL);
     }
 }

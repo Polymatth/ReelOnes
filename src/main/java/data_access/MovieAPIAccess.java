@@ -3,6 +3,7 @@ package data_access;
 import entity.Movie;
 import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesDataAccessInterface;
 import use_case.fetch_popularmovies.FetchPopularMoviesDataAccessInterface;
+import use_case.filter_application.FilterApplicationDataAccessInterface;
 import use_case.movie_detail.MovieDetailDataAccessInterface;
 import use_case.search_movie.SearchMovieDataAccessInterface;
 import okhttp3.OkHttpClient;
@@ -16,7 +17,8 @@ import java.util.*;
 /**
  * Implementation of SearchMovieDataAccessInterface to fetch movie data from API
  */
-public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDetailDataAccessInterface, FetchNowPlayingMoviesDataAccessInterface , FetchPopularMoviesDataAccessInterface {
+public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDetailDataAccessInterface,
+        FetchNowPlayingMoviesDataAccessInterface , FetchPopularMoviesDataAccessInterface, FilterApplicationDataAccessInterface {
 
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
