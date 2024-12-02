@@ -2,9 +2,13 @@ package use_case.signup;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
+import entity.MovieList;
 import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,6 +16,7 @@ class SignupInteractorTest {
 
     private static final String FAVMOVIE = "favoriteMovie";
     private static final String FAVDIRECTOR = "favoriteDirector";
+    private List<MovieList> movieListList = new ArrayList<>();
     @Test
     void successTest() {
         SignupInputData inputData = new SignupInputData("Paul", "password", "password", FAVMOVIE, FAVDIRECTOR);
@@ -78,7 +83,7 @@ class SignupInteractorTest {
 
         // Add Paul to the repo so that when we check later they already exist
         UserFactory factory = new CommonUserFactory();
-        User user = factory.create("Paul", "pwd",FAVMOVIE, FAVDIRECTOR);
+        User user = factory.create("Paul", "pwd",FAVMOVIE, FAVDIRECTOR, movieListList);
         userRepository.save(user);
 
         // This creates a presenter that tests whether the test case is as we expect.

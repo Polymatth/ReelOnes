@@ -2,10 +2,14 @@ package use_case.change_favorites;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
+import entity.MovieList;
 import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,6 +19,8 @@ class ChangeFavoritesInteractorTest {
     private static final String ORIGINAL_DIRECTOR = "Original Director";
     private static final String UPDATED_MOVIE = "Updated Movie";
     private static final String UPDATED_DIRECTOR = "Updated Director";
+    private List<MovieList> movieList = new ArrayList<>();
+
 
     private InMemoryUserDataAccessObject userRepository;
     private ChangeFavoritesOutputBoundary outputBoundary;
@@ -47,7 +53,7 @@ class ChangeFavoritesInteractorTest {
     void testSuccessfulFavoriteUpdate() {
         // Add a user to the repository
         UserFactory factory = new CommonUserFactory();
-        User user = factory.create("testUser", "password", ORIGINAL_MOVIE, ORIGINAL_DIRECTOR);
+        User user = factory.create("testUser", "password", ORIGINAL_MOVIE, ORIGINAL_DIRECTOR, movieList);
         userRepository.save(user);
 
         // Prepare input data
@@ -55,7 +61,8 @@ class ChangeFavoritesInteractorTest {
                 "testUser",
                 "password",
                 UPDATED_MOVIE,
-                UPDATED_DIRECTOR
+                UPDATED_DIRECTOR,
+                movieList
         );
 
         // Execute the interactor
