@@ -9,7 +9,7 @@ import use_case.filter_category_selection.FilterCategorySelectionOutputBoundary;
 import use_case.filter_category_selection.FilterCategorySelectionOutputData;
 
 /**
- * The presenter for the Filter Category use cases: Filter Category Selection and Filter Application
+ * The presenter for the Filter Category use cases: Filter Category Selection and Filter Application.
  */
 public class FilterCategoryPresenter implements FilterCategorySelectionOutputBoundary, FilterApplicationOutputBoundary {
 
@@ -60,8 +60,9 @@ public class FilterCategoryPresenter implements FilterCategorySelectionOutputBou
 
         filterCategoriesViewModel.setState(filterCategoriesState);
         filterCategoriesViewModel.firePropertyChanged();
-        //No need to update view model at this point; we are still on the same view.
-        this.viewManagerModel.setState(filterCategoriesViewModel.getViewName());
+
+        //Switch to the filter categories view.
+        this.viewManagerModel.setState(filterCategoryViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 }
