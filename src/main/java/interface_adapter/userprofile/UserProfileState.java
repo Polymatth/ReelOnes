@@ -1,11 +1,18 @@
 package interface_adapter.userprofile;
 
+import entity.Movie;
+import entity.MovieList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserProfileState {
     private String username = "";
     private String loginError;
     private String password = "";
     private String favMovie;
     private String favDirector;
+    private List<MovieList> movieListsList = new ArrayList<>();
 
     public String getUsername() {
         return username;
@@ -35,6 +42,8 @@ public class UserProfileState {
         return password;
     }
 
+    public void setMovieListsList(List<MovieList> movieListsList ){this.movieListsList = movieListsList;}
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -45,6 +54,19 @@ public class UserProfileState {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<MovieList> getUserLists() {
+        return this.movieListsList;
+    }
+
+    public boolean movieListExists(String listName) {
+        for (MovieList list : movieListsList) {
+            if (list.getListName().equals(listName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

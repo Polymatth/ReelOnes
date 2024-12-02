@@ -44,14 +44,14 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
         initializeMoviesPanel();
 
         // Load initial state
-        updateListName(viewModel.getListName());
-        updateMovies(viewModel.getMovies());
+        updateListName(viewModel.getState().getListName());
+        updateMovies(viewModel.getState().getMovies());
     }
 
     private void initializeTopPanel() {
         JPanel topPanel = new JPanel(new BorderLayout());
 
-        String listName = viewModel.getListName();
+        String listName = viewModel.getState().getListName();
 
         // List name label
         listNameLabel = new JLabel(listName);
@@ -62,18 +62,18 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         JButton applyFiltersButton = new JButton("Apply Filters");
-//        applyFiltersButton.addActionListener( e->
-//                new ActionListener() {
-//                     public void actionPerformed(ActionEvent evt) {
-//                     if (evt.getSource().equals(applyFiltersButton)) {
-//                         filterCategoriesController.goToFilterCategoriesView(viewModel.getState().getMovies(),
-//                                 viewModel.getState().getFiltersToMovies(),
-//                                 viewModel.getState().getFiltersToSelections(),
-//                                 viewModel.getViewName());
-//                     }
-//                     }
-//                }
-//        );
+        applyFiltersButton.addActionListener( e->
+                new ActionListener() {
+                     public void actionPerformed(ActionEvent evt) {
+                     if (evt.getSource().equals(applyFiltersButton)) {
+                         filterCategoriesController.goToFilterCategoriesView(viewModel.getState().getMovies(),
+                                 viewModel.getState().getFiltersToMovies(),
+                                 viewModel.getState().getFiltersToSelections(),
+                                 viewModel.getViewName());
+                     }
+                     }
+                }
+        );
 
         buttonPanel.add(applyFiltersButton);
 

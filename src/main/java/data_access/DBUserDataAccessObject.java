@@ -4,14 +4,19 @@ import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.List;
+import java.util.Map;
 
 import entity.User;
+import entity.Movie;
+import entity.MovieList;
 import entity.UserFactory;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import data_access.DBMovieListDataAccessObject;
 import use_case.change_favorites.ChangeFavoritesUserDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.get_currentuser.GetCurrentUserDataAccessInterface;
@@ -32,15 +37,18 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
+    private static final String MOVIELISTS = "movieLists";
     private static final String MESSAGE = "message";
     private static final String FAVMOVIE = "favoriteMovie";
     private static final String FAVDIRECTOR = "favoriteDirector";
     private final UserFactory userFactory;
+    private final DBMovieListDataAccessObject dbMovieListDataAccessObject;
 
     private static String currentUsername;
 
-    public DBUserDataAccessObject(UserFactory userFactory) {
+    public DBUserDataAccessObject(UserFactory userFactory, DBMovieListDataAccessObject dbMovieListDataAccessObject) {
         this.userFactory = userFactory;
+        this.dbMovieListDataAccessObject = dbMovieListDataAccessObject;
         // No need to do anything to reinitialize a user list! The data is the cloud that may be miles away.
     }
 
@@ -65,8 +73,9 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 final JSONObject infoObject = userJSONObject.getJSONObject("info");
                 final String favMovie = infoObject.getString(FAVMOVIE);
                 final String favDirector = infoObject.getString(FAVDIRECTOR);
+                List<MovieList> movieLists = dbMovieListDataAccessObject.parseMovieLists(infoObject.getString(MOVIELISTS));
 
-                return userFactory.create(name, password,favMovie, favDirector);
+                return userFactory.create(name, password,favMovie, favDirector, movieLists);
             }
             else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
@@ -112,6 +121,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         final JSONObject requestBody = new JSONObject();
         requestBody.put(USERNAME, user.getName());
         requestBody.put(PASSWORD, user.getPassword());
+
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
                 .url("http://vm003.teach.cs.toronto.edu:20112/user")
@@ -147,13 +157,15 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         requestBody.put(USERNAME, user.getName());
         requestBody.put(PASSWORD, user.getPassword());
 
+
         // Add "info" object with favorite movie and favorite director
         JSONObject infoObject = new JSONObject();
         infoObject.put(FAVMOVIE, user.getFavMovie());
         infoObject.put(FAVDIRECTOR, user.getFavDirector());
-
-        // Attach "info" object to the main request body
+        infoObject.put(MOVIELISTS, dbMovieListDataAccessObject.parseMovieListsToJSONArray(user.getMovieLists()));
         requestBody.put("info", infoObject);
+
+
 
         // Create request body for the HTTP call
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);

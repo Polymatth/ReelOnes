@@ -1,8 +1,7 @@
 package use_case.movie_list;
 
-import entity.Movie;
-import entity.MovieList;
-import entity.UserList;
+import entity.*;
+import interface_adapter.movie_list.MovieListPresenter;
 import use_case.movie_detail.MovieDetailInputData;
 import use_case.movie_detail.MovieDetailOutputData;
 
@@ -15,9 +14,13 @@ import java.util.Map;
 public class MovieListInteractor implements MovieListInputBoundary {
 
     private final MovieListDataAccessInterface movieListDataAccessInterface;
+    private final MovieListOutputBoundary movieListPresenter;
+    private final UserFactory userFactory;
 
-    public MovieListInteractor(MovieListDataAccessInterface movieListDataAccessInterface) {
+    public MovieListInteractor(MovieListDataAccessInterface movieListDataAccessInterface, MovieListOutputBoundary movieListPresenter, UserFactory userFactory) {
         this.movieListDataAccessInterface = movieListDataAccessInterface;
+        this.movieListPresenter = movieListPresenter;
+        this.userFactory = userFactory;
     }
 
     /**
@@ -26,17 +29,14 @@ public class MovieListInteractor implements MovieListInputBoundary {
      */
     @Override
     public void execute(MovieListInputData movieListInputData) {
-        MovieList movieList = movieListInputData.getMovieList();
-        System.out.println("Executing action on movie list: " + movieList.getListName());
+        final User user = userFactory.create(movieListInputData.getUsername(),movieListInputData.getPassword(), movieListInputData.getFavMovie(),movieListInputData.getFavDirector(),movieListInputData.getMovieListList());
+        movieListDataAccessInterface.saveMovieList(user);
+
+//        final MovieListOutputData movieListOutputData = new MovieListOutputData(user.getMovieLists());
+//        this.movieListPresenter.prepareSuccessView(movieListOutputData);
     }
 
-    @Override
-    public void createNewList(String userId, String listName, Boolean isPublic) {
-        MovieList movieList = new UserList(userId, listName, isPublic);
-        MovieListInputData inputData = new MovieListInputData(movieList);
-        movieListDataAccessInterface.saveMovieList(movieList);
-        this.execute(inputData);
-    }
+
 
     @Override
     public boolean movieListExists(String listName) {

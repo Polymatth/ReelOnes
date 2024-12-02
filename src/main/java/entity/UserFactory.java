@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.List;
+
 /**
  * Factory for creating users.
  */
@@ -11,6 +13,6 @@ public interface UserFactory {
      * @param password the password of the new user
      * @return the new user
      */
-    User create(String name, String password,String favMovie,String favDirector);
+    User create(String name, String password,String favMovie,String favDirector, List<MovieList> movieLists);
 
 }

@@ -23,10 +23,8 @@ public class Main {
                                             .addUserProfileView()
                                              .addChangeFavoritesView()
                                             .addOpenListView()
-
+                                             .addUserProfileView()
                                             .addEditListView()
-                                   .addUserProfileView()
-
                                             .addFilterCategoryView()
                                              .addFilterCategoriesView()
                                        .addFetchNowPlayingMoviesUseCase()
@@ -41,6 +39,7 @@ public class Main {
                                             .addChangePasswordUseCase()
                                             .addSearchMovieUseCase()
                                             .addMovieDetailUseCases()
+                                            .addMovieListUseCase()
 
                                             .addOpenListUseCase()
                                             .addEditListUseCase()

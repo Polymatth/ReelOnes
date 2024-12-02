@@ -48,11 +48,24 @@ public abstract class MovieList {
         this.isPublic = isPublic;
     }
 
+    public boolean getPublic() {
+         return isPublic;
+    }
+
+
     public void addMovie(Movie movie) {
         if (!movies.contains(movie)) {
             movies.add(movie);
         }
     }
+
+//    public Movie getMovieFromListByTitle(String title, Movie movie)
+////        for (Movie movieInList: movies) {
+////            if movieInList.getTitle().equals(title) {
+////                return movieInList;
+////            }
+////
+////    }
 
     public void removeMovie(Movie movie) {
         movies.remove(movie);
@@ -62,6 +75,15 @@ public abstract class MovieList {
 
     public boolean containsMovie(Movie movie) {
         return movies.contains(movie);
+    }
+
+    public boolean containsMovieByTitle(String title) {
+        for (Movie movie : movies) {
+            if (movie.getTitle().equals(title)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public abstract boolean isEditable();
