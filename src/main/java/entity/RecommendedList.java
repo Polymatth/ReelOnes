@@ -1,5 +1,8 @@
 package entity;
 
+/**
+ * Represents a RecommendedList entity which extends MovieList.
+ */
 public class RecommendedList extends MovieList {
     public RecommendedList(String userId) {
         super(userId, "Recommended Movies", false);

@@ -1,15 +1,9 @@
 package interface_adapter.movie_list;
 
-import entity.Movie;
-import entity.MovieList;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.login.LoginState;
-import interface_adapter.movie_detail_page.MovieDetailState;
-import use_case.movie_list.MovieListInputBoundary;
 import use_case.movie_list.MovieListOutputBoundary;
 import use_case.movie_list.MovieListOutputData;
 
-import java.util.List;
 
 public class MovieListPresenter implements MovieListOutputBoundary {
 
@@ -24,7 +18,7 @@ public class MovieListPresenter implements MovieListOutputBoundary {
     public void prepareSuccessView(MovieListOutputData movieListOutputData) {
         final MovieListState movieListState = movieListViewModel.getState();
 
-        movieListState.setName(movieListOutputData.getName());
+        movieListState.setUserLists(movieListOutputData.getMovieList());
 
         this.movieListViewModel.setState(movieListState);
         this.movieListViewModel.firePropertyChanged();

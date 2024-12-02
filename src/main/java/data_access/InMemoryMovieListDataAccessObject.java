@@ -26,19 +26,13 @@ public class InMemoryMovieListDataAccessObject implements MovieListDataAccessInt
     }
 
     @Override
-    public MovieList getMovieListByName(String listName) {
+    public MovieList getMovieListByName(String listName, String username) {
         return movieListsByName.get(listName);
     }
 
     @Override
     public List<MovieList> getUserListsForUser(String userId) {
         return movieListsByUserId.getOrDefault(userId, new java.util.ArrayList<>());
-    }
-
-    @Override
-    public MovieList getList(String username, String listName) {
-        return this.movieListsByName.get(username);
-
     }
 
     @Override

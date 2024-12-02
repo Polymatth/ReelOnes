@@ -1,7 +1,9 @@
 package use_case.edit_list;
 
 import entity.MovieList;
-
+/**
+ * An implementation of the Edit List Output Boundary.
+ */
 public class EditListInteractor implements EditListInputBoundary {
     private final EditListDataAccessInterface dataAccessObject;
     private final EditListOutputBoundary presenter;
@@ -13,7 +15,7 @@ public class EditListInteractor implements EditListInputBoundary {
 
     @Override
     public void execute(EditListInputData inputData) {
-        MovieList movieList = dataAccessObject.getList(inputData.getUsername(), inputData.getOldListName());
+        MovieList movieList = dataAccessObject.getMovieListByName(inputData.getOldListName(), inputData.getUsername());
         if (movieList == null) {
             presenter.prepareFailView("List not found!");
             return;

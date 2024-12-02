@@ -73,8 +73,8 @@ public class FilterApplicationInteractor implements FilterApplicationInputBounda
             for (Movie movie : originalList) {
                 for (String option : optionsSelected) {
                     List<String> popRange = Arrays.asList(option.split("-"));
-                    if (movie.getVote_average() >= Float.parseFloat(popRange.get(0)) &&
-                            movie.getVote_average() <= Float.parseFloat(popRange.get(1))) {
+                    if (movie.getVoteAverage() >= Float.parseFloat(popRange.get(0)) &&
+                            movie.getVoteAverage() <= Float.parseFloat(popRange.get(1))) {
                         applicableMovies.add(movie);
                     }
                 }
