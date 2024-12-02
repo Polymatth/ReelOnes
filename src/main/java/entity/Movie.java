@@ -42,9 +42,15 @@ public class Movie {
         this.streaming = new ArrayList<>();
     }
 
+    //Getters
+
     public String getPosterPath() {
         return this.poster_path;
     }
+
+    public String getOverview() {return this.overview;}
+
+    public String getOriginal_language() {return this.original_language;}
 
     public String getReleaseDate() {
         return this.release_date;
@@ -74,18 +80,6 @@ public class Movie {
         return this.streaming;
     }
 
-    public void setGenres(List<String> genreList) {
-        this.genres = genreList;
-    }
-
-    public void setStreaming(List<String> streamingList) {
-        this.streaming = streamingList;
-    }
-
-    public void setDirector(String dir) {
-        this.director = dir;
-    }
-
     public String getDirector() {
         return this.director;
     }
@@ -96,5 +90,19 @@ public class Movie {
 
     public float getVote_average() {
         return this.vote_average;
+    }
+
+    //Setters
+
+    public void setGenres(List<String> genreList) {
+        this.genres = genreList;
+    }
+
+    public void setStreaming(List<String> streamingList) {
+        this.streaming = streamingList;
+    }
+
+    public void setDirector(String dir) {
+        this.director = dir;
     }
 }

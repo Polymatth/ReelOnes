@@ -15,6 +15,9 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * The view when the user selects the "filters" button to view available filter categories.
+ */
 public class FilterCategoriesView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "filter categories page";
@@ -35,6 +38,7 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.add(title);
 
+        //Set the buttons for the different filter categories.
         JButton genre = new JButton(FilterCategoryConstants.GENRE);
         genre.setAlignmentX(Component.CENTER_ALIGNMENT);
         genre.setMaximumSize(new Dimension(Short.MAX_VALUE, 100));
@@ -52,6 +56,7 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
         popularity.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(popularity);
 
+        //Set the other 2 buttons: the Clear All Filters button and the Back Button.
         JPanel otherButtons = new JPanel();
         otherButtons.setLayout(new BoxLayout(otherButtons, BoxLayout.LINE_AXIS));
         otherButtons.setMaximumSize(new Dimension(Short.MAX_VALUE, 50));
@@ -63,6 +68,7 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
 
         this.add(otherButtons);
 
+        //Add action listeners for the filter category buttons.
         genre.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -115,6 +121,7 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
                 }
         );
 
+        //Add action listeners for the Clear All Filters and Back buttons.
         clear.addActionListener(
                 new ActionListener() {
                     @Override
@@ -139,6 +146,10 @@ public class FilterCategoriesView extends JPanel implements ActionListener, Prop
         );
     }
 
+    /**
+     * React to a button click that results in evt.
+     * @param e the ActionEvent to react to
+     */
     public void actionPerformed(ActionEvent e) {
     }
 

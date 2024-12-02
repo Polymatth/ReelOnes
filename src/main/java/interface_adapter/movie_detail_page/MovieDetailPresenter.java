@@ -6,6 +6,9 @@ import use_case.movie_detail.MovieDetailOutputData;
 import use_case.return_to_list_from_movie_detail.ReturnToListFromMovieOutputBoundary;
 import use_case.return_to_list_from_movie_detail.ReturnToListFromMovieOutputData;
 
+/**
+ * The presenter for the Movie Detail use cases: Movie Detail Selection and Return to List From Movie Detail view
+ */
 public class MovieDetailPresenter implements MovieDetailOutputBoundary, ReturnToListFromMovieOutputBoundary {
 
     private MovieDetailViewModel movieDetailViewModel;
@@ -16,6 +19,7 @@ public class MovieDetailPresenter implements MovieDetailOutputBoundary, ReturnTo
         this.viewManagerModel = viewManagerModel;
     }
 
+    @Override
     public void prepareSuccessView(MovieDetailOutputData movieDetailOutputData) {
         final MovieDetailState movieDetailState = movieDetailViewModel.getState();
         //Set the appropriate instance variable values for the Movie Detail State.
@@ -34,6 +38,7 @@ public class MovieDetailPresenter implements MovieDetailOutputBoundary, ReturnTo
         this.viewManagerModel.firePropertyChanged();
     }
 
+    @Override
     public void executeOriginView(ReturnToListFromMovieOutputData returnToListFromMovieOutputData) {
         viewManagerModel.setState(returnToListFromMovieOutputData.getOriginView());
         this.viewManagerModel.firePropertyChanged();

@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The return to list from filter categories interactor.
+ */
 public class ReturnToListInteractor implements ReturnToListInputBoundary {
 
     private ReturnToListOutputBoundary returnToListPresenter;

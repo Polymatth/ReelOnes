@@ -1,7 +1,8 @@
 package use_case.return_to_list_from_movie_detail;
 
-import use_case.movie_detail.MovieDetailOutputBoundary;
-
+/**
+ * The return to list from movie detail interactor
+ */
 public class ReturnToListFromMovieInteractor implements ReturnToListFromMovieInputBoundary {
 
     private ReturnToListFromMovieOutputBoundary returnToListFromMoviePresenter;
