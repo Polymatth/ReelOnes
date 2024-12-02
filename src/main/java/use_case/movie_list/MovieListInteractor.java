@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The MovieList Interactor.
+ */
 public class MovieListInteractor implements MovieListInputBoundary {
 
     private final MovieListDataAccessInterface movieListDataAccessInterface;
@@ -32,15 +35,15 @@ public class MovieListInteractor implements MovieListInputBoundary {
         final User user = userFactory.create(movieListInputData.getUsername(),movieListInputData.getPassword(), movieListInputData.getFavMovie(),movieListInputData.getFavDirector(),movieListInputData.getMovieListList());
         movieListDataAccessInterface.saveMovieList(user);
 
-//        final MovieListOutputData movieListOutputData = new MovieListOutputData(user.getMovieLists());
-//        this.movieListPresenter.prepareSuccessView(movieListOutputData);
+        final MovieListOutputData movieListOutputData = new MovieListOutputData(user.getMovieLists());
+        this.movieListPresenter.prepareSuccessView(movieListOutputData);
     }
 
 
 
     @Override
-    public boolean movieListExists(String listName) {
-        if (movieListDataAccessInterface.getMovieListByName(listName) == null) {
+    public boolean movieListExists(String listName, String username) {
+        if (movieListDataAccessInterface.getMovieListByName(listName, username) == null) {
             return false;
         }
         return true;

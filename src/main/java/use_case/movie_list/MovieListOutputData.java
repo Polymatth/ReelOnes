@@ -1,28 +1,21 @@
 package use_case.movie_list;
 
-import entity.Movie;
 import entity.MovieList;
 
 import java.util.List;
 
+/**
+ * Output Data for the MovieList Use Case.
+ */
 public class MovieListOutputData {
-    private final MovieList movieList;
+    private final List<MovieList> movieListList;
 
-    public MovieListOutputData(MovieList movieList) {
-        this.movieList = movieList;
+    public MovieListOutputData(List<MovieList> movieListList) {
+        this.movieListList = movieListList;
     }
 
-    public String getName() {
-        return this.movieList.getListName();
-    }
-
-
-    public List<Movie> getMovies(){
-        return this.movieList.getMovies();
-    }
-
-    public MovieList getMovieList(){
-        return this.movieList;
+    public List<MovieList> getMovieList(){
+        return this.movieListList;
     }
 
 }

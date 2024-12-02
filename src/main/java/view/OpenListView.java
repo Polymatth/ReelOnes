@@ -20,6 +20,9 @@ import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * The view when the user opens a movie List.
+ */
 public class OpenListView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "open list view";

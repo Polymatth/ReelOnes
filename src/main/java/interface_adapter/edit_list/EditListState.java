@@ -6,19 +6,20 @@ import entity.MovieList;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The state for the Edit List view.
+ */
 public class EditListState {
     private String listName;
     private List<Movie> movies = new ArrayList<>();
     private String errorMessage;
 
-    // Copy constructor
     public EditListState(EditListState copy) {
         this.listName = copy.listName;
         this.movies = new ArrayList<>(copy.movies); // Create a new list to avoid shared references
         this.errorMessage = copy.errorMessage;
     }
 
-    // Default constructor
     public EditListState() {
     }
 

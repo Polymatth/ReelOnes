@@ -4,6 +4,9 @@ import entity.Movie;
 
 import java.util.List;
 
+/**
+ * Output Data for the Open List Use Case.
+ */
 public class OpenListOutputData {
     private final String listName;
     private final List<Movie> movies;

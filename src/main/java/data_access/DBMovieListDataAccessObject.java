@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static data_access.DBUserDataAccessObject.*;
-import static java.lang.Integer.parseInt;
 
 public class DBMovieListDataAccessObject implements MovieListDataAccessInterface, EditListDataAccessInterface,
         OpenListDataAccessInterface, AddMovieDataAccessInterface {
@@ -130,7 +128,7 @@ public class DBMovieListDataAccessObject implements MovieListDataAccessInterface
         List<Movie> movies = new ArrayList<>();
         for (int i = 0; i < moviesArray.length(); i++) {
             JSONObject movieObject = moviesArray.getJSONObject(i);
-            String poster_path = movieObject.getString("poster_path");
+            String poster_path = movieObject.optString("poster_path");
             boolean adult = movieObject.getBoolean("adult");
             String overview = movieObject.getString("overview");
             String release_date = movieObject.getString("release_date");
@@ -200,30 +198,38 @@ public class DBMovieListDataAccessObject implements MovieListDataAccessInterface
         JSONArray moviesArray = new JSONArray();
         for (Movie movie : movies) {
             JSONObject movieObject = new JSONObject();
+            movieObject.put("poster_path", movie.getPosterPath());
+            movieObject.put("adult", movie.isAdult());
+            movieObject.put("overview", movie.getOverview());
+            movieObject.put("release_date", movie.getReleaseDate());
+
+            // Convert genre IDs list to JSONArray
+            JSONArray genreJsonArray = new JSONArray(movie.getGenre_ids());
+            movieObject.put("genre_ids", genreJsonArray);
+
+            movieObject.put("id", movie.getID());
+            movieObject.put("original_language", movie.getOriginal_language());
             movieObject.put("title", movie.getTitle());
-            movieObject.put("director", movie.getDirector());
-            movieObject.put("year", movie.getYear());
+            movieObject.put("backdrop_path", movie.getBackdropPath());
+            movieObject.put("popularity", movie.getPopularity());
+            movieObject.put("vote_count", movie.getVotecount());
+            movieObject.put("video", movie.getVideo());
+            movieObject.put("vote_average", movie.getVoteAverage());
+
             moviesArray.put(movieObject);
         }
         return moviesArray;
     }
 
     @Override
-    public MovieList getMovieListByName(String listName) {
-        return null;
-    }
-
-    @Override
-    public MovieList getList(String username, String listName) {
+    public MovieList getMovieListByName(String username, String listName) {
         List<MovieList> userLists = this.getUserListsForUser(username);
         for (MovieList list : userLists) {
-            if (listName.equals(list.getListName())) {
+            if (list.getListName().equals(listName)) {
                 return list;
-            } else {
-                throw new RuntimeException("List does not exist.");
             }
         }
-        return null;
+        throw new RuntimeException("Movie list with the name '" + listName + "' does not exist.");
     }
 
     @Override
@@ -233,6 +239,7 @@ public class DBMovieListDataAccessObject implements MovieListDataAccessInterface
         // Create the JSON request body
         final JSONObject requestBody = new JSONObject();
         requestBody.put(USERNAME, username);
+
         requestBody.put("listName", movieList.getListName());
         requestBody.put("isPublic", movieList.getPublic());
         requestBody.put("movies", serializeMovies(movieList.getMovies()));
@@ -241,7 +248,7 @@ public class DBMovieListDataAccessObject implements MovieListDataAccessInterface
 
         // Build the PUT request
         final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/updateMovieList")
+                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
                 .method("PUT", body)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();

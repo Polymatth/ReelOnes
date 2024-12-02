@@ -3,6 +3,9 @@ package entity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a Movie entity.
+ */
 public class Movie {
 
     private String poster_path;
@@ -64,6 +67,14 @@ public class Movie {
         return result.toString();
     }
 
+    public String getBackdropPath() {
+        return this.backdrop_path;
+    }
+
+    public float getPopularity() {
+        return popularity;
+    }
+
     public String getTitle() {
         return this.title;
     }
@@ -88,7 +99,17 @@ public class Movie {
         return this.id;
     }
 
-    public float getVote_average() {
+    public int getVotecount() {
+        return vote_count;
+    }
+
+    public Boolean getVideo() {
+        return video;
+    }
+
+    public boolean isAdult(){return this.adult;}
+
+    public float getVoteAverage() {
         return this.vote_average;
     }
 

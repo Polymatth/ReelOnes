@@ -14,6 +14,9 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * The view when the user edits a movie List.
+ */
 public class EditListView extends JPanel implements PropertyChangeListener {
     private final String viewName = "edit list";
     private final EditListViewModel viewModel;

@@ -3,6 +3,9 @@ package interface_adapter.edit_list;
 import use_case.edit_list.EditListInputBoundary;
 import use_case.edit_list.EditListInputData;
 
+/**
+ * Controller for handling requests to edit a user list.
+ */
 public class EditListController {
     private final EditListInputBoundary editListInputBoundary;
 

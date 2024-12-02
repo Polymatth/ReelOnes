@@ -1,6 +1,7 @@
 package use_case.signup;
 
 import entity.MovieList;
+import entity.RecommendedList;
 import entity.User;
 import entity.UserFactory;
 
@@ -26,6 +27,7 @@ public class SignupInteractor implements SignupInputBoundary {
 
     @Override
     public void execute(SignupInputData signupInputData) {
+        this.movieListList.add(new RecommendedList(signupInputData.getUsername()));
         if (userDataAccessObject.existsByName(signupInputData.getUsername())) {
             userPresenter.prepareFailView("User already exists.");
         }
