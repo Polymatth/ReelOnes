@@ -17,11 +17,31 @@ public class InMemoryMovieListDataAccessObject implements MovieListDataAccessInt
     private final Map<String, List<MovieList>> movieListsByUserId = new HashMap<>();
 
     @Override
+    public void createNewList(String userId, String listName, boolean isPublic) {
+
+    }
+
+    @Override
+    public void addMovieToList(String listName, Movie movie) {
+
+    }
+
+    @Override
+    public void removeMovieFromList(String listName, Movie movie) {
+
+    }
+
+    @Override
     public void saveMovieList(MovieList movieList) {
         movieListsByName.put(movieList.getListName(), movieList);
         movieListsByUserId
                 .computeIfAbsent(movieList.getUserId(), k -> new java.util.ArrayList<>())
                 .add(movieList);
+    }
+
+    @Override
+    public void renameList(String listId, String newName) {
+
     }
 
     @Override
@@ -32,6 +52,16 @@ public class InMemoryMovieListDataAccessObject implements MovieListDataAccessInt
     @Override
     public List<MovieList> getUserListsForUser(String userId) {
         return movieListsByUserId.getOrDefault(userId, new java.util.ArrayList<>());
+    }
+
+    @Override
+    public void deleteMovieList(String listName) {
+
+    }
+
+    @Override
+    public void updateMovieList(MovieList movieList) {
+
     }
 
     @Override

@@ -1,7 +1,6 @@
 package use_case.movie_detail;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The DAO for the movie detail selection use case.

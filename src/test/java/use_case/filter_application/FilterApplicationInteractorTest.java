@@ -47,13 +47,13 @@ public class FilterApplicationInteractorTest {
                 assertEquals(expectedTitles, actualTitles);
                 //Test that there are no movies in the resulting list that are NOT fantasy, comedy, or drama.
                 for (Movie movie : filterApplicationOutputData.getApplicableMovies()) {
-                    assert(movie.getGenres().contains("Fantasy") || movie.getGenres().contains("Comedy") ||
-                            movie.getGenres().contains("Drama"));
+                    assert(movie.getGenre_ids().contains(14) || movie.getGenre_ids().contains(35) ||
+                            movie.getGenre_ids().contains(18));
                 }
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -80,7 +80,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -107,7 +107,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -152,7 +152,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -178,7 +178,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -204,7 +204,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -246,7 +246,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -272,7 +272,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -298,7 +298,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -333,13 +333,13 @@ public class FilterApplicationInteractorTest {
                 assertEquals(expectedTitles, actualTitles);
                 //Test that there are no movies in the resulting list that are NOT released in the 2010s or 2020s.
                 for (Movie movie : filterApplicationOutputData.getApplicableMovies()) {
-                    assert(((MovieDetailDataAccessInterface)dataAccessInterface).getStreamingServices(movie.getID())
+                    assert(((FilterApplicationDataAccessInterface)dataAccessInterface).getStreamingServices(movie.getID())
                             .retainAll(optionsSelected));
                 }
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -365,7 +365,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }
@@ -392,7 +392,7 @@ public class FilterApplicationInteractorTest {
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
-                (MovieDetailDataAccessInterface) dataAccessInterface) {
+                (FilterApplicationDataAccessInterface) dataAccessInterface) {
         };
         interactor.execute(filterApplicationInputData);
     }

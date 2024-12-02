@@ -11,10 +11,12 @@ public class FilterApplicationOutputData {
 
     private List<Movie> applicableMovies;
     private List<String> optionsSelected;
+    private String categoryName;
 
-    public FilterApplicationOutputData(List<Movie> applicableMovies, List<String> optionsSelected) {
+    public FilterApplicationOutputData(List<Movie> applicableMovies, List<String> optionsSelected, String categoryName) {
         this.applicableMovies = applicableMovies;
         this.optionsSelected = optionsSelected;
+        this.categoryName = categoryName;
     }
 
     public List<Movie> getApplicableMovies() {
@@ -23,5 +25,9 @@ public class FilterApplicationOutputData {
 
     public List<String> getOptionsSelected() {
         return this.optionsSelected;
+    }
+
+    public String getCategoryName(){
+        return this.categoryName;
     }
 }

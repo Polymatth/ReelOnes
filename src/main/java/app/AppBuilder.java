@@ -75,16 +75,13 @@ import use_case.fetch_popularmovies.FetchPopularMoviesInputBoundary;
 import use_case.fetch_popularmovies.FetchPopularMoviesOutputBoundary;
 import use_case.fetch_popularmovies.FetchPopularMoviesInteractor;
 
+import use_case.filter_application.*;
 import use_case.get_currentuser.GetCurrentOutputBoundary;
 import use_case.get_currentuser.GetCurrentUserInputBoundary;
 import use_case.get_currentuser.GetCurrentUserInteractor;
 import use_case.clear_filters.ClearAllFiltersInputBoundary;
 import use_case.clear_filters.ClearAllFiltersInteractor;
 import use_case.clear_filters.ClearAllFiltersOutputBoundary;
-import use_case.filter_application.FilterApplicationInputBoundary;
-import use_case.filter_application.FilterApplicationInteractor;
-import use_case.filter_application.FilterApplicationOutputBoundary;
-import use_case.filter_application.FilterApplicationOutputData;
 import use_case.filter_category_selection.FilterCategorySelectionInputBoundary;
 import use_case.filter_category_selection.FilterCategorySelectionInteractor;
 import use_case.filter_category_selection.FilterCategorySelectionOutputBoundary;
@@ -158,6 +155,8 @@ public class AppBuilder {
     private final FetchPopularMoviesDataAccessInterface fetchPopularMoviesDataAccessInterface =  new AppConfig().getPopularMoviesDataAccess();
     private final MovieDetailDataAccessInterface movieDetailDataAccessInterface = new AppConfig()
             .getMovieDetailDataAccess();
+    private final FilterApplicationDataAccessInterface filterApplicationDataAccessInterface = new AppConfig()
+            .getFilterApplicationDataAccess();
     private final OpenListDataAccessInterface openListDataAccessInterface = new InMemoryOpenListDataAccessObject();
     private final EditListDataAccessInterface editListDataAccessInterface = new InMemoryMovieListDataAccessObject();
 
@@ -482,7 +481,7 @@ public class AppBuilder {
         final FilterCategorySelectionInputBoundary filterCategorySelectionInteractor = new
                 FilterCategorySelectionInteractor(filterCategoryPresenter);
         final FilterApplicationInputBoundary filterApplicationInteractor = new FilterApplicationInteractor(
-                (FilterApplicationOutputBoundary)filterCategoryPresenter, movieDetailDataAccessInterface);
+                (FilterApplicationOutputBoundary)filterCategoryPresenter, filterApplicationDataAccessInterface);
         final FilterCategoryController filterCategoryController = new FilterCategoryController(
                 filterCategorySelectionInteractor, filterApplicationInteractor);
         filterCategoriesView.setFilterCategoryController(filterCategoryController);

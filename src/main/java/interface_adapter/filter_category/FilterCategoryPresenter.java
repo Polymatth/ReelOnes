@@ -52,17 +52,19 @@ public class FilterCategoryPresenter implements FilterCategorySelectionOutputBou
         this.filterCategoryViewModel.setState(filterCategoryState);
         this.filterCategoryViewModel.firePropertyChanged();
 
+        //get the current state of the Filter Categories view model.
         final FilterCategoriesState filterCategoriesState = filterCategoriesViewModel.getState();
-        filterCategoriesState.setMoviestoFilter(filterCategoryState.getCategoryName(),
+        //Set the appropriate instance variable values for the Filter Categories State
+        filterCategoriesState.setMoviestoFilter(filterApplicationOutputData.getCategoryName(),
                 filterApplicationOutputData.getApplicableMovies());
-        filterCategoriesState.setSelectedFilters(filterCategoryState.getCategoryName(),
-                filterCategoryState.getSelectedOptions());
-
+        filterCategoriesState.setSelectedFilters(filterApplicationOutputData.getCategoryName(),
+                filterApplicationOutputData.getOptionsSelected());
+        //Update the State in the Filter Categories View Model.
         filterCategoriesViewModel.setState(filterCategoriesState);
         filterCategoriesViewModel.firePropertyChanged();
 
         //Switch to the filter categories view.
-        this.viewManagerModel.setState(filterCategoryViewModel.getViewName());
+        this.viewManagerModel.setState(filterCategoriesViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 }
