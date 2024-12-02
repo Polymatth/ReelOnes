@@ -4,6 +4,9 @@ import entity.Movie;
 
 import java.util.List;
 
+/**
+ * The OpenList Interactor.
+ */
 public class OpenListInteractor implements OpenListInputBoundary {
     private final OpenListDataAccessInterface repository;
     private final OpenListOutputBoundary presenter;

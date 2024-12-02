@@ -3,6 +3,9 @@ package entity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a MovieList entity.
+ */
 public abstract class MovieList {
     private final String userId;
     private String listName;
@@ -58,14 +61,6 @@ public abstract class MovieList {
             movies.add(movie);
         }
     }
-
-//    public Movie getMovieFromListByTitle(String title, Movie movie)
-////        for (Movie movieInList: movies) {
-////            if movieInList.getTitle().equals(title) {
-////                return movieInList;
-////            }
-////
-////    }
 
     public void removeMovie(Movie movie) {
         movies.remove(movie);

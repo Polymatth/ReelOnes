@@ -1,6 +1,5 @@
 package interface_adapter.add_movie_to_list;
 
-import entity.Movie;
 import use_case.add_movie_to_list.AddMovieInputBoundary;
 import use_case.add_movie_to_list.AddMovieInputData;
 

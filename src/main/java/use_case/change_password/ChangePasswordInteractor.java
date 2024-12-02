@@ -1,6 +1,7 @@
 package use_case.change_password;
 
 import entity.MovieList;
+import entity.RecommendedList;
 import entity.User;
 import entity.UserFactory;
 
@@ -26,6 +27,7 @@ public class ChangePasswordInteractor implements ChangePasswordInputBoundary {
 
     @Override
     public void execute(ChangePasswordInputData changePasswordInputData) {
+        this.movieListList.add(new RecommendedList(changePasswordInputData.getUsername()));
         final User user = userFactory.create(changePasswordInputData.getUsername(),
                                              changePasswordInputData.getPassword(), changePasswordInputData.getFavMovie(), changePasswordInputData.getFavDirector(), movieListList);
         userDataAccessObject.changePassword(user);

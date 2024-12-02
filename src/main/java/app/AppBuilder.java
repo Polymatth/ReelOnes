@@ -56,6 +56,12 @@ import interface_adapter.signup.SignupViewModel;
 import interface_adapter.userprofile.UserProfileController;
 import interface_adapter.userprofile.UserProfilePresenter;
 import interface_adapter.userprofile.UserProfileViewModel;
+import use_case.add_movie_to_list.AddMovieDataAccessInterface;
+import use_case.add_movie_to_list.AddMovieOutputBoundary;
+import interface_adapter.add_movie_to_list.AddMoviePresenter;
+import use_case.add_movie_to_list.AddMovieInteractor;
+import use_case.add_movie_to_list.AddMovieInputBoundary;
+import interface_adapter.add_movie_to_list.AddMovieController;
 import use_case.change_favorites.ChangeFavoritesInputBoundary;
 import use_case.change_favorites.ChangeFavoritesInteractor;
 import use_case.change_favorites.ChangeFavoritesOutputBoundary;
@@ -164,6 +170,7 @@ public class AppBuilder {
     private final OpenListDataAccessInterface openListDataAccessInterface = dbMovieListDataAccessObject;
     private final EditListDataAccessInterface editListDataAccessInterface = dbMovieListDataAccessObject;
     private final MovieListDataAccessInterface movieListDataAccessInterface = dbMovieListDataAccessObject;
+    private final AddMovieDataAccessInterface addMovieDataAccessInterface = dbMovieListDataAccessObject;
 
 
 
@@ -180,14 +187,13 @@ public class AppBuilder {
 
     private OpenListViewModel openListViewModel;
     private EditListViewModel editListViewModel;
-    private ChangePasswordView changePasswordView;
     private MovieListViewModel movieListViewModel;
-
-
-    private SearchMovieView searchMovieView;
     private SearchMovieViewModel searchMovieViewModel;
+
     private OpenListView openListView;
     private EditListView editListView;
+    private ChangePasswordView changePasswordView;
+    private SearchMovieView searchMovieView;
 
     private MovieDetailView movieDetailView;
     private MovieDetailViewModel movieDetailViewModel;
@@ -553,6 +559,18 @@ public class AppBuilder {
         final EditListController editListController = new EditListController(editListInteractor);
         editListView.setEditListController(editListController);
         openListView.setEditListController(editListController);
+        return this;
+    }
+
+    /**
+     * Adds the Add Movie To List Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addAddMovieUseCase() {
+        final AddMovieOutputBoundary addMovieOutputBoundary = new AddMoviePresenter();
+        final AddMovieInputBoundary addMovieInteractor = new AddMovieInteractor(addMovieDataAccessInterface, addMovieOutputBoundary);
+        final AddMovieController addMovieController = new AddMovieController(addMovieInteractor);
+        movieDetailView.setAddMovieController(addMovieController);
         return this;
     }
 
