@@ -1,7 +1,11 @@
 package use_case.signup;
 
+import entity.MovieList;
 import entity.User;
 import entity.UserFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Signup Interactor.
@@ -10,6 +14,7 @@ public class SignupInteractor implements SignupInputBoundary {
     private final SignupUserDataAccessInterface userDataAccessObject;
     private final SignupOutputBoundary userPresenter;
     private final UserFactory userFactory;
+    private List<MovieList> movieListList = new ArrayList();
 
     public SignupInteractor(SignupUserDataAccessInterface signupDataAccessInterface,
                             SignupOutputBoundary signupOutputBoundary,
@@ -28,7 +33,7 @@ public class SignupInteractor implements SignupInputBoundary {
             userPresenter.prepareFailView("Passwords don't match.");
         }
         else {
-            final User user = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword(),signupInputData.getFavMovie(), signupInputData.getFavDirector());
+            final User user = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword(),signupInputData.getFavMovie(), signupInputData.getFavDirector(), movieListList);
             userDataAccessObject.save(user);
             userDataAccessObject.modifyInfo(user);
 

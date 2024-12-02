@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.List;
+
 /**
  * A simple implementation of the User interface.
  */
@@ -9,12 +11,14 @@ public class CommonUser implements User {
     private final String password;
     private String favMovie;
     private String favDirector;
+    private List<MovieList> movieLists;
 
-    public CommonUser(String name, String password,String favMovie, String favDirector) {
+    public CommonUser(String name, String password,String favMovie, String favDirector, List<MovieList> movieLists) {
         this.name = name;
         this.password = password;
         this.favMovie = favMovie;
         this.favDirector = favDirector;
+        this.movieLists = movieLists;
 
     }
 
@@ -32,6 +36,11 @@ public class CommonUser implements User {
     public String getFavMovie() {return favMovie;}
 
     public String getFavDirector() {return favDirector;
+    }
+
+    @Override
+    public List<MovieList> getMovieLists() {
+        return this.movieLists;
     }
 
     @Override

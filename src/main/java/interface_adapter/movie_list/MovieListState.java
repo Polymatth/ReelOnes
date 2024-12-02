@@ -1,6 +1,8 @@
 package interface_adapter.movie_list;
 
 import entity.Movie;
+import entity.MovieList;
+import entity.UserList;
 
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class MovieListState {
     private String name = "";
     private List<Movie> movies;
     private String movieListError;
+    private List<UserList> userLists;
 
     public String getName() {
         return this.name;
@@ -29,4 +32,9 @@ public class MovieListState {
         this.movieListError = movieListError;
     }
 
+    public List<UserList> getUserLists() {
+        return userLists;
+    }
+
+    public void setUserLists(List<UserList> userLists) {this.userLists = userLists;}
 }

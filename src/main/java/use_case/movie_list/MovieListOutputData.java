@@ -21,8 +21,8 @@ public class MovieListOutputData {
         return this.movieList.getMovies();
     }
 
-
     public MovieList getMovieList(){
         return this.movieList;
     }
+
 }

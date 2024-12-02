@@ -2,17 +2,20 @@ package use_case.movie_list;
 
 import entity.Movie;
 import entity.MovieList;
+import entity.User;
 
 import java.util.List;
 
 public interface MovieListDataAccessInterface {
-    void createNewList(String userId, String listName, boolean isPublic);
-    void addMovieToList(String listName, Movie movie);
-    void removeMovieFromList(String listName, Movie movie);
-    void saveMovieList(MovieList movieList);
-    void renameList(String listId, String newName);
+
+    void saveMovieList(User user);
+
     MovieList getMovieListByName(String listName);
+
     List<MovieList> getUserListsForUser(String userId);
-    void deleteMovieList(String listName);
-    void updateMovieList(MovieList movieList);
+
+//    List<MovieList> getMovieListsForUser(String username);
+//    void addMovieList(String username, MovieList movieList);
+//    void updateMovieList(String username, MovieList movieList);
+//    void deleteMovieList(String username, String listName);
 }
