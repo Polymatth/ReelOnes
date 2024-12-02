@@ -21,6 +21,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The view when the user selects a movie to view details about it.
+ */
 public class MovieDetailView extends JPanel implements ActionListener, PropertyChangeListener {
 
         private final String viewName = "movie detail page";
@@ -50,7 +53,10 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
     }
 
     public void displayDetails() {
+        //Ensures that there is nothing currently being displayed so that only the correct information is displayed.
         this.removeAll();
+
+        //Set the labels for the different pieces of information about the movie.
         final JLabel title = new JLabel(this.movieDetailViewModel.getState().getTitle() +
                 " (" + this.movieDetailViewModel.getState().getYear() + ")");
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -80,9 +86,11 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
 
         final JLabel posterPic = new JLabel(new ImageIcon(poster));
 
+        //Create button to add the movie to a list and a back button.
         addTo = new JButton("Add to");
         final JButton back = new JButton("Back to list");
 
+        //Place labels that have information about the movie together.
         final JPanel movieInfo = new JPanel();
         movieInfo.setLayout(new BoxLayout(movieInfo, BoxLayout.PAGE_AXIS));
         movieInfo.add(title);
@@ -97,6 +105,7 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
         final JPanel backButton = new JPanel();
         backButton.add(back);
 
+        //Create action listener for the back button.
         back.addActionListener(
                 new ActionListener() {
                     @Override
@@ -109,6 +118,7 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
         final JPanel addPoster = new JPanel();
         addPoster.add(posterPic);
 
+        //Place movie information in a panel with the 2 buttons, to be placed on the right side of the page.
         final JPanel rightSide = new JPanel();
         rightSide.setLayout(new BoxLayout(rightSide, BoxLayout.PAGE_AXIS));
         rightSide.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -119,6 +129,7 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
         this.add(addPoster);
         this.add(rightSide);
     }
+
 
     private void showAddToListPopup() {
         List<UserList> userLists = movieListViewModel.getState().getUserLists();
@@ -165,6 +176,11 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
     }
 
 
+
+    /**
+     * React to a button click that results in evt.
+     * @param e the ActionEvent to react to
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
     }

@@ -5,6 +5,9 @@ import entity.Movie;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The input data for the clear all filters use case
+ */
 public class ClearAllFiltersInputData {
 
     private Map<String, List<String>> filtersToSelections;

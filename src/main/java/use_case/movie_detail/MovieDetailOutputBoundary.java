@@ -1,5 +1,8 @@
 package use_case.movie_detail;
 
+/**
+ * The output boundary for the movie detail selection use case
+ */
 public interface MovieDetailOutputBoundary {
 
     /**

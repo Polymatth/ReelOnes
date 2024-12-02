@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The state for the filter category view.
+ */
 public class FilterCategoryState {
 
     private String categoryName;

@@ -5,6 +5,9 @@ import entity.Movie;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The output data for the filter category selection use case
+ */
 public class FilterCategorySelectionOutputData {
 
     private String categoryName;

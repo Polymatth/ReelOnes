@@ -5,6 +5,9 @@ import entity.Movie;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The input data for the return to list from filter categories use case.
+ */
 public class ReturnToListInputData {
 
     private Map<String, List<String>> filtersToSelections;

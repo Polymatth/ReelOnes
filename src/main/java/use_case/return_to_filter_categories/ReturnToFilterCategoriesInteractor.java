@@ -4,6 +4,9 @@ import entity.Movie;
 
 import java.util.List;
 
+/**
+ * The return to filter categories interactor.
+ */
 public class ReturnToFilterCategoriesInteractor implements ReturnToFilterCategoriesInputBoundary {
 
     private ReturnToFilterCategoriesOutputBoundary returnToFilterCategoriesPresenter;

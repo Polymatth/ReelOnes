@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The clear all filters interactor.
+ */
 public class ClearAllFiltersInteractor implements ClearAllFiltersInputBoundary {
 
     private ClearAllFiltersOutputBoundary clearAllFiltersPresenter;
