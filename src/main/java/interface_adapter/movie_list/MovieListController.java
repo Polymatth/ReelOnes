@@ -9,6 +9,9 @@ import use_case.movie_list.MovieListInteractor;
 
 import java.util.List;
 
+/**
+ * Controller for handling requests to create a user list.
+ */
 public class MovieListController {
     private final MovieListInputBoundary movieListUseCaseInteractor;
 

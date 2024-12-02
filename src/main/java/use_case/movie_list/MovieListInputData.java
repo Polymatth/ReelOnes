@@ -4,7 +4,9 @@ import entity.MovieList;
 
 import java.util.List;
 
-
+/**
+ * The Input Data for the MovieList Use Case.
+ */
 public class MovieListInputData {
     private final List<MovieList> movieListList;
     private final String password;

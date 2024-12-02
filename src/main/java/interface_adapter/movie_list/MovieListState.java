@@ -5,12 +5,14 @@ import entity.MovieList;
 import entity.UserList;
 
 import java.util.List;
-
+/**
+ * The State of the Movie List.
+ */
 public class MovieListState {
     private String name = "";
     private List<Movie> movies;
     private String movieListError;
-    private List<UserList> userLists;
+    private List<MovieList> movieLists;
 
     public String getName() {
         return this.name;
@@ -32,9 +34,9 @@ public class MovieListState {
         this.movieListError = movieListError;
     }
 
-    public List<UserList> getUserLists() {
-        return userLists;
+    public List<MovieList> getUserLists() {
+        return movieLists;
     }
 
-    public void setUserLists(List<UserList> userLists) {this.userLists = userLists;}
+    public void setUserLists(List<MovieList> movieLists) {this.movieLists = movieLists;}
 }

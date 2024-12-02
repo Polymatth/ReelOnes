@@ -2,9 +2,13 @@ package use_case.change_password;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
+import entity.MovieList;
 import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,6 +16,7 @@ class ChangePasswordInteractorTest {
 
     private static final String FAVMOVIE = "favoriteMovie";
     private static final String FAVDIRECTOR = "favoriteDirector";
+    private List<MovieList> movieList = new ArrayList<>();
 
 
     @Test
@@ -21,7 +26,7 @@ class ChangePasswordInteractorTest {
 
         // Add the user with the old password to the repository
         UserFactory factory = new CommonUserFactory();
-        User user = factory.create("Paul", "oldPassword", FAVMOVIE, FAVDIRECTOR);
+        User user = factory.create("Paul", "oldPassword", FAVMOVIE, FAVDIRECTOR, movieList);
         userRepository.save(user);
 
         // Create a presenter that validates success

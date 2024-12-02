@@ -6,7 +6,7 @@ import use_case.edit_list.EditListOutputBoundary;
 import use_case.edit_list.EditListOutputData;
 
 /**
- * Presenter class for the Edit List use case. Transforms response models into view models.
+ * Presenter class for the Edit List use case. Implements EditListOutputBoundary.
  */
 public class EditListPresenter implements EditListOutputBoundary {
 

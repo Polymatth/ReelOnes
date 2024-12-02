@@ -1,5 +1,6 @@
 package view;
 
+import entity.MovieList;
 import entity.UserList;
 import interface_adapter.add_movie_to_list.AddMovieController;
 import interface_adapter.movie_detail_page.MovieDetailController;
@@ -132,46 +133,53 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
 
 
     private void showAddToListPopup() {
-        List<UserList> userLists = movieListViewModel.getState().getUserLists();
+        try {
+            List<MovieList> userLists = movieListViewModel.getState().getUserLists();
 
-        if (userLists == null || userLists.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "You don't have any lists. Create a list first!",
-                    "No Lists Found",
-                    JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        String[] listArray = userLists.stream()
-                .map(UserList::getListName)
-                .toArray(String[]::new);
-        String selectedList = (String) JOptionPane.showInputDialog(this,
-                "Select a list to add the movie to:",
-                "Add Movie to List",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                listArray,
-                listArray[0]);
-
-
-        if (selectedList != null && !selectedList.trim().isEmpty()) {
-            try {
-                addMovieController.addMovieToList(selectedList, movieDetailViewModel.getState().getTitle());
+            if (userLists == null || userLists.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
-                        "Movie added to \"" + selectedList + "\" successfully!",
-                        "Success",
+                        "You don't have any lists. Create a list first!",
+                        "No Lists Found",
                         JOptionPane.INFORMATION_MESSAGE);
-            } catch (Exception ex) {
+                return;
+            }
+
+            String[] listArray = new String[userLists.size()];
+            for (int i = 0; i < userLists.size(); i++) {
+                listArray[i] = userLists.get(i).getListName();
+            }
+            String selectedList = (String) JOptionPane.showInputDialog(this,
+                    "Select a list to add the movie to:",
+                    "Add Movie to List",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    listArray,
+                    listArray[0]);
+
+            if (selectedList != null && !selectedList.trim().isEmpty()) {
+                try {
+                    addMovieController.addMovieToList(selectedList, movieDetailViewModel.getState().getTitle());
+                    JOptionPane.showMessageDialog(this,
+                            "Movie added to \"" + selectedList + "\" successfully!",
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "Failed to add movie: " + ex.getMessage(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } else if (selectedList != null) {
                 JOptionPane.showMessageDialog(null,
-                        "Failed to add movie: " + ex.getMessage(),
+                        "List name cannot be empty.",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
-        } else if (selectedList != null) {
-        JOptionPane.showMessageDialog(null,
-                "List name cannot be empty.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(this,
+                    "Error fetching lists: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -197,7 +205,7 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
     public void setMovieDetailController(MovieDetailController movieDetailController) {
         this.movieDetailController = movieDetailController;
     }
-//    public void setMovieListController(MovieListController movieListController) {
-//        this.movieListController = movieListController;
-//    }
+    public void setAddMovieController(AddMovieController addMovieController) {
+        this.addMovieController = addMovieController;
+    }
 }

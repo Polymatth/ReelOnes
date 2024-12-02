@@ -1,5 +1,9 @@
 package use_case.movie_list;
 
+
+/**
+ * The output boundary for the MovieList Use Case.
+ */
 public interface MovieListOutputBoundary {
     /**
      * Prepares the success view for the Movie List Use Case.

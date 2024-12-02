@@ -1,9 +1,7 @@
 package use_case.edit_list;
 
-import entity.Movie;
 import entity.MovieList;
 
-import java.util.List;
 
 /**
  * Output Data for the Edit List Use Case.

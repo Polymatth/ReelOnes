@@ -86,9 +86,8 @@ public class FilterApplicationInteractor implements FilterApplicationInputBounda
             decade.append(year.charAt(2));
             if (possibleDecades.contains(decade.toString())) {
                 applicableMovies.add(movie);
-            }
-        }
     }
+        } }
 
     private void filterGenres(List<Movie> originalList, List<String> optionsSelected, List<Movie> applicableMovies) {
         for (Movie movie : originalList) {
