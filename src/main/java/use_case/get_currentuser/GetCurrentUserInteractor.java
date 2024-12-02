@@ -18,7 +18,7 @@ public class GetCurrentUserInteractor implements GetCurrentUserInputBoundary {
     public GetCurrentUserOutputData execute() {
          final String username = userDataAccessObject.getCurrentUsername();
          final User currentUser = userDataAccessObject.get(username);
-         final GetCurrentUserOutputData outputData = new GetCurrentUserOutputData(currentUser.getName(),currentUser.getPassword(),currentUser.getFavMovie(),currentUser.getFavDirector());
+         final GetCurrentUserOutputData outputData = new GetCurrentUserOutputData(currentUser.getName(),currentUser.getPassword(),currentUser.getFavMovie(),currentUser.getFavDirector(), currentUser.getMovieLists());
          getCurrentUserPresenter.prepareSuccessView(outputData);
 
         return outputData;

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import entity.Movie;
 import entity.MovieList;
+import entity.User;
 import entity.UserList;
 import use_case.edit_list.EditListDataAccessInterface;
 import use_case.movie_list.MovieListDataAccessInterface;
@@ -17,11 +18,11 @@ public class InMemoryMovieListDataAccessObject implements MovieListDataAccessInt
     private final Map<String, List<MovieList>> movieListsByUserId = new HashMap<>();
 
     @Override
-    public void saveMovieList(MovieList movieList) {
-        movieListsByName.put(movieList.getListName(), movieList);
-        movieListsByUserId
-                .computeIfAbsent(movieList.getUserId(), k -> new java.util.ArrayList<>())
-                .add(movieList);
+    public void saveMovieList(User user) {
+//        movieListsByName.put(movieList.getListName(), movieList);
+//        movieListsByUserId
+//                .computeIfAbsent(movieList.getUserId(), k -> new java.util.ArrayList<>())
+//                .add(movieList);
     }
 
     @Override

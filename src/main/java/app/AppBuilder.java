@@ -8,11 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 
-import data_access.InMemoryMovieListDataAccessObject;
-import data_access.InMemoryOpenListDataAccessObject;
-import data_access.InMemoryUserDataAccessObject;
-import data_access.DBUserDataAccessObject;
-import data_access.MovieAPIAccess;
+import data_access.*;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
@@ -46,6 +42,8 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.movie_detail_page.MovieDetailController;
 import interface_adapter.movie_detail_page.MovieDetailPresenter;
 import interface_adapter.movie_detail_page.MovieDetailViewModel;
+import interface_adapter.movie_list.MovieListPresenter;
+import interface_adapter.movie_list.MovieListViewModel;
 import interface_adapter.open_list.OpenListController;
 import interface_adapter.open_list.OpenListPresenter;
 import interface_adapter.open_list.OpenListViewModel;
@@ -104,6 +102,11 @@ import use_case.movie_detail.MovieDetailInputBoundary;
 import use_case.movie_detail.MovieDetailInteractor;
 import use_case.movie_detail.MovieDetailOutputBoundary;
 
+import use_case.movie_list.MovieListDataAccessInterface;
+import use_case.movie_list.MovieListInputBoundary;
+import use_case.movie_list.MovieListInteractor;
+import use_case.movie_list.MovieListOutputBoundary;
+import interface_adapter.movie_list.MovieListController;
 import use_case.open_list.OpenListDataAccessInterface;
 import use_case.open_list.OpenListInputBoundary;
 import use_case.open_list.OpenListInteractor;
@@ -146,11 +149,12 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
     // thought question: is the hard dependency below a problem?
     private final UserFactory userFactory = new CommonUserFactory();
+    private final DBMovieListDataAccessObject dbMovieListDataAccessObject = new DBMovieListDataAccessObject();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     // thought question: is the hard dependency below a problem?
-    private final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    private final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory, dbMovieListDataAccessObject);
 
 
     private final SearchMovieDataAccessInterface searchMovieDataAccessInterface = new AppConfig().getMovieDataAccess();
@@ -158,8 +162,9 @@ public class AppBuilder {
     private final FetchPopularMoviesDataAccessInterface fetchPopularMoviesDataAccessInterface =  new AppConfig().getPopularMoviesDataAccess();
     private final MovieDetailDataAccessInterface movieDetailDataAccessInterface = new AppConfig()
             .getMovieDetailDataAccess();
-    private final OpenListDataAccessInterface openListDataAccessInterface = new InMemoryOpenListDataAccessObject();
-    private final EditListDataAccessInterface editListDataAccessInterface = new InMemoryMovieListDataAccessObject();
+    private final OpenListDataAccessInterface openListDataAccessInterface = dbMovieListDataAccessObject;
+    private final EditListDataAccessInterface editListDataAccessInterface = dbMovieListDataAccessObject;
+    private final MovieListDataAccessInterface movieListDataAccessInterface = dbMovieListDataAccessObject;
 
 
     private SignupView signupView;
@@ -176,6 +181,7 @@ public class AppBuilder {
     private OpenListViewModel openListViewModel;
     private EditListViewModel editListViewModel;
     private ChangePasswordView changePasswordView;
+    private MovieListViewModel movieListViewModel;
 
 
     private SearchMovieView searchMovieView;
@@ -270,7 +276,8 @@ public class AppBuilder {
      */
     public AppBuilder addMovieDetailView() {
         movieDetailViewModel = new MovieDetailViewModel();
-        movieDetailView = new MovieDetailView(movieDetailViewModel);
+        movieListViewModel = new MovieListViewModel();
+        movieDetailView = new MovieDetailView(movieDetailViewModel, movieListViewModel);
         cardPanel.add(movieDetailView, movieDetailView.getViewName());
         return this;
     }
@@ -472,6 +479,7 @@ public class AppBuilder {
         filterCategoriesView.setFilterCategoriesController(filterCategoriesController);
         filterCategoryView.setFilterCategoriesController(filterCategoriesController);
         searchMovieView.setFilterCategoriesController(filterCategoriesController);
+        openListView.setFilterCategoriesController(filterCategoriesController);
         return this;
     }
 
@@ -507,6 +515,19 @@ public class AppBuilder {
     }
 
 
+    /**
+     * Adds the Open List Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addMovieListUseCase() {
+        final MovieListOutputBoundary movieListOutputBoundary = new MovieListPresenter(movieListViewModel,
+                viewManagerModel);
+        final MovieListInputBoundary movieListInteractor = new MovieListInteractor(movieListDataAccessInterface, movieListOutputBoundary,userFactory);
+        final MovieListController movieListController = new MovieListController(movieListInteractor);
+        //movieDetailView.setMovieListController(movieListController);
+        userProfileView.setMovieListController(movieListController);
+        return this;
+    }
 
     /**
      * Adds the Open List Use Case to the application.

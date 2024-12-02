@@ -7,6 +7,9 @@ import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.change_password.ChangePasswordOutputData;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 /**
  * The Change Favorites Interactor.
  */
@@ -25,7 +28,7 @@ public class ChangeFavoritesInteractor implements  ChangeFavoritesInputBoundary 
     @Override
     public void execute(ChangeFavoritesInputData changeFavoritesInputData) {
         final User user = userFactory.create(changeFavoritesInputData.getUsername(),
-                changeFavoritesInputData.getPassword(), changeFavoritesInputData.getFavMovie(),changeFavoritesInputData.getFavDirector());
+                changeFavoritesInputData.getPassword(), changeFavoritesInputData.getFavMovie(),changeFavoritesInputData.getFavDirector(), changeFavoritesInputData.getMovieListsList());
         userDataAccessObject.modifyInfo(user);
 
 

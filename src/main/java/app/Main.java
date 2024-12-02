@@ -39,6 +39,7 @@ public class Main {
                                             .addChangePasswordUseCase()
                                             .addSearchMovieUseCase()
                                             .addMovieDetailUseCases()
+                                            .addMovieListUseCase()
 
                                             .addOpenListUseCase()
                                             .addEditListUseCase()
