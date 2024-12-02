@@ -3,6 +3,7 @@ import entity.MovieList;
 import entity.UserList;
 import interface_adapter.change_favorites.ChangeFavoritesController;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.movie_list.MovieListController;
 import interface_adapter.open_list.OpenListController;
 import interface_adapter.userprofile.CircularButton;
 import interface_adapter.userprofile.UserProfileController;
@@ -18,7 +19,8 @@ import java.beans.PropertyChangeListener;
 
 import java.beans.PropertyChangeEvent;
 import java.awt.*;
-
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -39,6 +41,12 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
     private OpenListController openListController;
     private UserProfileController userProfileController;
     private ChangeFavoritesController changeFavoritesController;
+    private MovieListController movieListController;
+    private List<MovieList> userMovieListsList;
+    private String username2;
+    private String password;
+    private String favMovie;
+    private String favDirector;
     //private GetCurrentUserOutputData currentUser;
 
 
@@ -57,6 +65,7 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
     public UserProfileView(UserProfileViewModel userProfileViewModel) {
         this.userProfileViewModel = userProfileViewModel;
         this.userProfileViewModel.addPropertyChangeListener(this);
+
 
         // Main layout configuration
         this.setLayout(new BorderLayout()); // Changed to BorderLayout for better control
@@ -197,9 +206,10 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
                 UserProfileState currentState = userProfileViewModel.getState();
                 String username = currentState.getUsername();
                 String password = currentState.getPassword();
+                List<MovieList> movieListList = currentState.getUserLists();
                 System.out.println(username);
                 System.out.println(password);
-                changeFavoritesController.execute(username,password,newFavoriteMovie,newFavoriteDirector );
+                changeFavoritesController.execute(username,password,newFavoriteMovie,newFavoriteDirector,movieListList );
                 JOptionPane.showMessageDialog(null,
                         "Favorites updated successfully!",
                         "Success",
@@ -270,15 +280,17 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
 
-                } else if( userProfileViewModel.movieListExists(listName)) {
+                } else if( userProfileViewModel.getState().movieListExists(listName)) {
                     JOptionPane.showMessageDialog(null,
                             "List name already exists.",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     // create list
-                    userProfileViewModel.createNewList(userId, listName, isPublic);
-                    userProfileViewModel.addNewList(new UserList(userId, listName, isPublic));
+//                    userProfileViewModel.createNewList(userId, listName, isPublic);
+//                    userProfileViewModel.addNewList(new UserList(userId, listName, isPublic));
+                    userMovieListsList.add(new UserList(userId, listName, isPublic));
+                    movieListController.execute(username2,password,favMovie,favDirector,userMovieListsList);
 
                     // success message
                     JOptionPane.showMessageDialog(null,
@@ -305,7 +317,7 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
 
     private void refreshLists() {
         listsSection.removeAll();
-        for (MovieList list : userProfileViewModel.getUserLists()) {
+        for (MovieList list : userProfileViewModel.getState().getUserLists()) {
             JButton listButton = new JButton(list.getListName());
             listButton.setSize(200, 200);
             listButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -344,7 +356,14 @@ public void propertyChange(PropertyChangeEvent evt) {
     }
     else if (evt.getPropertyName().equals("loggedin")) {
         username.setText(userProfileViewModel.getState().getUsername());
+        userMovieListsList = userProfileViewModel.getState().getUserLists();
+        System.out.println(userMovieListsList);
+        username2 = userProfileViewModel.getState().getUsername();
+        password = userProfileViewModel.getState().getPassword();
+        favMovie = userProfileViewModel.getState().getFavMovie();
+        favDirector =userProfileViewModel.getState().getFavDirector();
         movieLabel.setText("<html>Favorite Movie: " + userProfileViewModel.getState().getFavMovie() +"<br> Favorite Director: " + userProfileViewModel.getState().getFavDirector());
+        refreshLists();
 
     }
     else if (evt.getPropertyName().equals("favorites")) {
@@ -373,6 +392,10 @@ public void propertyChange(PropertyChangeEvent evt) {
 
     public void setChangeFavoritesController (ChangeFavoritesController changeFavoritesController){
         this.changeFavoritesController = changeFavoritesController;
+    }
+
+    public void setMovieListController (MovieListController movieListController){
+        this.movieListController = movieListController;
     }
 
 

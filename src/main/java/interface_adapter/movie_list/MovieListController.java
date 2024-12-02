@@ -18,11 +18,11 @@ public class MovieListController {
 
     /**
      * Executes the Movie List Selection Use Case.
-     *
-     * @param movieList the movie list selected
+     * @param movieListList the movie list selected
      */
-    public void execute(MovieList movieList) {
-        final MovieListInputData movieListInputData = new MovieListInputData(movieList);
+    public void execute(String username, String password, String favMovie, String favDirector, List<MovieList> movieListList) {
+        final MovieListInputData movieListInputData = new MovieListInputData(username, password, favMovie, favDirector, movieListList);
+
         movieListUseCaseInteractor.execute(movieListInputData);
     }
 

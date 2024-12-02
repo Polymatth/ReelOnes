@@ -28,10 +28,7 @@ public class UserProfileViewModel  extends ViewModel<UserProfileState> {
     public UserProfileViewModel() {
         super("userprofile");
         setState(new UserProfileState());
-        this.movieListDataAccessInterface = new InMemoryMovieListDataAccessObject();
-        this.movieListInteractor = new MovieListInteractor(movieListDataAccessInterface);
-        this.userLists = new ArrayList<>(movieListInteractor.getUserListsForUser(getState().getUsername()));
-    }
+        }
 
     public void setGetCurrentUserController(GetCurrentUserController getCurrentUserController) {
         this.getCurrentUserController = getCurrentUserController;
@@ -43,39 +40,34 @@ public class UserProfileViewModel  extends ViewModel<UserProfileState> {
         getState().setPassword(user.getPassword());
         getState().setFavMovie(user.getFavMovie());
         getState().setFavDirector(user.getFavDirector());
-        System.out.println(getState().getUsername());
+        getState().setMovieListsList(user.getMovieLists());
         firePropertyChanged("loggedin");
     }
 
 
-    public void createNewList(String userId, String listName, boolean isPublic) {
-        movieListInteractor.createNewList(userId, listName, isPublic);
-        refreshUserLists();
-    }
+//    public void createNewList(String userId, String listName, boolean isPublic) {
+//        movieListInteractor.createNewList(userId, listName, isPublic);
+//        refreshUserLists();
+//    }
 
-    public List<MovieList> getUserLists() {
-        return movieListInteractor.getUserListsForUser(getState().getUsername());
-    }
+//    public List<MovieList> getUserLists() {
+//        return movieListInteractor.getUserListsForUser(getState().getUsername());
+//    }
 
     public void addNewList(MovieList newList) {
         this.userLists.add(newList);
-        firePropertyChanged("userLists"); // Notify listeners
+        firePropertyChanged("userLists");
     }
 
-    public boolean movieListExists(String listName) {
-        return movieListInteractor.movieListExists(listName);
-    }
+//    public boolean movieListExists(String listName) {
+//        return movieListInteractor.movieListExists(listName);
+//    }
 
-    private void refreshUserLists() {
-        this.userLists = new ArrayList<>(movieListInteractor.getUserListsForUser(getState().getUsername()));
-        firePropertyChanged("userLists"); // Notify listeners
-    }
+//    private void refreshUserLists() {
+//        this.userLists = new ArrayList<>(movieListInteractor.getUserListsForUser(getState().getUsername()));
+//        firePropertyChanged("userLists"); // Notify listeners
+//    }
 
-
-    @Override
-    public String getViewName() {
-        return "userprofile";
-    }
 
 
     public void updateFavorites(String newFavMovie, String newFavDirector) {

@@ -2,16 +2,33 @@ package use_case.movie_list;
 
 import entity.MovieList;
 
+import java.util.List;
+
 
 public class MovieListInputData {
-    private final MovieList movieList;
+    private final List<MovieList> movieListList;
+    private final String password;
+    private final String username;
+    private final String favMovie;
+    private final String favDirector;
 
-    public MovieListInputData(MovieList movieList) {
-        this.movieList = movieList;
+    public MovieListInputData(String username, String password, String favMovie, String favDirector, List<MovieList> movieListList) {
+        this.username = username;
+        this.favMovie = favMovie;
+        this.favDirector = favDirector;
+        this.password = password;
+        this.movieListList = movieListList;
     }
 
-    MovieList getMovieList() {
-        return this.movieList;
+    List<MovieList> getMovieListList() {
+        return movieListList;
     }
+
+    String getPassword() {return password;}
+    String getUsername() {return  username;}
+    String getFavMovie(){return favMovie;}
+    String getFavDirector(){return favDirector;}
+
+
 
 }

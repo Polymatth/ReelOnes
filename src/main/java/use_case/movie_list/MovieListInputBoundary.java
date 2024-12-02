@@ -8,8 +8,6 @@ public interface MovieListInputBoundary {
 
     void execute(MovieListInputData movieListInputData);
 
-    void createNewList(String userId, String listName, Boolean isPublic);
-
     List<MovieList> getUserListsForUser(String userId);
 
     boolean movieListExists(String listName);
