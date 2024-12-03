@@ -61,8 +61,13 @@ public class Movie {
 
     public String getYear() {
         StringBuilder result = new StringBuilder();
-        for (int i=0; i<4; i++) {
-            result.append(this.release_date.charAt(i));
+        if (!this.release_date.equals("n/a") && !this.release_date.isEmpty()) {
+            for (int i = 0; i < 4; i++) {
+                result.append(this.release_date.charAt(i));
+            }
+        }
+        else {
+            return "n/a";
         }
         return result.toString();
     }

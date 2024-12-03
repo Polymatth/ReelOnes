@@ -1,10 +1,10 @@
 package use_case.create_recommendation;
 
-import data_access.MovieAPIAccess;
 import entity.Movie;
 import entity.MovieList;
 import entity.RecommendedList;
-import entity.User;
+import use_case.fetch_popularmovies.FetchPopularMoviesDataAccessInterface;
+import use_case.search_movie.SearchMovieDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,25 +13,35 @@ import java.util.List;
 
 public class CreateRecommendationCosimStrategy implements CreateRecommendationStrategy {
 
-    float threshold;
-    MovieAPIAccess movieAPIAccess;
-    @Override
-    public void setAPIAccess(MovieAPIAccess movieAPIAccess) {
-        this.movieAPIAccess = movieAPIAccess;
-    }
+    double threshold;
 
-    public void setThreshold(float threshold) {
+    FetchPopularMoviesDataAccessInterface fetchPopularMoviesDataAccessInterface;
+    SearchMovieDataAccessInterface searchMovieDataAccessInterface;
+
+    public void setThreshold(double threshold) {
         this.threshold = threshold;
     }
+
+    public double getThreshold() {return this.threshold;}
+
+    @Override
+    public void setAPIAccess(SearchMovieDataAccessInterface searchMovieDataAccessInterface) {
+        this.searchMovieDataAccessInterface = searchMovieDataAccessInterface;
+    }
+
+    public void setFetchPopularMoviesDataAccessInterface (FetchPopularMoviesDataAccessInterface fetchPopularMoviesDataAccessInterface) {
+        this.fetchPopularMoviesDataAccessInterface = fetchPopularMoviesDataAccessInterface;
+    }
+
     @Override
     public String getStrategy() {
         return "Cosine Similarity";
     }
 
     @Override
-    public Boolean movieUnknown(List<MovieList> movieLists, Movie movie) {
+    public Boolean movieUnknown(List<MovieList> movieLists, Movie movie, String favMovie) {
         for (MovieList movieList: movieLists) {
-            if (movieList.containsMovie(movie)) {
+            if (movieList.containsMovieByTitle(movie.getTitle()) || movie.getTitle().equals(favMovie)) {
                 return false;
             }
         }
@@ -43,7 +53,9 @@ public class CreateRecommendationCosimStrategy implements CreateRecommendationSt
         result.addAll(List.of(movie.getTitle().split("\\W")));
         result.add(movie.getOriginal_language());
         result.addAll(List.of(movie.getOverview().split("\\W")));
-        result.addAll(movie.getStreaming());
+        //result.addAll(movie.getStreaming());
+        //result.addAll(searchMovieDataAccessInterface.getCast(movie.getID()));
+        result.add(searchMovieDataAccessInterface.getDirector(movie.getID()));
         result.add(movie.getYear());
         for (Integer id: movie.getGenre_ids()) {
             result.add(String.valueOf(id));
@@ -52,8 +64,6 @@ public class CreateRecommendationCosimStrategy implements CreateRecommendationSt
     }
 
     public double similarity_score(Movie movieA, Movie movieB) {
-
-        float result = 0;
 
         float numerator = 0;
         float denominatorA = 0;
@@ -79,12 +89,34 @@ public class CreateRecommendationCosimStrategy implements CreateRecommendationSt
     @Override
     public RecommendedList generateList(String userId, String favMovie, String favDirector, List<MovieList> movieLists, Integer size) {
         RecommendedList result = new RecommendedList(userId);
-        List<Movie> queryResults = movieAPIAccess.getPopularMovies();
+        Movie movieCandidate = searchMovieDataAccessInterface.searchMoviesByQuery(favMovie).get(0);
+        List<Movie> queryResults = new ArrayList<>();
+        System.out.println(queryResults.size());
+        queryResults.addAll(fetchPopularMoviesDataAccessInterface.getPopularMovies());
+        System.out.println(queryResults.size());
+        queryResults.addAll(searchMovieDataAccessInterface.searchMoviesByGenre(movieCandidate.getGenre_ids()));
+        System.out.println(queryResults.size());
+        queryResults.addAll(searchMovieDataAccessInterface.searchByDirector(searchMovieDataAccessInterface.getDirector(
+                movieCandidate.getID())));
+        System.out.println(queryResults.size());
+        if (!favDirector.equals(searchMovieDataAccessInterface.getDirector(
+                movieCandidate.getID()))) {
+            queryResults.addAll(searchMovieDataAccessInterface.searchByDirector(favDirector));
+        }
+
+        System.out.println(queryResults.size());
         int i = 0;
-        while (result.size() <= queryResults.size() && result.size() <= size) {
+        while (result.size() < size && i < queryResults.size()) {
             Movie movie = queryResults.get(i);
-            if (!result.containsMovie(movie) && movieUnknown(movieLists, movie) && similarity_score(movie,
-                    movieAPIAccess.searchMoviesByQuery(favMovie).get(0)) >= threshold) {
+            System.out.println(movie.getTitle());
+            System.out.println(similarity_score(movie,
+                    movieCandidate));
+            System.out.println(similarity_score(movie,
+                    movieCandidate) >= threshold);
+            if (!result.containsMovieByTitle(movie.getTitle()) &&
+                    movieUnknown(movieLists, movie, favMovie) &&
+                    similarity_score(movie,
+                    movieCandidate) >= threshold) {
                 result.addMovie(movie);
             }
             i += 1;

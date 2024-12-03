@@ -14,11 +14,15 @@ public class CreateRecommendationInputData {
 
     private final String userId;
 
-    public CreateRecommendationInputData(String userId, String favMovie, String favDirector, List<MovieList> movieLists) {
+    private final String password;
+
+    public CreateRecommendationInputData(String userId, String password, String favMovie, String favDirector, List<MovieList> movieLists) {
         this.userId = userId;
+        this.password = password;
         this.favMovie = favMovie;
         this.favDirector = favDirector;
         this.movieLists = movieLists;
+
     }
 
     String getFavMovie() {return favMovie;}
@@ -28,4 +32,6 @@ public class CreateRecommendationInputData {
     List<MovieList> getMovieLists() {return movieLists;}
 
     String getUserId() {return userId;}
+
+    String getPassword() {return password;}
 }

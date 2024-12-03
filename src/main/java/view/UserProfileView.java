@@ -2,6 +2,7 @@ package view;
 import entity.MovieList;
 import entity.UserList;
 import interface_adapter.change_favorites.ChangeFavoritesController;
+import interface_adapter.create_recommendation.CreateRecommendationController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.movie_list.MovieListController;
 import interface_adapter.open_list.OpenListController;
@@ -22,6 +23,7 @@ import java.beans.PropertyChangeEvent;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -43,6 +45,7 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
     private UserProfileController userProfileController;
     private ChangeFavoritesController changeFavoritesController;
     private MovieListController movieListController;
+    private CreateRecommendationController createRecommendationController;
     private List<MovieList> userMovieListsList;
     private String username2;
     private String password;
@@ -327,6 +330,10 @@ public class UserProfileView extends JPanel implements PropertyChangeListener {
                 listButton.addActionListener(
                         evt -> {
                             if (evt.getSource().equals(listButton)) {
+                                if (Objects.equals(list.getListName(), "Recommended Movies")) {
+                                    createRecommendationController.execute(
+                                            username2, password, favMovie, favDirector, userMovieListsList);
+                                }
                                 openListController.execute(list.getListName());
                             }
                         }
@@ -397,6 +404,10 @@ public void propertyChange(PropertyChangeEvent evt) {
 
     public void setMovieListController (MovieListController movieListController){
         this.movieListController = movieListController;
+    }
+
+    public void setCreateRecommendationController (CreateRecommendationController createRecommendationController){
+        this.createRecommendationController = createRecommendationController;
     }
 
 
