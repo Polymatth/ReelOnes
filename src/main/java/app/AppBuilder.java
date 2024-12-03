@@ -470,7 +470,7 @@ public class AppBuilder {
 
     public AppBuilder addFilterCategoriesUseCases() {
         final GoToFilterCategoriesOutputBoundary goToFilterCategoriesOutputBoundary = new FilterCategoriesPresenter(
-                filterCategoriesViewModel, searchMovieViewModel, viewManagerModel);
+                filterCategoriesViewModel, searchMovieViewModel, openListViewModel, viewManagerModel);
         final GoToFilterCategoriesInputBoundary goToFilterCategoriesInteractor = new GoToFilterCategoriesInteractor(
                 goToFilterCategoriesOutputBoundary);
         final ClearAllFiltersInputBoundary clearAllFiltersInteractor = new ClearAllFiltersInteractor(
