@@ -6,6 +6,7 @@ import java.util.Map;
 import entity.User;
 import use_case.change_favorites.ChangeFavoritesUserDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.get_currentuser.GetCurrentUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
@@ -17,7 +18,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface, ChangeFavoritesUserDataAccessInterface {
+        LogoutUserDataAccessInterface, ChangeFavoritesUserDataAccessInterface , GetCurrentUserDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
 
