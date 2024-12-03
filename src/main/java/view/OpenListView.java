@@ -63,22 +63,22 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
 
         // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
-        JButton applyFiltersButton = new JButton("Apply Filters");
-        applyFiltersButton.addActionListener(
-                new ActionListener() {
-                     public void actionPerformed(ActionEvent evt) {
-                     if (evt.getSource().equals(applyFiltersButton)) {
-                         filterCategoriesController.goToFilterCategoriesView(viewModel.getState().getMovies(),
-                                 viewModel.getState().getFiltersToMovies(),
-                                 viewModel.getState().getFiltersToSelections(),
-                                 viewModel.getViewName());
-                     }
-                     }
-                }
-        );
-
-        buttonPanel.add(applyFiltersButton);
+//
+//        JButton applyFiltersButton = new JButton("Apply Filters");
+//        applyFiltersButton.addActionListener(
+//                new ActionListener() {
+//                     public void actionPerformed(ActionEvent evt) {
+//                     if (evt.getSource().equals(applyFiltersButton)) {
+//                         filterCategoriesController.goToFilterCategoriesView(viewModel.getState().getMovies(),
+//                                 viewModel.getState().getFiltersToMovies(),
+//                                 viewModel.getState().getFiltersToSelections(),
+//                                 viewModel.getViewName());
+//                     }
+//                     }
+//                }
+//        );
+//
+//        buttonPanel.add(applyFiltersButton);
 
         JButton editListButton = new JButton("Edit List");
         editListButton.addActionListener(
