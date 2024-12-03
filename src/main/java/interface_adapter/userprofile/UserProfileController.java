@@ -1,9 +1,7 @@
 package interface_adapter.userprofile;
 
 import use_case.goprofile.GoProfileInputBoundary;
-import use_case.goprofile.GoProfileInputData;
-import use_case.logout.LogoutInputBoundary;
-import use_case.logout.LogoutInputData;
+
 
 public class UserProfileController {
 

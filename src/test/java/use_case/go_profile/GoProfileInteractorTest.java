@@ -2,7 +2,6 @@ package use_case.go_profile;
 
 import org.junit.jupiter.api.Test;
 import use_case.goprofile.GoProfileInputBoundary;
-import use_case.goprofile.GoProfileInputData;
 import use_case.goprofile.GoProfileInteractor;
 import use_case.goprofile.GoProfileOutputBoundary;
 
@@ -42,10 +41,9 @@ class GoProfileInteractorTest {
         };
 
         GoProfileInputBoundary interactor = new GoProfileInteractor(successPresenter);
-        GoProfileInputData inputData = new GoProfileInputData("user");
 
         // Execute the use case
-        interactor.execute(inputData);
+        interactor.execute();
     }
 
     @Test
