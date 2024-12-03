@@ -30,9 +30,13 @@ public class MovieDetailPresenter implements MovieDetailOutputBoundary, ReturnTo
         movieDetailState.setStreamingServices(movieDetailOutputData.getStreamingServices());
         movieDetailState.setPosterImagePath(movieDetailOutputData.getPosterImagePath());
         movieDetailState.setOriginView(movieDetailOutputData.getOriginView());
+        movieDetailState.setMovie(movieDetailOutputData.getMovie());
         //Update the State in the Movie Detail View Model
         this.movieDetailViewModel.setState(movieDetailState);
         this.movieDetailViewModel.firePropertyChanged();
+        //LoadUserInfo everytime you prepare successview:
+        this.movieDetailViewModel.loadCurrentUser();
+        this.movieDetailViewModel.firePropertyChanged("currentuser");
         //Update the View Manager Model.
         this.viewManagerModel.setState(movieDetailViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
@@ -43,5 +47,7 @@ public class MovieDetailPresenter implements MovieDetailOutputBoundary, ReturnTo
         viewManagerModel.setState(returnToListFromMovieOutputData.getOriginView());
         this.viewManagerModel.firePropertyChanged();
     }
+
+
 
 }

@@ -240,8 +240,8 @@ public class FilterApplicationInteractorTest {
                 assertEquals(expectedTitles, actualTitles);
                 //Test that there are no movies in the resulting list that are NOT released in the 2010s or 2020s.
                 for (Movie movie : filterApplicationOutputData.getApplicableMovies()) {
-                    assert(((float)5.0 <= movie.getVote_average() && (float)5.9 >= movie.getVote_average()) ||
-                            ((float)6.0 <= movie.getVote_average() && (float)6.9 >= movie.getVote_average()));
+                    assert(((float)5.0 <= movie.getVoteAverage() && (float)5.9 >= movie.getVoteAverage()) ||
+                            ((float)6.0 <= movie.getVoteAverage() && (float)6.9 >= movie.getVoteAverage()));
                 }
             }
         };

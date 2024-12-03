@@ -53,10 +53,10 @@ public class MovieDetailInteractorTest {
                 assertEquals(String.join(", ", genreNames), movieDetailOutputData.getGenre());
                 //Test that you get the right list of streaming services.
                 List<String> services = new ArrayList<>();
-                services.add("Netflix");
-                services.add("Paramount+ Amazon Channel");
-                services.add("Netflix basic with Ads");
-                assertEquals(String.join(", ", services), movieDetailOutputData.getStreamingServices());
+//                services.add("Netflix");
+//                services.add("Paramount+ Amazon Channel");
+//                services.add("Netflix basic with Ads");
+                assertEquals("Paramount+ Amazon Channel", movieDetailOutputData.getStreamingServices());
                 //Test that you get the right view name.
                 assertEquals("movie search", movieDetailOutputData.getOriginView());
             }

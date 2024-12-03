@@ -1,5 +1,11 @@
 package interface_adapter.movie_detail_page;
 
+import entity.Movie;
+import entity.MovieList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The state for the Movie Detail View Model
  */
@@ -12,6 +18,73 @@ public class MovieDetailState {
     private String streamingServices = "";
     private String posterImagePath = "";
     private String originView;
+    private String username = "";
+    private String loginError;
+    private String password = "";
+    private String favMovie;
+    private String favDirector;
+    private List<MovieList> movieListsList = new ArrayList<>();
+    private Movie movie;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getLoginError() {
+        return loginError;
+    }
+
+    public String getFavDirector() {
+        return favDirector;
+    }
+
+    public String getFavMovie() {
+        return favMovie;
+    }
+
+    public Movie getMovie(){return movie;}
+
+    public void setMovie(Movie movie){this.movie = movie;}
+
+    public void setFavDirector(String favDirector) {
+        this.favDirector = favDirector;
+    }
+
+    public void setFavMovie(String favMovie) {
+        this.favMovie = favMovie;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setMovieListsList(List<MovieList> movieListsList ){this.movieListsList = movieListsList;}
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setLoginError(String usernameError) {
+        this.loginError = usernameError;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<MovieList> getUserLists() {
+        return this.movieListsList;
+    }
+
+    public boolean movieListExists(String listName) {
+        for (MovieList list : movieListsList) {
+            if (list.getListName().equals(listName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void setTitle(String title) {
         this.title = title;

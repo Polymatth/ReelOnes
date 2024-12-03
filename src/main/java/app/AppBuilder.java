@@ -167,7 +167,7 @@ public class AppBuilder {
             .getMovieDetailDataAccess();
     private final FilterApplicationDataAccessInterface filterApplicationDataAccessInterface = new AppConfig()
             .getFilterApplicationDataAccess();
-    private final OpenListDataAccessInterface openListDataAccessInterface = dbMovieListDataAccessObject;
+    private final OpenListDataAccessInterface openListDataAccessInterface = userDataAccessObject;
     private final EditListDataAccessInterface editListDataAccessInterface = dbMovieListDataAccessObject;
     private final MovieListDataAccessInterface movieListDataAccessInterface = dbMovieListDataAccessObject;
     private final AddMovieDataAccessInterface addMovieDataAccessInterface = dbMovieListDataAccessObject;
@@ -377,7 +377,7 @@ public class AppBuilder {
         changePasswordView.setGetCurrentUserController(getCurrentUserController);
         editListView.setGetCurrentUserController(getCurrentUserController);
         userProfileViewModel.setGetCurrentUserController(getCurrentUserController);
-
+        movieDetailViewModel.setGetCurrentUserController(getCurrentUserController);
         return this;
     }
 
@@ -568,7 +568,7 @@ public class AppBuilder {
      */
     public AppBuilder addAddMovieUseCase() {
         final AddMovieOutputBoundary addMovieOutputBoundary = new AddMoviePresenter();
-        final AddMovieInputBoundary addMovieInteractor = new AddMovieInteractor(addMovieDataAccessInterface, addMovieOutputBoundary);
+        final AddMovieInputBoundary addMovieInteractor = new AddMovieInteractor(addMovieDataAccessInterface, addMovieOutputBoundary,userFactory);
         final AddMovieController addMovieController = new AddMovieController(addMovieInteractor);
         movieDetailView.setAddMovieController(addMovieController);
         return this;

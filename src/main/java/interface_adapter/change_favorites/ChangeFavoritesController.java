@@ -26,7 +26,7 @@ public class ChangeFavoritesController {
      * @param password the password
      * @param username the user whose favorites to change
      */
-    public void execute(String username, String password, String favMovie, String favDirector, List<MovieList> movieListList) {
+    public void execute(String username, String password, String favMovie, String favDirector, List<MovieList> movieListList ) {
         final ChangeFavoritesInputData changeFavoritesInputData = new ChangeFavoritesInputData(username, password, favMovie, favDirector,movieListList);
         userChangeFavoritesUseCaseInteractor.execute(changeFavoritesInputData);
     }
