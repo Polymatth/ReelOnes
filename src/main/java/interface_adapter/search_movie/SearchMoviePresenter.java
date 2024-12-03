@@ -26,6 +26,10 @@ public class SearchMoviePresenter implements SearchMovieOutputBoundary {
             this.viewModel.getState().getFiltersToMovies().put(category, outputData.getMovies());
             this.viewModel.getState().getFiltersToSelections().put(category, new ArrayList<>());
         }
+        this.viewModel.getState().setCurrentFilteredMovies(new ArrayList<>());
+        if (this.viewModel.getState().getFiltered()) {
+            this.viewModel.getState().setFiltered(false);
+        }
         this.viewModel.firePropertyChanged();
 
         this.viewManagerModel.setState(viewModel.getViewName());

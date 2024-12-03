@@ -64,7 +64,7 @@ public class SearchMovieState {
     }
 
     public List<Movie> moviesToDisplay() {
-        if (isFiltered) {
+        if (isFiltered && this.currentFilteredMovies.size() < (movies.size())) {
             return this.currentFilteredMovies;
         }
         else {

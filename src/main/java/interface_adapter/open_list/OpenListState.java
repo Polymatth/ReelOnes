@@ -66,4 +66,11 @@ public class OpenListState {
         this.isFiltered = b;
     }
 
+    public List<Movie> moviesToDisplay() {
+        if (this.isFiltered && this.currentFilteredMovies.size() < this.movies.size()) {
+            return this.currentFilteredMovies;
+        }
+        return this.movies;
+    }
+
 }

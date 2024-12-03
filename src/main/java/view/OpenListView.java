@@ -49,7 +49,7 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
 
         // Load initial state
         updateListName(viewModel.getState().getListName());
-        updateMovies(viewModel.getState().getMovies());
+        updateMovies(viewModel.getState().moviesToDisplay());
     }
 
     private void initializeTopPanel() {
