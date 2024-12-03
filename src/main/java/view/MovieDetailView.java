@@ -163,11 +163,17 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
                     listArray,
                     listArray[0]);
 
-            if (selectedList != null && !selectedList.trim().isEmpty()) {
+            if (selectedList.equals("Recommended Movies")) {
+                JOptionPane.showMessageDialog(this,
+                        "You can't add movies to Recommended List. Try another list!",
+                        "Access Denied",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+            } else if (selectedList != null && !selectedList.trim().isEmpty()) {
                 try {
                     Movie movie = movieDetailViewModel.getState().getMovie();
                     for (int i = 0; i < userLists.size(); i++) {
-                        if (userLists.get(i).getListName() == selectedList){
+                        if (userLists.get(i).getListName().equals(selectedList)){
                              userLists.get(i).addMovie(movieDetailViewModel.getState().getMovie());
                         }
                     }
