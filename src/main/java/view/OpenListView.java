@@ -1,5 +1,7 @@
 package view;
 
+import entity.MovieList;
+import interface_adapter.ViewModel;
 import interface_adapter.edit_list.EditListController;
 import interface_adapter.filter_categories.FilterCategoriesController;
 import interface_adapter.filter_category.FilterCategoryController;
@@ -47,9 +49,6 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
         initializeTopPanel();
         initializeMoviesPanel();
 
-        // Load initial state
-        updateListName(viewModel.getState().getListName());
-        updateMovies(viewModel.getState().moviesToDisplay());
     }
 
     private void initializeTopPanel() {
@@ -112,11 +111,7 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    private void updateListName(String listName) {
-        listNameLabel.setText(listName);
-    }
-
-    private void updateMovies(List<Movie> movies) {
+    private void updateMovies(List<Movie> movies, String listname) {
         moviesPanel.removeAll();
         if (movies == null || movies.isEmpty()) {
             // Display a placeholder message when no movies are available
@@ -135,6 +130,8 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
         moviesPanel.revalidate();
         moviesPanel.repaint();
     }
+
+
 
     private JPanel createMovieBox(Movie movie) {
         JPanel movieBox = new JPanel();
@@ -164,18 +161,9 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        SwingUtilities.invokeLater(() -> {
-            switch (evt.getPropertyName()) {
-                case "listName":
-                    updateListName((String) evt.getNewValue());
-                    break;
-                case "movies":
-                    updateMovies((List<Movie>) evt.getNewValue());
-                    break;
-                default:
-                    break;
-            }
-        });
+        if (evt.getPropertyName().equals("movies")){
+            updateMovies(viewModel.getState().getMovies(),viewModel.getState().getListName());
+        }
     }
 
     public String getViewName() {

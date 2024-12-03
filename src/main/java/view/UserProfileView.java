@@ -5,6 +5,7 @@ import interface_adapter.change_favorites.ChangeFavoritesController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.movie_list.MovieListController;
 import interface_adapter.open_list.OpenListController;
+import interface_adapter.open_list.OpenListViewModel;
 import interface_adapter.userprofile.CircularButton;
 import interface_adapter.userprofile.UserProfileController;
 import interface_adapter.userprofile.UserProfileState;

@@ -1,6 +1,7 @@
 package interface_adapter.open_list;
 
 import entity.Movie;
+import entity.MovieList;
 import entity.UserList;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class OpenListState {
     private List<Movie> currentFilteredMovies = new ArrayList<>();
     private Map<String, List<String>> filtersToSelections = new HashMap<>();
     private Map<String, List<Movie>> filtersToMovies = new HashMap<>();
+    private List<MovieList> movieListList = new ArrayList<MovieList>();
 
 
     public String getListName() {
@@ -28,6 +30,12 @@ public class OpenListState {
 
     public List<Movie> getMovies() {
         return movies;
+    }
+
+    public List<MovieList> getMovieListList(){return movieListList;}
+
+    public void setMovieListList(List<MovieList> movieListList) {
+        this.movieListList = movieListList;
     }
 
     public void setMovies(List<Movie> movies) {
