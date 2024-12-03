@@ -21,6 +21,9 @@ public class OpenListPresenter implements OpenListOutputBoundary {
     public void prepareSuccessView(OpenListOutputData outputData) {
         openListViewModel.getState().setListName(outputData.getListName());
         openListViewModel.getState().setMovies(outputData.getMovies());
+        openListViewModel.firePropertyChanged("movies");
+        openListViewModel.loadUserMovies();
+       // openListViewModel.getState().setMovies(outputData.getMovies());
         this.viewManager.setState(openListViewModel.getViewName());
         this.viewManager.firePropertyChanged();
     }

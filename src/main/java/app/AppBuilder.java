@@ -378,6 +378,7 @@ public class AppBuilder {
         editListView.setGetCurrentUserController(getCurrentUserController);
         userProfileViewModel.setGetCurrentUserController(getCurrentUserController);
         movieDetailViewModel.setGetCurrentUserController(getCurrentUserController);
+        openListViewModel.setGetCurrentUserController(getCurrentUserController);
         return this;
     }
 
@@ -567,7 +568,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addAddMovieUseCase() {
-        final AddMovieOutputBoundary addMovieOutputBoundary = new AddMoviePresenter();
+        final AddMovieOutputBoundary addMovieOutputBoundary = new AddMoviePresenter(openListViewModel);
         final AddMovieInputBoundary addMovieInteractor = new AddMovieInteractor(addMovieDataAccessInterface, addMovieOutputBoundary,userFactory);
         final AddMovieController addMovieController = new AddMovieController(addMovieInteractor);
         movieDetailView.setAddMovieController(addMovieController);

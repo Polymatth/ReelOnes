@@ -41,9 +41,8 @@ public class AddMovieInteractor implements AddMovieInputBoundary {
             final User user = userFactory.create(inputData.getUsername(),inputData.getPassword(), inputData.getFavMovie(),inputData.getFavDirector(),inputData.getMovieListsList());
             // Add the movie to the list using the data access layer
             dataAccess.saveMovieList(user);
-
             // Prepare the success view with the output data
-            AddMovieOutputData outputData = new AddMovieOutputData(listName, movieTitle);
+            AddMovieOutputData outputData = new AddMovieOutputData(listName, movieTitle,user);
             outputBoundary.prepareSuccessView(outputData);
         } catch (Exception e) {
             // Handle any exceptions that may occur during the operation
