@@ -139,7 +139,28 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
         movieBox.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         JLabel moviePoster = new JLabel();
-        moviePoster.setIcon(new ImageIcon(movie.getPosterPath()));
+
+        // Set poster size
+        int posterWidth = 160;
+        int posterHeight = 240;
+        moviePoster.setPreferredSize(new Dimension(posterWidth, posterHeight));
+
+        if (movie.getPosterPath() != null && !movie.getPosterPath().isEmpty()) {
+            try {
+                String baseUrl = "https://image.tmdb.org/t/p/w500/";
+                URL fullUrl = new URL(baseUrl + movie.getPosterPath());
+
+                Image image = ImageIO.read(fullUrl).getScaledInstance(posterWidth, posterHeight, Image.SCALE_SMOOTH);
+                ImageIcon posterIcon = new ImageIcon(image);
+                moviePoster.setIcon(posterIcon);
+            } catch (Exception e) {
+                System.err.println("Error loading movie poster for " + movie.getTitle() + ": " + e.getMessage());
+                moviePoster.setIcon(new ImageIcon("src/main/resources/images/placeholder.png"));
+            }
+        } else {
+            moviePoster.setIcon(new ImageIcon("src/main/resources/images/placeholder.png"));
+        }
+
         moviePoster.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel movieTitle = new JLabel(movie.getTitle());
