@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.get_currentuser.GetCurrentUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.open_list.OpenListDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 /**
@@ -30,7 +33,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface , GetCurrentUserDataAccessInterface , ChangeFavoritesUserDataAccessInterface {
+        LogoutUserDataAccessInterface , GetCurrentUserDataAccessInterface , ChangeFavoritesUserDataAccessInterface, OpenListDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -75,13 +78,11 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 final String favDirector = infoObject.getString(FAVDIRECTOR);
                 List<MovieList> movieLists = dbMovieListDataAccessObject.parseMovieLists(infoObject.getString(MOVIELISTS));
 
-                return userFactory.create(name, password,favMovie, favDirector, movieLists);
-            }
-            else {
+                return userFactory.create(name, password, favMovie, favDirector, movieLists);
+            } else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
             }
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -105,8 +106,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             final JSONObject responseBody = new JSONObject(response.body().string());
 
             return responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE;
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -135,18 +135,16 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
                 // success!
-            }
-            else {
+            } else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
             }
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }
 
 
-    public void modifyInfo(User user){
+    public void modifyInfo(User user) {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
 
         // Create JSON body with user data
@@ -164,7 +162,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         infoObject.put(FAVDIRECTOR, user.getFavDirector());
         infoObject.put(MOVIELISTS, dbMovieListDataAccessObject.parseMovieListsToJSONArray(user.getMovieLists()));
         requestBody.put("info", infoObject);
-
 
 
         // Create request body for the HTTP call
@@ -190,6 +187,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         }
 
     }
+
     @Override
     public void changePassword(User user) {
         final OkHttpClient client = new OkHttpClient().newBuilder()
@@ -213,12 +211,10 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
                 // success!
-            }
-            else {
+            } else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
             }
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -226,5 +222,21 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     @Override
     public String getCurrentUsername() {
         return currentUsername;
+    }
+
+    @Override
+    public List<Movie> getMoviesForList(String listName) {
+        try {
+            String username = getCurrentUsername();
+            User user = get(username);
+            for (MovieList movieList : user.getMovieLists()) {
+                if (movieList.getListName().equals(listName)) {
+                    return movieList.getMovies();
+                }
+            }
+        } catch (JSONException ex) {
+            throw new RuntimeException("Error parsing the response for the movies list: " + listName, ex);
+        }
+        return new ArrayList<>();
     }
 }

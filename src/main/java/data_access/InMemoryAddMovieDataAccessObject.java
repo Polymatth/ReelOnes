@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.User;
 import use_case.add_movie_to_list.AddMovieDataAccessInterface;
 
 import java.util.ArrayList;
@@ -14,5 +15,10 @@ public class InMemoryAddMovieDataAccessObject implements AddMovieDataAccessInter
     public void addMovieToList(String listId, String movieId) {
         userLists.putIfAbsent(listId, new ArrayList<>());
         userLists.get(listId).add(movieId);
+    }
+
+    @Override
+    public void saveMovieList(User user) {
+
     }
 }

@@ -9,6 +9,7 @@ import interface_adapter.open_list.OpenListController;
 import interface_adapter.open_list.OpenListViewModel;
 import entity.Movie;
 import interface_adapter.userprofile.UserProfileController;
+import interface_adapter.userprofile.UserProfileViewModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,7 +35,7 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
     private MovieDetailController movieDetailController;
     private EditListController editListController;
     private FilterCategoriesController filterCategoriesController;
-    private OpenListController openListController;
+    //private OpenListController openListController;
 
     public OpenListView(OpenListViewModel viewModel) {
         this.viewModel = viewModel;
@@ -141,7 +142,7 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
         movieBox.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         JLabel moviePoster = new JLabel();
-        moviePoster.setIcon(new ImageIcon(movie.getPosterPath())); // Replace with actual loading logic
+        moviePoster.setIcon(new ImageIcon(movie.getPosterPath()));
         moviePoster.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel movieTitle = new JLabel(movie.getTitle());

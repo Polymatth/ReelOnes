@@ -17,7 +17,6 @@ public class InMemoryOpenListDataAccessObject implements OpenListDataAccessInter
         return movieLists.getOrDefault(listId, new ArrayList<>());
     }
 
-    // Add methods to manipulate the in-memory data for testing purposes.
     public void addList(String listId, List<Movie> movies) {
         movieLists.put(listId, movies);
     }

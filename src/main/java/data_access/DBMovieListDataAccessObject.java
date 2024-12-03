@@ -19,7 +19,7 @@ import java.util.Objects;
 
 
 public class DBMovieListDataAccessObject implements MovieListDataAccessInterface, EditListDataAccessInterface,
-        OpenListDataAccessInterface, AddMovieDataAccessInterface {
+        AddMovieDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -126,36 +126,73 @@ public class DBMovieListDataAccessObject implements MovieListDataAccessInterface
 
     public List<Movie> parseMovies(JSONArray moviesArray) throws JSONException {
         List<Movie> movies = new ArrayList<>();
+
         for (int i = 0; i < moviesArray.length(); i++) {
             JSONObject movieObject = moviesArray.getJSONObject(i);
-            String poster_path = movieObject.optString("poster_path");
-            boolean adult = movieObject.getBoolean("adult");
-            String overview = movieObject.getString("overview");
-            String release_date = movieObject.getString("release_date");
 
-            JSONArray genreJsonArray = movieObject.getJSONArray("genre_ids");
-            List genre_ids = new ArrayList();
-            int size = genreJsonArray.length();
-            int j = 0;
-            while (j< size){
-                genre_ids.add(genreJsonArray.get(j));
-                j++;
+            // Parse basic fields
+            String posterPath = movieObject.optString("posterPath", ""); // Use default value if missing
+            boolean adult = movieObject.optBoolean("adult", false);
+            String overview = movieObject.optString("overview", "No overview available");
+            String releaseDate = movieObject.optString("releaseDate", "n/a");
+
+            // Parse genre IDs as a list of integers
+            JSONArray genreJsonArray = movieObject.optJSONArray("genre_ids");
+            List<Integer> genreIds = new ArrayList<>();
+            if (genreJsonArray != null) {
+                for (int j = 0; j < genreJsonArray.length(); j++) {
+                    genreIds.add(genreJsonArray.getInt(j));
+                }
             }
 
-            int id = movieObject.getInt("id");
-            String original_language = movieObject.getString("original_language");
-            String title = movieObject.getString("title");
-            String backdrop_path = movieObject.getString("backdrop_path");
-            float popularity = movieObject.getFloat("popularity");
-            int vote_count = movieObject.getInt("vote_count");
-            boolean video = movieObject.getBoolean("video");
-            float vote_average = movieObject.getFloat("vote_average");
-            movies.add(new Movie(poster_path, adult, overview, release_date,
-                    genre_ids, id, original_language, title, backdrop_path,
-                    popularity, vote_count, video, vote_average));
+            // Parse other fields
+            int id = movieObject.optInt("ID", -1);
+            String originalLanguage = movieObject.optString("original_language", "unknown");
+            String title = movieObject.optString("title", "Untitled");
+            String backdropPath = movieObject.optString("backdropPath", "");
+            float popularity = (float) movieObject.optDouble("popularity", 0.0);
+            int voteCount = movieObject.optInt("votecount", 0);
+            boolean video = movieObject.optBoolean("video", false);
+            float voteAverage = (float) movieObject.optDouble("voteAverage", 0.0);
+
+            // Parse genres as a list of strings
+            JSONArray genresArray = movieObject.optJSONArray("genres");
+            List<String> genres = new ArrayList<>();
+            if (genresArray != null) {
+                for (int j = 0; j < genresArray.length(); j++) {
+                    genres.add(genresArray.getString(j));
+                }
+            }
+
+            // Parse streaming services as a list of strings
+            JSONArray streamingArray = movieObject.optJSONArray("streaming");
+            List<String> streaming = new ArrayList<>();
+            if (streamingArray != null) {
+                for (int j = 0; j < streamingArray.length(); j++) {
+                    streaming.add(streamingArray.getString(j));
+                }
+            }
+
+
+            String director = movieObject.optString("director", "");
+
+            // Create and initialize a Movie object
+            Movie movie = new Movie(posterPath, adult, overview, releaseDate, genreIds, id,
+                    originalLanguage, title, backdropPath, popularity,
+                    voteCount, video, voteAverage);
+
+            // Set additional fields
+            movie.setGenres(genres);
+            movie.setStreaming(streaming);
+            movie.setDirector(director);
+
+            // Add to the list
+            movies.add(movie);
         }
+
         return movies;
     }
+
 
     public List<MovieList> parseMovieLists(String movieListArrayString) throws JSONException {
         // Convert the input string back to a JSONArray
@@ -266,14 +303,17 @@ public class DBMovieListDataAccessObject implements MovieListDataAccessInterface
         }
     }
 
-    public void updateList(User user) {
-        this.saveMovieList(user);
-    }
-
-    @Override
-    public List<Movie> getMoviesForList(String listName) {
-        return List.of();
-    }
+//    @Override
+//    public List<Movie> getMoviesForList(String listName) {
+//
+//        try {
+//            MovieList movieList = getMovieListByName("username", listName);
+//
+//            return movieList.getMovies();
+//        } catch (RuntimeException e) {
+//            throw new RuntimeException("Could not retrieve movies for the list: " + e.getMessage(), e);
+//        }
+//    }
 
     @Override
     public void addMovieToList(String listId, String movieId) {
@@ -288,7 +328,7 @@ public class DBMovieListDataAccessObject implements MovieListDataAccessInterface
 
         // Build the POST request
         final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/addMovieToList")
+                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
                 .method("POST", body)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
