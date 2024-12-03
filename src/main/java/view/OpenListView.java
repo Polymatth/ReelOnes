@@ -79,14 +79,14 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
 //        );
 //
 //        buttonPanel.add(applyFiltersButton);
-
-        JButton editListButton = new JButton("Edit List");
-        editListButton.addActionListener(
-                 new ActionListener() {
-                     public void actionPerformed(ActionEvent evt) {
-                         if (evt.getSource().equals(editListButton)) {
-                            editListController.switchToEditListView(); }}});
-        buttonPanel.add(editListButton);
+//
+//        JButton editListButton = new JButton("Edit List");
+//        editListButton.addActionListener(
+//                 new ActionListener() {
+//                     public void actionPerformed(ActionEvent evt) {
+//                         if (evt.getSource().equals(editListButton)) {
+//                            editListController.switchToEditListView(); }}});
+//        buttonPanel.add(editListButton);
 
         JButton goBackButton = new JButton(GO_BACK);
         goBackButton.addActionListener(
