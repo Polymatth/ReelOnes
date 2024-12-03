@@ -62,4 +62,8 @@ public class OpenListState {
         this.filtersToMovies = filtersToMovies;
     }
 
+    public void setIsFiltered(boolean b) {
+        this.isFiltered = b;
+    }
+
 }

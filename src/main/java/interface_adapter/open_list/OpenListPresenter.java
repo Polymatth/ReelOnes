@@ -2,10 +2,12 @@ package interface_adapter.open_list;
 
 import entity.Movie;
 import interface_adapter.ViewManagerModel;
+import use_case.filter_application.FilterCategoryConstants;
 import use_case.open_list.OpenListOutputBoundary;
 import use_case.open_list.OpenListOutputData;
 import view.ViewManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OpenListPresenter implements OpenListOutputBoundary {
@@ -21,6 +23,10 @@ public class OpenListPresenter implements OpenListOutputBoundary {
     public void prepareSuccessView(OpenListOutputData outputData) {
         openListViewModel.getState().setListName(outputData.getListName());
         openListViewModel.getState().setMovies(outputData.getMovies());
+        for (String category : FilterCategoryConstants.getCategories()) {
+            this.openListViewModel.getState().getFiltersToMovies().put(category, outputData.getMovies());
+            this.openListViewModel.getState().getFiltersToSelections().put(category, new ArrayList<>());
+        }
         this.viewManager.setState(openListViewModel.getViewName());
         this.viewManager.firePropertyChanged();
     }
