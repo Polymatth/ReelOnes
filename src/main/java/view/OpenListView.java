@@ -49,7 +49,7 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
 
         // Load initial state
         updateListName(viewModel.getState().getListName());
-        updateMovies(viewModel.getState().getMovies());
+        updateMovies(viewModel.getState().moviesToDisplay());
     }
 
     private void initializeTopPanel() {
@@ -66,7 +66,7 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         JButton applyFiltersButton = new JButton("Apply Filters");
-        applyFiltersButton.addActionListener( e->
+        applyFiltersButton.addActionListener(
                 new ActionListener() {
                      public void actionPerformed(ActionEvent evt) {
                      if (evt.getSource().equals(applyFiltersButton)) {
