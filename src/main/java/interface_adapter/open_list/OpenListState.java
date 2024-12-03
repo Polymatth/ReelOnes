@@ -70,4 +70,15 @@ public class OpenListState {
         this.filtersToMovies = filtersToMovies;
     }
 
+    public void setIsFiltered(boolean b) {
+        this.isFiltered = b;
+    }
+
+    public List<Movie> moviesToDisplay() {
+        if (this.isFiltered && this.currentFilteredMovies.size() < this.movies.size()) {
+            return this.currentFilteredMovies;
+        }
+        return this.movies;
+    }
+
 }
