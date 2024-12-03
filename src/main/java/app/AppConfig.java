@@ -1,6 +1,10 @@
 package app;
 
 import data_access.MovieAPIAccess;
+import use_case.create_recommendation.CreateRecommendationCosimStrategy;
+import use_case.create_recommendation.CreateRecommendationDirectorStrategy;
+import use_case.create_recommendation.CreateRecommendationGenreStrategy;
+import use_case.create_recommendation.CreateRecommendationStrategy;
 import use_case.fetch_popularmovies.FetchPopularMoviesDataAccessInterface;
 import use_case.filter_application.FilterApplicationDataAccessInterface;
 import use_case.movie_detail.MovieDetailDataAccessInterface;
@@ -27,5 +31,13 @@ public class AppConfig {
 
     public FilterApplicationDataAccessInterface getFilterApplicationDataAccess() {
         return new MovieAPIAccess(API_KEY, API_URL);
+    }
+    public CreateRecommendationStrategy getRecommendationStrategy() {
+        CreateRecommendationStrategy strategy = new CreateRecommendationCosimStrategy();
+        if (strategy.getStrategy().equals("Cosine Similarity")){
+            ((CreateRecommendationCosimStrategy) strategy).setThreshold(0.19);
+            ((CreateRecommendationCosimStrategy) strategy).setFetchPopularMoviesDataAccessInterface(getPopularMoviesDataAccess());
+        }
+        return strategy;
     }
 }
