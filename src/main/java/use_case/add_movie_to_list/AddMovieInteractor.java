@@ -14,7 +14,9 @@ public class AddMovieInteractor implements AddMovieInputBoundary {
     private final UserFactory userFactory;
 
 
-    public AddMovieInteractor(AddMovieDataAccessInterface dataAccess, AddMovieOutputBoundary outputBoundary,UserFactory userFactory) {
+    public AddMovieInteractor(AddMovieDataAccessInterface dataAccess,
+                              AddMovieOutputBoundary outputBoundary,
+                              UserFactory userFactory) {
         this.dataAccess = dataAccess;
         this.outputBoundary = outputBoundary;
         this.userFactory = userFactory;
@@ -22,30 +24,22 @@ public class AddMovieInteractor implements AddMovieInputBoundary {
 
     @Override
     public void addMovieToList(AddMovieInputData inputData) {
-
         String listName = inputData.getListName();
         String movieTitle = inputData.getMovieTitle();
-        String username = inputData.getUsername();
-
         if (listName == null || listName.isEmpty()) {
             outputBoundary.prepareFailView("List name cannot be empty.");
             return;
         }
-
         if (movieTitle == null || movieTitle.isEmpty()) {
             outputBoundary.prepareFailView("Invalid movie data. Movie cannot be null or missing an ID.");
             return;
         }
-
         try {
             final User user = userFactory.create(inputData.getUsername(),inputData.getPassword(), inputData.getFavMovie(),inputData.getFavDirector(),inputData.getMovieListsList());
-            // Add the movie to the list using the data access layer
             dataAccess.saveMovieList(user);
-            // Prepare the success view with the output data
             AddMovieOutputData outputData = new AddMovieOutputData(listName, movieTitle,user);
             outputBoundary.prepareSuccessView(outputData);
         } catch (Exception e) {
-            // Handle any exceptions that may occur during the operation
             outputBoundary.prepareFailView("Failed to add movie to list: " + e.getMessage());
         }
     }

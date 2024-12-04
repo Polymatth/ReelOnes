@@ -2,7 +2,6 @@ package view;
 
 import entity.MovieList;
 import interface_adapter.ViewModel;
-import interface_adapter.edit_list.EditListController;
 import interface_adapter.filter_categories.FilterCategoriesController;
 import interface_adapter.filter_category.FilterCategoryController;
 import interface_adapter.logout.LogoutController;
@@ -35,9 +34,6 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
     private JPanel moviesPanel;
     private UserProfileController userProfileController;
     private MovieDetailController movieDetailController;
-    private EditListController editListController;
-    private FilterCategoriesController filterCategoriesController;
-    //private OpenListController openListController;
 
     public OpenListView(OpenListViewModel viewModel) {
         this.viewModel = viewModel;
@@ -63,30 +59,7 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
 
         // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-//
-//        JButton applyFiltersButton = new JButton("Apply Filters");
-//        applyFiltersButton.addActionListener(
-//                new ActionListener() {
-//                     public void actionPerformed(ActionEvent evt) {
-//                     if (evt.getSource().equals(applyFiltersButton)) {
-//                         filterCategoriesController.goToFilterCategoriesView(viewModel.getState().getMovies(),
-//                                 viewModel.getState().getFiltersToMovies(),
-//                                 viewModel.getState().getFiltersToSelections(),
-//                                 viewModel.getViewName());
-//                     }
-//                     }
-//                }
-//        );
-//
-//        buttonPanel.add(applyFiltersButton);
 
-        JButton editListButton = new JButton("Edit List");
-        editListButton.addActionListener(
-                 new ActionListener() {
-                     public void actionPerformed(ActionEvent evt) {
-                         if (evt.getSource().equals(editListButton)) {
-                            editListController.switchToEditListView(); }}});
-        buttonPanel.add(editListButton);
 
         JButton goBackButton = new JButton(GO_BACK);
         goBackButton.addActionListener(
@@ -201,13 +174,5 @@ public class OpenListView extends JPanel implements ActionListener, PropertyChan
 
     public void setUserProfileController(UserProfileController userProfileController) {
         this.userProfileController = userProfileController;
-    }
-
-    public void setFilterCategoriesController(FilterCategoriesController filterCategoriesController) {
-        this.filterCategoriesController = filterCategoriesController;
-    }
-
-    public void setEditListController(EditListController editListController) {
-        this.editListController = editListController;
     }
 }

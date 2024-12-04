@@ -25,16 +25,6 @@ public class OpenListPresenter implements OpenListOutputBoundary {
         openListViewModel.getState().setMovies(outputData.getMovies());
         openListViewModel.firePropertyChanged("movies");
         openListViewModel.loadUserMovies();
-       // openListViewModel.getState().setMovies(outputData.getMovies());
-
-        for (String category : FilterCategoryConstants.getCategories()) {
-            this.openListViewModel.getState().getFiltersToMovies().put(category, outputData.getMovies());
-            this.openListViewModel.getState().getFiltersToSelections().put(category, new ArrayList<>());
-        }
-        this.openListViewModel.getState().setCurrentFilteredMovies(new ArrayList<>());
-        if (this.openListViewModel.getState().getFiltered()) {
-            this.openListViewModel.getState().setIsFiltered(false);
-        }
         this.openListViewModel.firePropertyChanged();
         this.viewManager.setState(openListViewModel.getViewName());
         this.viewManager.firePropertyChanged();

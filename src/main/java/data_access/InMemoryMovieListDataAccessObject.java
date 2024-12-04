@@ -8,11 +8,10 @@ import entity.Movie;
 import entity.MovieList;
 import entity.User;
 import entity.UserList;
-import use_case.edit_list.EditListDataAccessInterface;
 import use_case.movie_list.MovieListDataAccessInterface;
 
 // temporary class. will delete it after implementing DBMovieListDataAccessObject.
-public class InMemoryMovieListDataAccessObject implements MovieListDataAccessInterface, EditListDataAccessInterface {
+public class InMemoryMovieListDataAccessObject implements MovieListDataAccessInterface {
 
     private final Map<String, MovieList> movieListsByName = new HashMap<>();
     private final Map<String, List<MovieList>> movieListsByUserId = new HashMap<>();
@@ -35,8 +34,4 @@ public class InMemoryMovieListDataAccessObject implements MovieListDataAccessInt
         return movieListsByUserId.getOrDefault(userId, new java.util.ArrayList<>());
     }
 
-    @Override
-    public void updateList(String username, MovieList movieList) {
-    // implement later
-    }
 }
