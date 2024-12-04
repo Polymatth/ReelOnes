@@ -299,34 +299,34 @@ public class DBMovieListDataAccessObject implements MovieListDataAccessInterface
 //        }
 //    }
 
-    @Override
-    public void addMovieToList(String listId, String movieId) {
-        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-
-        // Create the JSON request body
-        final JSONObject requestBody = new JSONObject();
-        requestBody.put("listId", listId);
-        requestBody.put("movieId", movieId);
-
-        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
-
-        // Build the POST request
-        final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
-                .method("POST", body)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
-
-        try {
-            // Execute the request and handle the response
-            final Response response = client.newCall(request).execute();
-            final JSONObject responseBody = new JSONObject(response.body().string());
-
-            if (responseBody.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
-            }
-        } catch (IOException | JSONException ex) {
-            throw new RuntimeException("Error adding movie to list", ex);
-        }
-    }
+//    @Override
+//    public void addMovieToList(String listId, String movieId) {
+//        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+//
+//        // Create the JSON request body
+//        final JSONObject requestBody = new JSONObject();
+//        requestBody.put("listId", listId);
+//        requestBody.put("movieId", movieId);
+//
+//        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
+//
+//        // Build the POST request
+//        final Request request = new Request.Builder()
+//                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
+//                .method("POST", body)
+//                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+//                .build();
+//
+//        try {
+//            // Execute the request and handle the response
+//            final Response response = client.newCall(request).execute();
+//            final JSONObject responseBody = new JSONObject(response.body().string());
+//
+//            if (responseBody.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+//                throw new RuntimeException(responseBody.getString(MESSAGE));
+//            }
+//        } catch (IOException | JSONException ex) {
+//            throw new RuntimeException("Error adding movie to list", ex);
+//        }
+//    }
 }
