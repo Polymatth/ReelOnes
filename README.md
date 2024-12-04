@@ -7,7 +7,7 @@
 - Maryam 
 
 ## Summary
-**ReelOnes** is a movie discovery platform that allows users to search for movies, view detailed information, create personalized lists,receive tailored recommendationsnd explore popular and "now playing" movies. Designed to enhance the movie-watching experience, it offers robust search and filtering features, ensuring users can easily find and organize their favorite content.
+**ReelOnes** is a movie discovery platform that allows users to search for movies, view detailed information, create personalized lists,receive tailored recommendations, and explore popular and "now playing" movies. Designed to enhance the movie-watching experience, it offers robust search and filtering features, ensuring users can easily find and organize their favorite content.
 
 ## Table of Contents
 1. [Features](#features)  
