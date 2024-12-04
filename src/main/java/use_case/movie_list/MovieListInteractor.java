@@ -27,7 +27,7 @@ public class MovieListInteractor implements MovieListInputBoundary {
     }
 
     /**
-     * Executes the action on the movie list, such as viewing or editing it.
+     * Executes the action of creating a movie list.
      * @param movieListInputData The data for the movie list
      */
     @Override
