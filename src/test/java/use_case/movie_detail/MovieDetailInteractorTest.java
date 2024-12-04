@@ -39,17 +39,25 @@ public class MovieDetailInteractorTest {
             public void prepareSuccessView(MovieDetailOutputData movieDetailOutputData) {
                 //Test that you get the right movie by checking IDs.
                 assertEquals(343611, movieDetailOutputData.getID());
+                //Test that you get the right movie object
+                assertEquals(testMovie, movieDetailOutputData.getMovie());
+                //Test that the title is correct
+                assertEquals("Jack Reacher: Never Go Back", movieDetailOutputData.getTitle());
                 //Test that you get the correct director.
                 assertEquals("Edward Zwick", movieDetailOutputData.getDirector());
                 //Test that you get the correct poster path.
                 assertEquals("/IfB9hy4JH1eH6HEfIgIGORXi5h.jpg", movieDetailOutputData.getPosterImagePath());
-                //Test that you get the correct list of genres names.
+                //Test that the year of release is correct.
+                assertEquals("2016", movieDetailOutputData.getYear());
+                //Test that you get the right list of genres
                 List<String> genreNames = new ArrayList<>();
                 genreNames.add("Thriller");
                 genreNames.add("Action");
                 genreNames.add("Crime");
                 genreNames.add("Drama");
                 genreNames.add("Mystery");
+                assertEquals(genreNames, movieDetailOutputData.getGenres());
+                //Test that the list of genres names gets rendered correctly as a string.
                 assertEquals(String.join(", ", genreNames), movieDetailOutputData.getGenre());
                 //Test that you get the right list of streaming services.
                 List<String> services = new ArrayList<>();
