@@ -19,9 +19,6 @@ import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.ChangePasswordViewModel;
 import interface_adapter.create_recommendation.CreateRecommendationController;
-import interface_adapter.edit_list.EditListPresenter;
-import interface_adapter.edit_list.EditListViewModel;
-import interface_adapter.edit_list.EditListController;
 import interface_adapter.fetch_nowplayingmovies.FetchNowPlayingMoviesController;
 import interface_adapter.fetch_nowplayingmovies.FetchNowPlayingMoviesPresenter;
 import interface_adapter.fetch_popularmovies.FetchPopularMoviesController;
@@ -72,7 +69,6 @@ import use_case.change_password.ChangePasswordOutputBoundary;
 
 import use_case.create_recommendation.CreateRecommendationInteractor;
 import use_case.create_recommendation.CreateRecommendationStrategy;
-import use_case.edit_list.EditListOutputBoundary;
 import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesDataAccessInterface;
 import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesInputBoundary;
 import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesInteractor;
@@ -117,10 +113,6 @@ import use_case.open_list.OpenListDataAccessInterface;
 import use_case.open_list.OpenListInputBoundary;
 import use_case.open_list.OpenListInteractor;
 import use_case.open_list.OpenListOutputBoundary;
-import use_case.edit_list.EditListDataAccessInterface;
-import use_case.edit_list.EditListInputBoundary;
-import use_case.edit_list.EditListInteractor;
-import use_case.edit_list.EditListOutputBoundary;
 import use_case.return_to_filter_categories.ReturnToFilterCategoriesInputBoundary;
 import use_case.return_to_filter_categories.ReturnToFilterCategoriesInteractor;
 import use_case.return_to_filter_categories.ReturnToFilterCategoriesOutputBoundary;
@@ -172,7 +164,6 @@ public class AppBuilder {
             .getFilterApplicationDataAccess();
     private final CreateRecommendationStrategy createRecommendationStrategy = new AppConfig().getRecommendationStrategy();
     private final OpenListDataAccessInterface openListDataAccessInterface = userDataAccessObject;
-    private final EditListDataAccessInterface editListDataAccessInterface = dbMovieListDataAccessObject;
     private final MovieListDataAccessInterface movieListDataAccessInterface = dbMovieListDataAccessObject;
     private final AddMovieDataAccessInterface addMovieDataAccessInterface = dbMovieListDataAccessObject;
 
@@ -190,12 +181,10 @@ public class AppBuilder {
     private UserProfileView userProfileView;
 
     private OpenListViewModel openListViewModel;
-    private EditListViewModel editListViewModel;
     private MovieListViewModel movieListViewModel;
     private SearchMovieViewModel searchMovieViewModel;
 
     private OpenListView openListView;
-    private EditListView editListView;
     private ChangePasswordView changePasswordView;
     private SearchMovieView searchMovieView;
 
@@ -303,16 +292,6 @@ public class AppBuilder {
         return this;
     }
 
-    /**
-     * Adds the EditList View to the application.
-     * @return this builder
-     */
-    public AppBuilder addEditListView() {
-        editListViewModel = new EditListViewModel();
-        editListView = new EditListView(editListViewModel);
-        cardPanel.add(editListView, editListView.getViewName());
-        return this;
-    }
 
     public AppBuilder addFilterCategoriesView() {
         filterCategoriesViewModel = new FilterCategoriesViewModel();
@@ -379,7 +358,6 @@ public class AppBuilder {
         final GetCurrentUserController getCurrentUserController = new GetCurrentUserController(getCurrentUserInteractor);
         System.out.println("Created GetCurrentUserController: " + getCurrentUserController);
         changePasswordView.setGetCurrentUserController(getCurrentUserController);
-        editListView.setGetCurrentUserController(getCurrentUserController);
         userProfileViewModel.setGetCurrentUserController(getCurrentUserController);
         movieDetailViewModel.setGetCurrentUserController(getCurrentUserController);
         openListViewModel.setGetCurrentUserController(getCurrentUserController);
@@ -474,7 +452,7 @@ public class AppBuilder {
 
     public AppBuilder addFilterCategoriesUseCases() {
         final GoToFilterCategoriesOutputBoundary goToFilterCategoriesOutputBoundary = new FilterCategoriesPresenter(
-                filterCategoriesViewModel, searchMovieViewModel, openListViewModel, viewManagerModel);
+                filterCategoriesViewModel, searchMovieViewModel, viewManagerModel);
         final GoToFilterCategoriesInputBoundary goToFilterCategoriesInteractor = new GoToFilterCategoriesInteractor(
                 goToFilterCategoriesOutputBoundary);
         final ClearAllFiltersInputBoundary clearAllFiltersInteractor = new ClearAllFiltersInteractor(
@@ -490,7 +468,6 @@ public class AppBuilder {
         filterCategoriesView.setFilterCategoriesController(filterCategoriesController);
         filterCategoryView.setFilterCategoriesController(filterCategoriesController);
         searchMovieView.setFilterCategoriesController(filterCategoriesController);
-        openListView.setFilterCategoriesController(filterCategoriesController);
         return this;
     }
 
@@ -550,7 +527,6 @@ public class AppBuilder {
         final OpenListInputBoundary openListInteractor = new OpenListInteractor(openListDataAccessInterface, openListOutputBoundary);
         final OpenListController openListController = new OpenListController(openListInteractor);
         userProfileView.setOpenListController(openListController);
-        editListView.setOpenListController(openListController);
         return this;
     }
 
@@ -562,19 +538,6 @@ public class AppBuilder {
         createRecommendationInteractor.setStrategy(createRecommendationStrategy);
         final CreateRecommendationController createRecommendationController = new CreateRecommendationController(createRecommendationInteractor);
         userProfileView.setCreateRecommendationController(createRecommendationController);
-        return this;
-    }
-
-    /**
-     * Adds the Edit List Use Case to the application.
-     * @return this builder
-     */
-    public AppBuilder addEditListUseCase() {
-        final EditListOutputBoundary editListOutputBoundary = new EditListPresenter(viewManagerModel, editListViewModel, openListViewModel);
-        final EditListInputBoundary editListInteractor = new EditListInteractor(editListDataAccessInterface, editListOutputBoundary);
-        final EditListController editListController = new EditListController(editListInteractor);
-        editListView.setEditListController(editListController);
-        openListView.setEditListController(editListController);
         return this;
     }
 

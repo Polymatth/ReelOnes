@@ -33,14 +33,12 @@ public class FilterCategoriesPresenter implements ReturnToFilterCategoriesOutput
     private ViewManagerModel viewManagerModel;
     private List<ViewModel> possibleViewModels = new ArrayList<>();
     private SearchMovieViewModel searchMovieViewModel;
-    private OpenListViewModel openListViewModel;
 
     public FilterCategoriesPresenter(FilterCategoriesViewModel filterCategoriesViewModel, SearchMovieViewModel
-            searchMovieViewModel, OpenListViewModel openListViewModel, ViewManagerModel viewManagerModel) {
+            searchMovieViewModel, ViewManagerModel viewManagerModel) {
         this.filterCategoriesViewModel = filterCategoriesViewModel;
         this.searchMovieViewModel = searchMovieViewModel;
         this.possibleViewModels.add(this.searchMovieViewModel);
-        this.openListViewModel = openListViewModel;
         this.viewManagerModel = viewManagerModel;
     }
 
@@ -52,12 +50,12 @@ public class FilterCategoriesPresenter implements ReturnToFilterCategoriesOutput
         filterCategoriesState.setOriginalMovieList(goToFilterCategoriesOutputData.getOriginalList());
         //for (List<Movie> movieList : goToFilterCategoriesOutputData.getFiltersToMovies().values()) {
         //    if (!movieList.isEmpty()) {
-                filterCategoriesState.setFilterToMovies(goToFilterCategoriesOutputData.getFiltersToMovies());
+        filterCategoriesState.setFilterToMovies(goToFilterCategoriesOutputData.getFiltersToMovies());
         //    }
         //}
         //for (List<String> optionsList : goToFilterCategoriesOutputData.getFiltersToSelections().values()) {
-       //     if (!optionsList.isEmpty()) {
-                filterCategoriesState.setFiltersToSelections(goToFilterCategoriesOutputData.getFiltersToSelections());
+        //     if (!optionsList.isEmpty()) {
+        filterCategoriesState.setFiltersToSelections(goToFilterCategoriesOutputData.getFiltersToSelections());
         //    }
         //}
         filterCategoriesState.setListView(goToFilterCategoriesOutputData.getListView());
@@ -117,23 +115,5 @@ public class FilterCategoriesPresenter implements ReturnToFilterCategoriesOutput
             this.searchMovieViewModel.setState(state);
             this.searchMovieViewModel.firePropertyChanged();
         }
-        else {
-            //get the current state of the Open List view model.
-            viewModel = this.openListViewModel;
-            OpenListState state = this.openListViewModel.getState();
-            state.setFiltersToMovies(returnToListOutputData.getFiltersToMovies());
-            state.setFiltersToSelections(returnToListOutputData.getFiltersToSelections());
-            state.setCurrentFilteredMovies(returnToListOutputData.getFinalFilteredList());
-            if (!state.getFiltered() && !returnToListOutputData.getFinalFilteredList().equals(state.getMovies())) {
-                state.setIsFiltered(true);
-            }
-            //Update the State in the appropriate View Model.
-            this.openListViewModel.setState(state);
-            this.openListViewModel.firePropertyChanged();
-        }
-        //Update the View Manager Model.
-        this.viewManagerModel.setState(viewModel.getViewName());
-        this.viewManagerModel.firePropertyChanged();
     }
-
 }

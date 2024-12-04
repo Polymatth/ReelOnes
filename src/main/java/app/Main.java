@@ -24,7 +24,6 @@ public class Main {
                                             .addChangeFavoritesView()
                                             .addOpenListView()
                                             .addUserProfileView()
-                                            .addEditListView()
                                             .addFilterCategoryView()
                                             .addFilterCategoriesView()
                                             .addFetchNowPlayingMoviesUseCase()
@@ -43,7 +42,6 @@ public class Main {
                                             .addMovieListUseCase()
                                             .addOpenListUseCase()
                                             .addCreateRecommendationUseCase()
-                                            .addEditListUseCase()
                                             .addFilterCategoriesUseCases()
                                             .addFilterCategoryUseCases()
 

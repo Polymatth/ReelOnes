@@ -6,19 +6,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import use_case.add_movie_to_list.AddMovieDataAccessInterface;
-import use_case.edit_list.EditListDataAccessInterface;
-import use_case.movie_detail.MovieDetailDataAccessInterface;
 import use_case.movie_list.MovieListDataAccessInterface;
-import use_case.open_list.OpenListDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 
-public class DBMovieListDataAccessObject implements MovieListDataAccessInterface, EditListDataAccessInterface,
+
+public class DBMovieListDataAccessObject implements MovieListDataAccessInterface,
         AddMovieDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
@@ -269,49 +265,37 @@ public class DBMovieListDataAccessObject implements MovieListDataAccessInterface
         throw new RuntimeException("Movie list with the name '" + listName + "' does not exist.");
     }
 
-    @Override
-    public void updateList(String username, MovieList movieList) {
-        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-
-        // Create the JSON request body
-        final JSONObject requestBody = new JSONObject();
-        requestBody.put(USERNAME, username);
-
-        requestBody.put("listName", movieList.getListName());
-        requestBody.put("isPublic", movieList.getPublic());
-        requestBody.put("movies", serializeMovies(movieList.getMovies()));
-
-        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
-
-        // Build the PUT request
-        final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
-                .method("PUT", body)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
-
-        try {
-            // Execute the request and handle the response
-            final Response response = client.newCall(request).execute();
-            final JSONObject responseBody = new JSONObject(response.body().string());
-
-            if (responseBody.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
-            }
-        } catch (IOException | JSONException ex) {
-            throw new RuntimeException("Error updating movie list", ex);
-        }
-    }
-
 //    @Override
-//    public List<Movie> getMoviesForList(String listName) {
+//    public void updateList(String username, MovieList movieList) {
+//        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
+//
+//        // Create the JSON request body
+//        final JSONObject requestBody = new JSONObject();
+//        requestBody.put(USERNAME, username);
+//
+//        requestBody.put("listName", movieList.getListName());
+//        requestBody.put("isPublic", movieList.getPublic());
+//        requestBody.put("movies", serializeMovies(movieList.getMovies()));
+//
+//        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
+//
+//        // Build the PUT request
+//        final Request request = new Request.Builder()
+//                .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
+//                .method("PUT", body)
+//                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+//                .build();
 //
 //        try {
-//            MovieList movieList = getMovieListByName("username", listName);
+//            // Execute the request and handle the response
+//            final Response response = client.newCall(request).execute();
+//            final JSONObject responseBody = new JSONObject(response.body().string());
 //
-//            return movieList.getMovies();
-//        } catch (RuntimeException e) {
-//            throw new RuntimeException("Could not retrieve movies for the list: " + e.getMessage(), e);
+//            if (responseBody.getInt(STATUS_CODE_LABEL) != SUCCESS_CODE) {
+//                throw new RuntimeException(responseBody.getString(MESSAGE));
+//            }
+//        } catch (IOException | JSONException ex) {
+//            throw new RuntimeException("Error updating movie list", ex);
 //        }
 //    }
 
