@@ -2,10 +2,10 @@
 
 ## Authors and Contributors
 CSC207 Fall 2024 - Group 80:
-Lamees Al-Busaidi
-Selin Cakir
-Maryam Hassan
-Matthew MacQuarrie-Cottle
+- Lamees Al-Busaidi
+- Selin Cakir
+- Maryam Hassan
+- Matthew MacQuarrie-Cottle
 
 ## Summary
 **ReelOnes** is a movie discovery platform that allows users to search for movies, view detailed information, create personalized lists, receive tailored recommendations, and explore popular and "now playing" movies. Designed to enhance the movie-watching experience, it offers robust search and filtering features, ensuring users can easily find and organize their favorite content.
