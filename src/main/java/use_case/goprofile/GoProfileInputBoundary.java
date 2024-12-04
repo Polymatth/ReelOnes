@@ -7,10 +7,9 @@ package use_case.goprofile;
 public interface GoProfileInputBoundary {
     /**
      * Executes the go profile use case.
-     * @param profileInputData the input data
      */
 
-    void execute(GoProfileInputData profileInputData);
+    void execute();
 
     /**
      * Executes the switch to profile view use case.

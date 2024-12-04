@@ -1,7 +1,10 @@
 package interface_adapter.add_movie_to_list;
 
+import entity.MovieList;
 import use_case.add_movie_to_list.AddMovieInputBoundary;
 import use_case.add_movie_to_list.AddMovieInputData;
+
+import java.util.List;
 
 /**
  * Controller for handling requests to add a movie to a user list.
@@ -21,11 +24,10 @@ public class AddMovieController {
     /**
      * Adds a movie to a specified user list.
      *
-     * @param listName the name of the user list.
-     * @param movieTitle the title of movie to add.
+     *
      */
-    public void addMovieToList(String listName, String movieTitle) {
-        AddMovieInputData inputData = new AddMovieInputData(listName, movieTitle);
+    public void addMovieToList(String username, String password, String favMovie, String favDirector, List<MovieList> movieListLists,String listName, String movieTitle) {
+        AddMovieInputData inputData = new AddMovieInputData(username,password,favMovie,favDirector,movieListLists, listName,movieTitle);
         inputBoundary.addMovieToList(inputData);
     }
 }

@@ -18,6 +18,7 @@ import interface_adapter.change_favorites.ChangeFavoritesViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.ChangePasswordViewModel;
+import interface_adapter.create_recommendation.CreateRecommendationController;
 import interface_adapter.edit_list.EditListPresenter;
 import interface_adapter.edit_list.EditListViewModel;
 import interface_adapter.edit_list.EditListController;
@@ -69,6 +70,8 @@ import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
 
+import use_case.create_recommendation.CreateRecommendationInteractor;
+import use_case.create_recommendation.CreateRecommendationStrategy;
 import use_case.edit_list.EditListOutputBoundary;
 import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesDataAccessInterface;
 import use_case.fetch_nowplayingmovies.FetchNowPlayingMoviesInputBoundary;
@@ -167,11 +170,8 @@ public class AppBuilder {
             .getMovieDetailDataAccess();
     private final FilterApplicationDataAccessInterface filterApplicationDataAccessInterface = new AppConfig()
             .getFilterApplicationDataAccess();
-    private final FilterApplicationDataAccessInterface filterApplicationDataAccessInterface = new AppConfig()
-            .getFilterApplicationDataAccess();
-    private final OpenListDataAccessInterface openListDataAccessInterface = new InMemoryOpenListDataAccessObject();
-    private final EditListDataAccessInterface editListDataAccessInterface = new InMemoryMovieListDataAccessObject();
-    private final OpenListDataAccessInterface openListDataAccessInterface = dbMovieListDataAccessObject;
+    private final CreateRecommendationStrategy createRecommendationStrategy = new AppConfig().getRecommendationStrategy();
+    private final OpenListDataAccessInterface openListDataAccessInterface = userDataAccessObject;
     private final EditListDataAccessInterface editListDataAccessInterface = dbMovieListDataAccessObject;
     private final MovieListDataAccessInterface movieListDataAccessInterface = dbMovieListDataAccessObject;
     private final AddMovieDataAccessInterface addMovieDataAccessInterface = dbMovieListDataAccessObject;
@@ -381,7 +381,8 @@ public class AppBuilder {
         changePasswordView.setGetCurrentUserController(getCurrentUserController);
         editListView.setGetCurrentUserController(getCurrentUserController);
         userProfileViewModel.setGetCurrentUserController(getCurrentUserController);
-
+        movieDetailViewModel.setGetCurrentUserController(getCurrentUserController);
+        openListViewModel.setGetCurrentUserController(getCurrentUserController);
         return this;
     }
 
@@ -473,7 +474,7 @@ public class AppBuilder {
 
     public AppBuilder addFilterCategoriesUseCases() {
         final GoToFilterCategoriesOutputBoundary goToFilterCategoriesOutputBoundary = new FilterCategoriesPresenter(
-                filterCategoriesViewModel, searchMovieViewModel, viewManagerModel);
+                filterCategoriesViewModel, searchMovieViewModel, openListViewModel, viewManagerModel);
         final GoToFilterCategoriesInputBoundary goToFilterCategoriesInteractor = new GoToFilterCategoriesInteractor(
                 goToFilterCategoriesOutputBoundary);
         final ClearAllFiltersInputBoundary clearAllFiltersInteractor = new ClearAllFiltersInteractor(
@@ -553,6 +554,17 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addCreateRecommendationUseCase() {
+        final CreateRecommendationInteractor createRecommendationInteractor = new CreateRecommendationInteractor(
+                dbMovieListDataAccessObject,
+                searchMovieDataAccessInterface,
+                userFactory);
+        createRecommendationInteractor.setStrategy(createRecommendationStrategy);
+        final CreateRecommendationController createRecommendationController = new CreateRecommendationController(createRecommendationInteractor);
+        userProfileView.setCreateRecommendationController(createRecommendationController);
+        return this;
+    }
+
     /**
      * Adds the Edit List Use Case to the application.
      * @return this builder
@@ -571,8 +583,8 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addAddMovieUseCase() {
-        final AddMovieOutputBoundary addMovieOutputBoundary = new AddMoviePresenter();
-        final AddMovieInputBoundary addMovieInteractor = new AddMovieInteractor(addMovieDataAccessInterface, addMovieOutputBoundary);
+        final AddMovieOutputBoundary addMovieOutputBoundary = new AddMoviePresenter(openListViewModel);
+        final AddMovieInputBoundary addMovieInteractor = new AddMovieInteractor(addMovieDataAccessInterface, addMovieOutputBoundary,userFactory);
         final AddMovieController addMovieController = new AddMovieController(addMovieInteractor);
         movieDetailView.setAddMovieController(addMovieController);
         return this;

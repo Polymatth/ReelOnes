@@ -42,6 +42,7 @@ public class Main {
                                             .addAddMovieUseCase()
                                             .addMovieListUseCase()
                                             .addOpenListUseCase()
+                                            .addCreateRecommendationUseCase()
                                             .addEditListUseCase()
                                             .addFilterCategoriesUseCases()
                                             .addFilterCategoryUseCases()

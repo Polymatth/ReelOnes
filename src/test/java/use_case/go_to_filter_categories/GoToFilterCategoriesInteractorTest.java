@@ -67,8 +67,8 @@ public class GoToFilterCategoriesInteractorTest {
         filtersToSelections.put(FilterCategoryConstants.GENRE, Arrays.asList(new String[]{"Documentary"}));
         List<Movie> moviesToAddGenre = new ArrayList<>();
         for (Movie movie : testList) {
-            if (((float)5.0 <= movie.getVote_average() && (float)5.9>=movie.getVote_average()) ||
-                    ((float)6.0 <=movie.getVote_average()&&(float)6.9>=movie.getVote_average())) {
+            if (((float)5.0 <= movie.getVoteAverage() && (float)5.9>=movie.getVoteAverage()) ||
+                    ((float)6.0 <=movie.getVoteAverage()&&(float)6.9>=movie.getVoteAverage())) {
                 moviesToAddPopularity.add(movie);
             }
             if (movie.getGenre_ids().contains(99)) {

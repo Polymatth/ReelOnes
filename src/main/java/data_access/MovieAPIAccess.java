@@ -241,6 +241,72 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
         return "Unknown";
     }
 
+    public List<String> getCast(int movieID) {
+        try {
+            String url = "https://api.themoviedb.org/3/movie/" + movieID + "/credits?language=en-US" + "&api_key=" + apiKey;
+            String authToken = "Bearer 688717ab16b692bc28e554309061593f";
+            //System.out.println("Url: " + url + " Auth Token: " + authToken);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("accept", CONTENT_TYPE_JSON)
+                    .addHeader("Authorization", authToken)
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                String jsonResponse = response.body().string();
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray results = jsonObject.getJSONArray("cast");
+                List<String> cast = new ArrayList<>();
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject elem = results.getJSONObject(i);
+                    cast.add(elem.getString("name"));
+                }
+                return cast;
+            }
+            else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public List<String> getCrew(int movieID) {
+        try {
+            String url = "https://api.themoviedb.org/3/movie/" + movieID + "/credits?language=en-US" + "&api_key=" + apiKey;
+            String authToken = "Bearer 688717ab16b692bc28e554309061593f";
+            //System.out.println("Url: " + url + " Auth Token: " + authToken);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("accept", CONTENT_TYPE_JSON)
+                    .addHeader("Authorization", authToken)
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                String jsonResponse = response.body().string();
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                JSONArray results = jsonObject.getJSONArray("crew");
+                List<String> crew = new ArrayList<>();
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject elem = results.getJSONObject(i);
+                    crew.add(elem.getString("name"));
+                }
+                return crew;
+            }
+            else {
+                System.out.println("API request failed with code: " + response.code());
+            }
+        } catch (IOException | org.json.JSONException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
     /**
      * Returns the list of streaming services on which a given movie is available
      * @param movieID the ID of the movie we want to find streaming services playing
@@ -502,7 +568,9 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
             if (response.isSuccessful() && response.body() != null) {
                 String jsonResponse = response.body().string();
                 JSONObject jsonObject = new JSONObject(jsonResponse);
-                JSONArray results = jsonObject.getJSONArray("results");
+                JSONArray results = jsonObject.getJSONArray("cast");
+                JSONArray crew = jsonObject.getJSONArray("crew");
+                results.putAll(crew);
 
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject movieJson = results.getJSONObject(i);
@@ -520,7 +588,7 @@ public class MovieAPIAccess implements SearchMovieDataAccessInterface, MovieDeta
                             movieJson.optString("poster_path"),
                             movieJson.getBoolean("adult"),
                             movieJson.getString("overview"),
-                            movieJson.getString("release_date"),
+                            movieJson.optString("release_date", "n/a"),
                             genre_ids,
                             movieJson.getInt("id"),
                             movieJson.getString("original_language"),

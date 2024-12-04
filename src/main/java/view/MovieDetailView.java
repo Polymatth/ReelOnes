@@ -1,5 +1,6 @@
 package view;
 
+import entity.Movie;
 import entity.MovieList;
 import entity.UserList;
 import interface_adapter.add_movie_to_list.AddMovieController;
@@ -35,6 +36,12 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
         private BufferedImage poster = null;
         private MovieDetailController movieDetailController;
         private AddMovieController addMovieController;
+
+        private String username;
+        private String password;
+        private String favMovie;
+        private String favDirector;
+        private List<MovieList> userMovieListsList;
 
     public MovieDetailView(MovieDetailViewModel movieDetailViewModel, MovieListViewModel movieListViewModel) {
 
@@ -156,9 +163,21 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
                     listArray,
                     listArray[0]);
 
-            if (selectedList != null && !selectedList.trim().isEmpty()) {
+            if (selectedList.equals("Recommended Movies")) {
+                JOptionPane.showMessageDialog(this,
+                        "You can't add movies to Recommended List. Try another list!",
+                        "Access Denied",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+            } else if (selectedList != null && !selectedList.trim().isEmpty()) {
                 try {
-                    addMovieController.addMovieToList(selectedList, movieDetailViewModel.getState().getTitle());
+                    Movie movie = movieDetailViewModel.getState().getMovie();
+                    for (int i = 0; i < userLists.size(); i++) {
+                        if (userLists.get(i).getListName().equals(selectedList)){
+                             userLists.get(i).addMovie(movieDetailViewModel.getState().getMovie());
+                        }
+                    }
+                    addMovieController.addMovieToList(username,password,favMovie,favDirector,userLists,selectedList,movie.getTitle());
                     JOptionPane.showMessageDialog(this,
                             "Movie added to \"" + selectedList + "\" successfully!",
                             "Success",
@@ -196,6 +215,13 @@ public class MovieDetailView extends JPanel implements ActionListener, PropertyC
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         displayDetails();
+        if (evt.getPropertyName().equals("currentuser")) {
+            userMovieListsList = movieDetailViewModel.getState().getUserLists();
+            username = movieDetailViewModel.getState().getUsername();
+            password = movieDetailViewModel.getState().getPassword();
+            favMovie = movieDetailViewModel.getState().getFavMovie();
+            favDirector =movieDetailViewModel.getState().getFavDirector();
+        }
     }
 
     public String getViewName() {

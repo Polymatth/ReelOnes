@@ -26,7 +26,7 @@ public class ReturnToListInteractorTest {
         Map<String, List<Movie>> filtersToMovies = new HashMap<>();
         List<Movie> moviesToAdd = new ArrayList<>();
         for (Movie movie : testList) {
-            float avg = movie.getVote_average();
+            float avg = movie.getVoteAverage();
             if (((float)5.0 <= avg && (float)5.9 >= avg) || ((float)6.0 <= avg && (float)6.9 >= avg)) {
                 moviesToAdd.add(movie);
             }
@@ -86,8 +86,8 @@ public class ReturnToListInteractorTest {
         filtersToSelections.put(FilterCategoryConstants.GENRE, Arrays.asList(new String[]{"Documentary"}));
         List<Movie> moviesToAddGenre = new ArrayList<>();
         for (Movie movie : testList) {
-            if (((float)5.0 <= movie.getVote_average() && (float)5.9>=movie.getVote_average()) ||
-                    ((float)6.0 <=movie.getVote_average()&&(float)6.9>=movie.getVote_average())) {
+            if (((float)5.0 <= movie.getVoteAverage() && (float)5.9>=movie.getVoteAverage()) ||
+                    ((float)6.0 <=movie.getVoteAverage()&&(float)6.9>=movie.getVoteAverage())) {
                 moviesToAddPopularity.add(movie);
             }
             if (movie.getGenre_ids().contains(99)) {
@@ -152,8 +152,8 @@ public class ReturnToListInteractorTest {
         filtersToSelections.put(FilterCategoryConstants.GENRE, Arrays.asList(new String[]{"Horror"}));
         List<Movie> moviesToAddGenre = new ArrayList<>();
         for (Movie movie : testList) {
-            if (((float)5.0 <= movie.getVote_average() && (float)5.9>=movie.getVote_average()) ||
-                    ((float)6.0 <=movie.getVote_average()&&(float)6.9>=movie.getVote_average())) {
+            if (((float)5.0 <= movie.getVoteAverage() && (float)5.9>=movie.getVoteAverage()) ||
+                    ((float)6.0 <=movie.getVoteAverage()&&(float)6.9>=movie.getVoteAverage())) {
                 moviesToAddPopularity.add(movie);
             }
             if (movie.getGenre_ids().contains(27)) {

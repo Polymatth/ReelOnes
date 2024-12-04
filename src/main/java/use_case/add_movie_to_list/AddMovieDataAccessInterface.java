@@ -1,5 +1,7 @@
 package use_case.add_movie_to_list;
 
+import entity.User;
+
 /**
  * Interface for adding a movie to a user list.
  */
@@ -11,4 +13,5 @@ public interface AddMovieDataAccessInterface {
      */
     void addMovieToList(String listId, String movieId);
 
+    void saveMovieList(User user);
 }
