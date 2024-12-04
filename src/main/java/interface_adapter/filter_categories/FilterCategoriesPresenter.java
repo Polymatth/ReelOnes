@@ -100,10 +100,8 @@ public class FilterCategoriesPresenter implements ReturnToFilterCategoriesOutput
     @Override
     public void executeReturnToList(ReturnToListOutputData returnToListOutputData) {
         //Find the correct list view model using the list view name.
-        ViewModel viewModel;
         if (returnToListOutputData.getListView().equals(this.searchMovieViewModel.getViewName())) {
             //get the current state of the Search Movie view model.
-            viewModel = this.searchMovieViewModel;
             SearchMovieState state = this.searchMovieViewModel.getState();
             state.setFiltersToMovies(returnToListOutputData.getFiltersToMovies());
             state.setFiltersToSelections(returnToListOutputData.getFiltersToSelections());
@@ -114,6 +112,8 @@ public class FilterCategoriesPresenter implements ReturnToFilterCategoriesOutput
             //Update the State in the appropriate View Model.
             this.searchMovieViewModel.setState(state);
             this.searchMovieViewModel.firePropertyChanged();
+            this.viewManagerModel.setState(this.searchMovieViewModel.getViewName());
+            this.viewManagerModel.firePropertyChanged();
         }
     }
 }
