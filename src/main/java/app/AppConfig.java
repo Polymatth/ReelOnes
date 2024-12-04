@@ -32,6 +32,8 @@ public class AppConfig {
     public FilterApplicationDataAccessInterface getFilterApplicationDataAccess() {
         return new MovieAPIAccess(API_KEY, API_URL);
     }
+
+    //Sets necessary parameters for the recommendation strategy
     public CreateRecommendationStrategy getRecommendationStrategy() {
         CreateRecommendationStrategy strategy = new CreateRecommendationCosimStrategy();
         if (strategy.getStrategy().equals("Cosine Similarity")){

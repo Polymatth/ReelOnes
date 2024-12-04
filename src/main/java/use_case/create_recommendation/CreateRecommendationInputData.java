@@ -1,10 +1,12 @@
 package use_case.create_recommendation;
 
 import entity.MovieList;
-import entity.User;
+
 
 import java.util.List;
-
+/**
+ * The input data for the Create Recommendation Use Case.
+ */
 public class CreateRecommendationInputData {
     private final String favMovie;
 
