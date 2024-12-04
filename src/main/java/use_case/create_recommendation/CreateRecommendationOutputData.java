@@ -4,7 +4,9 @@ import entity.Movie;
 import entity.RecommendedList;
 
 import java.util.List;
-
+/**
+ * The output data for the Create Recommendation Use Case.
+ */
 public class CreateRecommendationOutputData {
 
     private final RecommendedList recommendedList;

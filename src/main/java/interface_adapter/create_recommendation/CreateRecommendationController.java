@@ -6,6 +6,9 @@ import use_case.create_recommendation.CreateRecommendationInputData;
 
 import java.util.List;
 
+/**
+ * Controller for the CreateRecommendation Use Case.
+ */
 public class CreateRecommendationController {
 
     private final CreateRecommendationInputBoundary createRecommendationInteractor;
