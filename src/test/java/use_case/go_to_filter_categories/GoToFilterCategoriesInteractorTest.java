@@ -42,6 +42,8 @@ public class GoToFilterCategoriesInteractorTest {
                             goToFilterCategoriesOutputData.getFiltersToMovies().get(category).size());
                     assert(goToFilterCategoriesOutputData.getFiltersToSelections().get(category).isEmpty());
                 }
+                //Test that the list view is correct.
+                assertEquals("movie search", goToFilterCategoriesOutputData.getListView());
             }
         };
         GoToFilterCategoriesInputBoundary interactor = new GoToFilterCategoriesInteractor(goToFilterCategoriesPresenter);
@@ -102,6 +104,8 @@ public class GoToFilterCategoriesInteractorTest {
                         assert (goToFilterCategoriesOutputData.getFiltersToSelections().get(category).isEmpty());
                     }
                 }
+                //Test that the list view is correct.
+                assertEquals("movie search", goToFilterCategoriesOutputData.getListView());
             }
         };
         GoToFilterCategoriesInputBoundary interactor = new GoToFilterCategoriesInteractor(goToFilterCategoriesPresenter);

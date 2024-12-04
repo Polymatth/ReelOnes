@@ -50,6 +50,10 @@ public class FilterApplicationInteractorTest {
                     assert(movie.getGenre_ids().contains(14) || movie.getGenre_ids().contains(35) ||
                             movie.getGenre_ids().contains(18));
                 }
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.GENRE, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -77,6 +81,11 @@ public class FilterApplicationInteractorTest {
             public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
                 //Test that all the movies are included in the resulting list.
                 assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.GENRE, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
+
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -104,6 +113,10 @@ public class FilterApplicationInteractorTest {
             public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
                 //Test that all the movies are included in the resulting list.
                 assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.GENRE, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -149,6 +162,10 @@ public class FilterApplicationInteractorTest {
                     assert((2020 <= Integer.parseInt(movie.getYear()) || 2029 >= Integer.parseInt(movie.getYear())) ||
                             (2010 <= Integer.parseInt(movie.getYear()) || 2019 >= Integer.parseInt(movie.getYear())));
                 }
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.DECADE_OF_RELEASE, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -175,6 +192,10 @@ public class FilterApplicationInteractorTest {
             public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
                 //Test that all the movies of the original list are included.
                 assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.DECADE_OF_RELEASE, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -201,6 +222,10 @@ public class FilterApplicationInteractorTest {
             public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
                 //Test that all the movies of the original list are included.
                 assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.DECADE_OF_RELEASE, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -243,6 +268,10 @@ public class FilterApplicationInteractorTest {
                     assert(((float)5.0 <= movie.getVoteAverage() && (float)5.9 >= movie.getVoteAverage()) ||
                             ((float)6.0 <= movie.getVoteAverage() && (float)6.9 >= movie.getVoteAverage()));
                 }
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.POPULARITY_RATING, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -260,7 +289,8 @@ public class FilterApplicationInteractorTest {
         List<String> allOptions = Arrays.asList(new String[]{"0.0-0.9", "1.0-1.9", "2.0-2.9", "3.0-3.9", "4.0-4.9", "5.0-5.9",
                 "6.0-6.9", "7.0-7.9", "8.0-8.9", "9.0-10.0"});
         List<String> optionsSelected = new ArrayList<>(allOptions);
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Popularity Ratings",
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(FilterCategoryConstants
+                .POPULARITY_RATING,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
@@ -269,6 +299,10 @@ public class FilterApplicationInteractorTest {
             public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
                 //Test that all the movies of the original list are included.
                 assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.POPULARITY_RATING, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -286,7 +320,8 @@ public class FilterApplicationInteractorTest {
         List<String> allOptions = Arrays.asList(new String[]{"0.0-0.9", "1.0-1.9", "2.0-2.9", "3.0-3.9", "4.0-4.9", "5.0-5.9",
                 "6.0-6.9", "7.0-7.9", "8.0-8.9", "9.0-10.0"});
         List<String> optionsSelected = new ArrayList<>();
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Popularity Ratings",
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(FilterCategoryConstants
+                .POPULARITY_RATING,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
@@ -295,6 +330,10 @@ public class FilterApplicationInteractorTest {
             public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
                 //Test that all the movies of the original list are included.
                 assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.POPULARITY_RATING, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -336,6 +375,10 @@ public class FilterApplicationInteractorTest {
                     assert(((FilterApplicationDataAccessInterface)dataAccessInterface).getStreamingServices(movie.getID())
                             .retainAll(optionsSelected));
                 }
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.STREAMING_SERVICES, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -353,7 +396,8 @@ public class FilterApplicationInteractorTest {
         List<String> allOptions = Arrays.asList(new String[]{"Netflix", "Amazon Prime Video", "Disney Plus", "Iqiyi",
                 "Apple TV", "Max"});
         List<String> optionsSelected = new ArrayList<>(allOptions);
-        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData("Popularity Ratings",
+        FilterApplicationInputData filterApplicationInputData = new FilterApplicationInputData(FilterCategoryConstants
+                .STREAMING_SERVICES,
                 optionsSelected, allOptions, testList);
 
         //Create a test presenter that tests that the interactor works as we expect.
@@ -362,6 +406,10 @@ public class FilterApplicationInteractorTest {
             public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
                 //Test that all the movies of the original list are included.
                 assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.STREAMING_SERVICES, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,
@@ -389,6 +437,10 @@ public class FilterApplicationInteractorTest {
             public void updateFilteredList(FilterApplicationOutputData filterApplicationOutputData) {
                 //Test that all the movies of the original list are included.
                 assertEquals(16, filterApplicationOutputData.getApplicableMovies().size());
+                //Test that the category name is correct.
+                assertEquals(FilterCategoryConstants.STREAMING_SERVICES, filterApplicationOutputData.getCategoryName());
+                //Test that the correct list of selected options has been stored.
+                assertEquals(optionsSelected, filterApplicationOutputData.getOptionsSelected());
             }
         };
         FilterApplicationInputBoundary interactor = new FilterApplicationInteractor(filterApplicationPresenter,

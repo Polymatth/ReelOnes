@@ -38,6 +38,10 @@ public class ReturnToFilterCategoriesInteractorTest {
             public void executeReturnToFilterCategories(ReturnToFilterCategoriesOutputData returnToFilterCategoriesOutputData) {
                 //Test that the filter category is the same.
                 assertEquals("Popularity Ratings", returnToFilterCategoriesOutputData.getCategoryName());
+                //Test that the list of selected options for the filter category the user is starting from is the same.
+                assertEquals(categoryselections, returnToFilterCategoriesOutputData.getSelectedOptions());
+                //Test that the list of filtered movies for the filter category the user is starting from is the same.
+                assertEquals(filteredMovies, returnToFilterCategoriesOutputData.getFilteredMovies());
             }
         };
         ReturnToFilterCategoriesInputBoundary interactor = new ReturnToFilterCategoriesInteractor(
