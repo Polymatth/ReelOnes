@@ -6,12 +6,12 @@ import entity.User;
  * Interface for adding a movie to a user list.
  */
 public interface AddMovieDataAccessInterface {
-    /**
-     * Adds a movie to a user list.
-     * @param listId the ID of the user list
-     * @param movieId the ID of the movie to add
-     */
-    void addMovieToList(String listId, String movieId);
+//    /**
+//     * Adds a movie to a user list.
+//     * @param listId the ID of the user list
+//     * @param movieId the ID of the movie to add
+//     */
+//    void addMovieToList(String listId, String movieId);
 
     void saveMovieList(User user);
 }
